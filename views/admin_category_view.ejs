@@ -1,0 +1,154 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+
+    <div class="main-content">
+      <div class="container-fluid mt-4 pt-2 mb-6">
+        <!-- header -->
+        <div class="d-md-flex align-items-center">
+          <h3 class="mb-3 mb-md-0">Category</h3>
+          <a href="/admin_category_add_get" class="btn btn-purple hover-lift-light shadow-light-sm ms-auto me-3">
+            <span class="svg-icon svg-icon-sm text-white me-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                <title>ionicons-v5-a</title>
+                <line x1="256" y1="112" x2="256" y2="400" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+                <line x1="400" y1="256" x2="112" y2="256" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+              </svg>
+            </span>
+            Add Category
+          </a>
+        </div>
+
+        <!-- report -->
+        <div id="companies" class="card mt-4">
+          <div class="card-header">
+            <form class="flex-grow-1 pe-3">
+              <div class="input-group input-group-flush pt-2">
+                <div class="input-group-text ps-0">
+                  <i class="fas fa-search relative-top--2"></i>
+                </div>
+                <input type="search" class="search form-control" placeholder="Search..." />
+              </div>
+            </form>
+
+            <div class="ms-auto mt-2 mt-md-0">
+              <button type="button" class="btn btn-white btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="svg-icon svg-icon-sm me-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                    <title>ionicons-v5-n</title>
+                    <path
+                      d="M35.4,87.12,204.05,283.56A16.07,16.07,0,0,1,208,294V413.32a7.93,7.93,0,0,0,5.39,7.59l80.15,26.67A7.94,7.94,0,0,0,304,440V294A16.07,16.07,0,0,1,308,283.56L476.6,87.12A14,14,0,0,0,466,64H46.05A14,14,0,0,0,35.4,87.12Z"
+                      style="
+                    fill: none;
+                    stroke: #000;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-width: 32px;
+                  " />
+                  </svg>
+                </i>
+
+                Filter
+              </button>
+
+              <div class="dropdown-menu dropdown-menu-card shadow-light">
+                <div class="card-header">
+                  <div class="card-header-title">Filters</div>
+                </div>
+                <div class="card-body p-0">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center justify-content-between px-4">
+                      <span> Location </span>
+                      <select class="form-select form-select-sm w-auto">
+                        <option>America</option>
+                        <option>Europe</option>
+                        <option>Asia</option>
+                        <option>Africa</option>
+                        <option>Oceania</option>
+                      </select>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-between px-4">
+                      <span> Added at </span>
+                      <select class="form-select form-select-sm w-auto">
+                        <option>Last week</option>
+                        <option>This year</option>
+                        <option>Last year</option>
+                      </select>
+                    </li>
+                  </ul>
+                </div>
+                <a href="#!" class="card-footer-btn btn btn-purple justify-content-center">
+                  Apply filter
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm card-table table-nowrap">
+              <thead>
+                <tr>
+                  <th class="col-2 text-center">Sl NO</th>
+                  <th class="col-3 text-center">
+                    <a class="text-dark" href="">Image</a>
+                  </th>
+                  <th class="col-4 text-center">
+                    <a class="text-dark" href="">Category Name</a>
+                  </th>
+                  <th class="col-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                <% categories.forEach((category, index)=> { %>
+                  <td class="col-2 text-center"><%= index+1%></td>
+                  <td class="col-3 text-center">
+                    <div class="w-100 d-flex justify-content-center align-items-center">
+                      <img src="<%= category.imageUrl[0].url%>" alt="Category Image" style="width: 50%; height: auto;">
+                    </div>
+                  </td>
+                  <td class="col-4 text-center">
+                    <%= category.categoryName%>
+                  </td>
+                  <td class="col-3 text-center">
+                    <div>
+                      <a href="/admin_category_edit_get/<%= category._id%>">
+                        <i class="fas fa-edit" style="color: #e7bb1d;">EDIT</i>
+                      </a>
+                      <a href="" class="btn btn-danger mx-5">UNLIST</a>
+                    </div>
+                  </td>
+                  </tr>
+                  <%})%>
+                    <tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- <div class="card-footer d-flex justify-content-center p-0">
+        <ul class="nav-pagination">
+          <li>
+            <a class="page" href="#!">1</a>
+          </li>
+          <li>
+            <a class="page" href="#!">2</a>
+          </li>
+          <li>
+            <a class="page" href="#!">3</a>
+          </li>
+        </ul>
+      </div> -->
+        </div>
+      </div>
+    </div>
+
+    <%-include('admin_footer')-%>

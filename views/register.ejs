@@ -1,0 +1,158 @@
+<%-include('header') -%>
+<!--Body Content-->
+<div id="page-content">
+  <!--Page Title-->
+  <div class="page section-header text-center">
+    <div class="page-title">
+      <div class="wrapper">
+        <h1 class="page-width">Create an Account</h1>
+      </div>
+    </div>
+    <!--End Page Title-->
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
+          <div class="mb-4">
+            <form
+              id="userRegisterForm"
+              accept-charset="UTF-8"
+              class="contact-form"
+            >
+              <div class="row" id="inside">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="firstName"
+                      placeholder="First Name"
+                      id="FirstName"
+                      autofocus=""
+                    />
+                    <p id="firstNameError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="lastName"
+                      placeholder="Last Name"
+                      id="LastName"
+                    />
+                    <p id="lastNameError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="phoneNo"
+                      placeholder="Phone no"
+                      id="Phoneno"
+                      class=""
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autofocus=""
+                    />
+                    <p id="phoneNoError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      id="CustomerEmail"
+                      class=""
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autofocus=""
+                    />
+                    <p id="emailError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      value=""
+                      name="password"
+                      placeholder="Password"
+                      id="CustomerPassword"
+                      class=""
+                    />
+                    <p id="passwordError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      value=""
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      id="CustomerPassword"
+                      class=""
+                    />
+                    <p
+                      id="confirmPasswordError"
+                      class="text-danger text-left error-msg"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
+                  <input type="submit" class="btn mb-3" value="Create" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Body Content-->
+  <script src="/js/axios.min.js"></script>
+  <script>
+    document
+      .getElementById("userRegisterForm")
+      .addEventListener("submit", validation);
+      
+    async function validation(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      resetErrorMessages();
+      try {
+        const response = await axios.post("/register", formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          window.location.href = "/user_otp";
+        }
+      } catch (err) {
+        if (err.response.status === 400) {
+          const errors = err.response.data.error;
+          Object.keys(errors).forEach((key) => {
+            document.getElementById(key).textContent = errors[key];
+          });
+        } else {
+          alert("Something went wrong");
+        }
+      }
+    }
+
+    function resetErrorMessages() {
+      const errorElements = document.querySelectorAll(".error-msg");
+      errorElements.forEach((element) => {
+        element.textContent = "";
+      });
+    }
+  </script>
+
+  <!--Footer-->
+  <%-include('footer')-%>
+</div>

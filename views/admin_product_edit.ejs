@@ -1,0 +1,172 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+    <style>
+      .category-select,
+      .subCategory-select,
+      .brand-select {
+        margin-left: 22px;
+        margin-top: 8px;
+        height: 30px;
+        width: 50px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+    <div class="main-content">
+      <div class="container-fluid pb-7">
+        <div class="d-flex align-items-start mt-5">
+          <h2 class="mb-0">Edit Products</h2>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-xl-7">
+            <form id="editProductForm">
+              <div class="from-group mt-4 pt-3">
+                <label class="form-label"> Product name: </label>
+                <input type="text" class="form-control" name="name" value="<%= product.name%>" />
+                <p id="productNameError" class="text-danger"></p>
+              </div>
+
+              <div class="from-group mt-4">
+                <label class="form-label"> Product description: </label>
+                <textarea rows="4" class="form-control" name="description"><%= product.description%></textarea>
+                <p id="productDescriptionError" class="text-danger"></p>
+              </div>
+
+              <div class="from-group mt-4">
+                <label class="form-label"> Price: </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="text" class="form-control" name="price" value="<%= product.price%>" />
+                </div>
+                <p id="productPriceError" class="text-danger"></p>
+              </div>
+
+              <div class="from-group mt-4">
+                <label class="form-label"> Stock: </label>
+                <input type="text" class="form-control" name="stock" value="<%=product.stock%>" />
+                <p id="productStockError" class="text-danger"></p>
+              </div>
+              <div class="row mt-4">
+                <div class="col-lg-12 col-md-6 p-0">
+                  <select style="width: 180px" name="category" class="category-select">
+                    <option value="<%= category._id%>" selected>
+                      <%=product.category.categoryName%>
+                    </option>
+                    <%category.forEach(category=> {%>
+                      <option value="<%= category._id%>" <%=product.category==category._id ? 'selected' : '' %>>
+                        <%= category.categoryName%>
+                      </option>
+                      <%}) %>
+                  </select>
+                  <p id="categoryError" class="text-danger"></p>
+
+                  <% product.imageUrl.forEach((image, index)=> { %>
+                    <% if (image.isVisible) {%>
+                      <div>
+                        <label>
+                          <input type="checkbox" name="selectedImages" value="<%= image.url %>"
+                             id="selectedImage" checked>
+                          <img class="pb-5" src="<%= image.url %>" alt="Product Image" style="width: 50%; height: auto">
+                        </label>
+                      </div>
+                    <%} else {%>
+                      <div>
+                        <label>
+                          <input type="checkbox" name="selectedImages" value="<%= image.url %>"
+                             id="selectedImage">
+                          <img class="pb-5" src="<%= image.url %>" alt="Product Image" style="width: 50%; height: auto">
+                        </label>
+                      </div>
+                    <%}%>
+                    
+                    <% }); %>
+
+                      <div class="from-group mt-4">
+                        <label class="form-label mb-0"> Product image: </label>
+                        <p class="form-text">
+                          Upload a JPG or PNG. No larger than 1200px.
+                        </p>
+                        <input type="file" class="form-control" name="image" />
+                        <p id="productImageError" class="text-danger text-left"></p>
+                      </div>
+                      <div class="d-grid gap-3 mt-5">
+                        <button class="btn btn-primary btn-lg hover-lift-light" type="submit">
+                          Edit Product
+                        </button>
+                        <button class="btn btn-link">Cancel</button>
+                      </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/axios.min.js"></script>
+    <script>
+      const productId = '<%= product._id %>'
+      // // const selectedImages = [];
+      // document.getElementById('selectedImage').addEventListener('change', imageSelection);
+
+
+      // async function imageSelection(event) {
+      //   const imageUrl = event.target.value;
+      //   const isChecked = event.target.checked;
+      //   try {
+      //     const imageResponse = await axios.post(`/admin_product_image/id?imageUrl=${imageUrl}`, { checked: isChecked });
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+        // try {
+        //   const response = await fetch(`/admin_product_image/id?=${imageUrl}`);
+        //   if (response.ok) {
+        //     const imageResponse = await response.json();
+        //     console.log(imageResponse);
+        //     // Handle the imageResponse data
+        //   } else {
+        //     throw new Error('Request failed with status ' + response.status);
+        //   }
+        // } catch (err) {
+        //   console.log(err);
+        // }
+
+      // }
+
+      document
+        .getElementById("editProductForm")
+        .addEventListener("submit", addProduct);
+      async function addProduct(event) {
+        event.preventDefault();
+        document
+          .getElementById("editProductForm")
+          .querySelectorAll("p")
+          .forEach((element) => {
+            element.textContent = "";
+          });
+        const formData = new FormData(event.target);
+
+        try {
+          const response = await axios.post(`/admin_product_edit_post/${productId}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          if (response.status === 200) {
+            window.location.href = "/admin_product_view_get";
+          }
+        } catch (err) {
+          if (err.response.status === 404) {
+            const errors = err.response.data.error;
+            Object.keys(errors).forEach((key) => {
+              document.getElementById(key).textContent = errors[key];
+            });
+          } else if (err.response.status === 500) {
+            alert(err);
+          } else {
+            alert(err);
+          }
+        }
+      }
+    </script>
+    <%-include('admin_footer') -%>

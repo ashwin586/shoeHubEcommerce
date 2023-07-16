@@ -1,0 +1,180 @@
+<%- include('admin_header')-%> <%- include('admin_sidebar')-%>
+<div class="main-content">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white d-none d-lg-flex">
+    <div class="container-fluid">
+      <!-- Form -->
+      <form>
+        <div class="input-group input-group-flush">
+          <div class="input-group-text">
+            <i class="fas fa-search relative-top--2"></i>
+          </div>
+
+          <input
+            type="text"
+            class="form-control dropdown-toggle"
+            data-bs-toggle="dropdown"
+            placeholder="Search..."
+            aria-label="Search"
+            aria-expanded="false"
+          />
+        </div>
+      </form>
+
+      <!-- User -->
+      <div class="d-flex align-items-center">
+        <div class="dropdown d-none d-md-flex">
+          <a
+            href="#"
+            class="svg-icon svg-icon-sm"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+          </a>
+          <!-- <div
+            class="dropdown-menu dropdown-menu-end dropdown-menu-card shadow-light-sm me-n3"
+          ></div> -->
+        </div>
+        <div class="dropdown ms-2">
+          <a
+            href="#"
+            class="d-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            <span class="text-dark ms-2">Adrian, G.</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="/admin_logout">Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 mt-md-5 mb-6">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center text-md-start m-0">Good morning Admin</h3>
+      </div>
+
+      <div class="col-12 mt-4">
+        <div class="card">
+          <div class="card-header text-center">
+            <div class="card-header-title mb-2 mb-md-0">Your earnings</div>
+
+            <div
+              class="w-100 w-md-250 bg-white border rounded d-flex align-items-center fs-sm fw-bold ms-md-auto py-1 px-3"
+              role="button"
+              data-datepicker
+            >
+              <div class="svg-icon me-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="512"
+                  height="512"
+                  viewBox="0 0 512 512"
+                >
+                  <title>ionicons-v5-e</title>
+                  <rect
+                    x="48"
+                    y="80"
+                    width="416"
+                    height="384"
+                    rx="48"
+                    ry="48"
+                    style="
+                      fill: none;
+                      stroke: #000;
+                      stroke-linejoin: round;
+                      stroke-width: 32px;
+                    "
+                  />
+                  <path
+                    d="M397.82,80H114.18C77.69,80,48,110.15,48,147.2V208H64c0-16,16-32,32-32H416c16,0,32,16,32,32h16V147.2C464,110.15,434.31,80,397.82,80Z"
+                  />
+                  <circle cx="296" cy="232" r="24" />
+                  <circle cx="376" cy="232" r="24" />
+                  <circle cx="296" cy="312" r="24" />
+                  <circle cx="376" cy="312" r="24" />
+                  <circle cx="136" cy="312" r="24" />
+                  <circle cx="216" cy="312" r="24" />
+                  <circle cx="136" cy="392" r="24" />
+                  <circle cx="216" cy="392" r="24" />
+                  <circle cx="296" cy="392" r="24" />
+                  <line
+                    x1="128"
+                    y1="48"
+                    x2="128"
+                    y2="80"
+                    style="
+                      fill: none;
+                      stroke: #000;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 32px;
+                    "
+                  />
+                  <line
+                    x1="384"
+                    y1="48"
+                    x2="384"
+                    y2="80"
+                    style="
+                      fill: none;
+                      stroke: #000;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 32px;
+                    "
+                  />
+                </svg>
+              </div>
+              <span class="mt-1"></span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="chart">
+              <canvas class="chart-canvas" id="ecommerceChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card-footer py-3 bg-dark">
+            <div class="row row-cols-2 row-cols-md-5">
+              <div class="col text-center">
+                <div class="text-uppercase-xs text-pastel-purple">
+                  Total sales
+                </div>
+                <h4 class="text-white mt-1 mt-md-3 mb-0">$362,201</h4>
+              </div>
+              <div class="col text-center">
+                <div class="text-uppercase-xs text-pastel-purple">Visits</div>
+                <h4 class="text-white mt-1 mt-md-3 mb-0">3,210</h4>
+              </div>
+              <div class="col text-center mt-4 mt-md-0">
+                <div class="text-uppercase-xs text-pastel-purple">
+                  Today's orders
+                </div>
+                <h4 class="text-white mt-1 mt-md-3 mb-0">18</h4>
+              </div>
+              <div class="col text-center mt-4 mt-md-0">
+                <div class="text-uppercase-xs text-pastel-purple">
+                  Today's visitors
+                </div>
+                <h4 class="text-white mt-1 mt-md-3 mb-0">891</h4>
+              </div>
+              <div class="col text-center mt-4 mt-md-0">
+                <div class="text-uppercase-xs text-pastel-purple">
+                  Avg. order value
+                </div>
+                <h4 class="text-white mt-1 mt-md-3 mb-0">$247</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('admin_footer')-%>

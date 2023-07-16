@@ -1,0 +1,79 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+
+<div class="main-content">
+  <div class="container-fluid pb-7">
+    <div class="d-flex align-items-start mt-5">
+      <h2 class="mb-0">Edit Category</h2>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-7">
+        <form id="editCategoryForm">
+          <div class="from-group mt-4 pt-3">
+            <label class="form-label"> Category name: </label>
+            <input type="text" class="form-control" name="name" value="<%= category.categoryName%>" />
+            <p id="categoryNameError" class="text-danger"></p>
+          </div>
+          <div class="row mt-4">
+            <div class="col-lg-12 col-md-6 p-0">
+              <div class="from-group mt-4">
+                <label class="form-label mb-0"> Category image: </label>
+                <p class="form-text">
+                  Upload a JPG or PNG. No larger than 1200px.
+                </p>
+                <input type="file" class="form-control" name="image" />
+                <p id="categoryImageError" class="text-danger text-left"></p>
+              </div>
+              <div class="d-grid gap-3 mt-5">
+                <button
+                  class="btn btn-primary btn-lg hover-lift-light"
+                  type="submit"
+                >
+                  Add Category
+                </button>
+                <button class="btn btn-link">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/axios.min.js"></script>
+<script>
+  const categoryId = '<%= category._id %>'
+  document
+    .getElementById("editCategoryForm")
+    .addEventListener("submit", editCategory);
+  async function editCategory(event) {
+    event.preventDefault();
+    document
+      .getElementById("editCategoryForm")
+      .querySelectorAll("p")
+      .forEach((element) => {
+        element.textContent = "";
+      });
+    const formData = new FormData(event.target);
+    try {
+      const response = await axios.post(`/admin_category_edit_post/${categoryId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        window.location.href = "/admin_category_view_get";
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        const errors = err.response.data.error;
+        Object.keys(errors).forEach((key) => {
+          document.getElementById(key).textContent = errors[key];
+        });
+      } else {
+        alert("Something went wrong");
+      }
+    }
+  }
+</script>
+<%-include('admin_footer') -%>

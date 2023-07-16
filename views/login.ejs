@@ -1,0 +1,113 @@
+<%-include('header')-%>
+<!--Body Content-->
+<div id="page-content">
+  <!--Page Title-->
+  <div class="page section-header text-center">
+    <div class="page-title">
+      <div class="wrapper">
+        <h1 class="page-width">Login</h1>
+      </div>
+    </div>
+  </div>
+  <!--End Page Title-->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
+        <div class="mb-4">
+          <div>
+            <p id="isBlockedError" class="text-danger error-msg"></p>
+          </div>
+          <form id="userLoginForm" accept-charset="UTF-8" class="contact-form">
+            <div class="row" id="inside">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <p class="text-center text-danger error-msg" id="loginError"></p>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your Email"
+                    id="CustomerEmail"
+                    class=""
+                    autocorrect="off"
+                    autocapitalize="off"
+                    autofocus=""
+                  />
+                  <p id="emailError" class="text-danger text-left error-msg"></p>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                  <input
+                    type="password"
+                    value=""
+                    name="password"
+                    placeholder="Enter your Password"
+                    id="CustomerPassword"
+                    class=""
+                  />
+                  <p id="passwordError" class="text-danger text-left error-msg"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
+                <input type="submit" class="btn mb-3" value="Sign In" />
+                <p class="mb-4">
+                  <a href="/user_email_verifyGet" id="RecoverPassword"
+                    >Forgot your password?</a
+                  >
+                  &nbsp; | &nbsp;
+                  <a href="/register" id="customer_register_link"
+                    >Create account</a
+                  >
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Body Content-->
+<script src="/js/axios.min.js"></script>
+<script>
+  document
+    .getElementById("userLoginForm")
+    .addEventListener("submit", validation);
+  async function validation(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    resetErrorMessages();
+    try {
+      const response = await axios.post("/login", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status === 200) {
+        window.location.href = "/";
+      }
+    } catch (err) {
+      if (err.response.status === 400) {
+        const errors = err.response.data.error;
+        Object.keys(errors).forEach((key) => {
+          document.getElementById(key).textContent = errors[key];
+        });
+      } else {
+        alert("Something went wrong");
+      }
+    }
+  }
+
+  function resetErrorMessages() {
+      const errorElements = document.querySelectorAll(".error-msg");
+      errorElements.forEach((element) => {
+        element.textContent = "";
+      });
+    }
+</script>
+
+<!--Footer-->
+<%-include('footer')-%>;
