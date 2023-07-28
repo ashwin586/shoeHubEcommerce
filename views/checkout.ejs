@@ -1,0 +1,335 @@
+<%- include('header') -%>
+
+  <style>
+    .divInput[type="radio"] {
+      display: none;
+    }
+
+    #divLabel {
+      display: block;
+      cursor: pointer;
+      padding: 5px;
+      margin-bottom: 5px;
+    }
+
+    .divInput[type='radio']:checked+label .card-body {
+      background-color: lightblue;
+    }
+
+    .divInput[type="radio"]:checked+label .card-body {
+      font-weight: bold;
+    }
+  </style>
+
+  <!--Body Content-->
+  <div id="page-content">
+    <!--Page Title-->
+    <div class="page section-header text-center">
+      <div class="page-title">
+        <div class="wrapper">
+          <h1 class="page-width">Checkout</h1>
+        </div>
+      </div>
+    </div>
+    <!--End Page Title-->
+
+    <div class="container">
+      <div class="row">
+        <div class="form-group form-check col-md-12 col-lg-12 col-xl-12">
+          <label class="form-check-label padding-15px-left">
+            <button class="btn btn--small">Add New Address</button>
+          </label>
+        </div>
+      </div>
+
+      <div class="row billing-fields">
+        <div id="billing-details-container" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
+          <div class="create-ac-content bg-light-gray padding-20px-all">
+            <form id="addAddress" accept-charset="UTF-8">
+              <fieldset>
+                <h2 class="login-title mb-3">Billing details</h2>
+                <div class="row">
+                  <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                    <label>Full Name <span class="required-f">*</span></label>
+                    <input name="fullName" value="" id="input-firstname" type="text" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>E-Mail <span class="required-f">*</span></label>
+                    <input name="email" value="" id="input-email" type="email" />
+                  </div>
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>Phone Number <span class="required-f">*</span></label>
+                    <input name="phoneNo" value="" id="input-telephone" type="tel" />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <div class="row">
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>Address <span class="required-f">*</span></label>
+                    <input name="address" value="" id="input-address-1" type="text" />
+                  </div>
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>City <span class="required-f">*</span></label>
+                    <input name="city" value="" id="input-city" type="text" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>Pin Code <span class="required-f">*</span></label>
+                    <input name="pinCode" value="" id="input-postcode" type="text" />
+                  </div>
+                  <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                    <label>State <span class="required-f">*</span></label>
+                    <select name="stateId" id="input-zone">
+                      <option value="">--- Please Select ---</option>
+                      <option value="AP">Andhra Pradesh</option>
+                      <option value="AR">Arunachal Pradesh</option>
+                      <option value="AS">Assam</option>
+                      <option value="BR">Bihar</option>
+                      <option value="CT">Chhattisgarh</option>
+                      <option value="GA">Gujarat</option>
+                      <option value="HR">Haryana</option>
+                      <option value="HP">Himachal Pradesh</option>
+                      <option value="JK">Jammu and Kashmir</option>
+                      <option value="GA">Goa</option>
+                      <option value="JH">Jharkhand</option>
+                      <option value="KA">Karnataka</option>
+                      <option value="KL">Kerala</option>
+                      <option value="MP">Madhya Pradesh</option>
+                      <option value="MH">Maharashtra</option>
+                      <option value="MN">Manipur</option>
+                      <option value="ML">Meghalaya</option>
+                      <option value="MZ">Mizoram</option>
+                      <option value="NL">Nagaland</option>
+                      <option value="OR">Odisha</option>
+                      <option value="PB">Punjab</option>
+                      <option value="RJ">Rajasthan</option>
+                      <option value="SK">Sikkim</option>
+                      <option value="TN">Tamil Nadu</option>
+                      <option value="TG">Telangana</option>
+                      <option value="TR">Tripura</option>
+                      <option value="UT">Uttarakhand</option>
+                      <option value="UP">Uttar Pradesh</option>
+                      <option value="WB">West Bengal</option>
+                      <option value="AN">Andaman and Nicobar Islands</option>
+                      <option value="CH">Chandigarh</option>
+                      <option value="DN">Dadra and Nagar Haveli</option>
+                      <option value="DD">Daman and Diu</option>
+                      <option value="DL">Delhi</option>
+                      <option value="LD">Lakshadweep</option>
+                      <option value="PY">Puducherry</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn--small">
+                    Add Address
+                  </button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+          <div class="your-order-payment">
+            <div class="your-order">
+              <h2 class="order-title mb-4">Your Order</h2>
+
+              <div class="table-responsive-sm order-table">
+                <table class="bg-white table table-bordered table-hover text-center">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Product Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <% let totalPrice=0%>
+                    <tbody>
+                      <% cartItemsWithDetails.forEach(cartItems=> {%>
+                        <tr>
+                          <td class="text-left">
+                            <%= cartItems.name%>
+                          </td>
+                          <td>
+                            <%= cartItems.price%>
+                          </td>
+                          <td>
+                            <%= cartItems.quantity%>
+                          </td>
+                          <td>
+                            <% const total=cartItems.price * cartItems.quantity %>
+                              <%= total%>
+                                <% totalPrice +=total; %>
+                          </td>
+                        </tr>
+                        <%})%>
+                    </tbody>
+                    <tfoot class="font-weight-600">
+                      <tr>
+                        <td colspan="3" class="text-right">Total Amount</td>
+                        <td id="totalAmount">
+                          <%= totalPrice%>
+                        </td>
+                      </tr>
+                    </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="your-payment">
+              <h2 class="payment-title mb-3">payment method</h2>
+              <div class="payment-method">
+                <div>
+                  <span>
+                    <input class="paymentSelect" type="radio" name="paymentMethod" value="cashOnDelivery" />
+                    <label class="h4"> Cash On Delivery</label>
+                  </span>
+                </div>
+
+                <div>
+                  <span>
+                    <input class="paymentSelect" type="radio" name="paymentMethod" value="razorPay" />
+                    <label class="h4">RazorPay</label>
+                  </span>
+                </div>
+
+                <div class="order-button-payment">
+                  <button class="btn" value="Place order" type="submit" onclick="placeOrder()">
+                    Place order
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="dynamicAddress">
+        <% userAddresses.forEach(address=> {%>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 sm-margin-30px-bottom">
+            <input class="divInput" type="radio" name="selectedAddress" data-addressid="<%= address._id%>"
+              id="radio_<%= address._id%>" />
+            <label id="divLabel" for="radio_<%= address._id%>">
+              <div class="card card-dashboard checking" data-addressid="<%= address._id%>">
+                <div class="card-body">
+                  <h3 class="card-title">Billing Address</h3>
+                  <p>
+                    <%= address.name%><br>
+                      <%= address.email%><br>
+                        <%= address.phoneNo%><br>
+                          <%= address.streetAddress%><br>
+                            <%= address.pinCode%><br>
+                              <%= address.state%><br>
+                  </p>
+                </div>
+              </div>
+            </label>
+          </div>
+          <%})%>
+      </div>
+      <div>
+      </div>
+    </div>
+    <!--End Body Content-->
+
+    <!--Footer-->
+    <%- include('footer')-%>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="/js/axios.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          $(".create-ac-content").hide();
+
+          $(".btn--small").on("click", function () {
+            $(".create-ac-content").toggle();
+          });
+        });
+
+        document.getElementById("addAddress").addEventListener("submit", addAddress);
+
+        async function addAddress(event) {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          try {
+            const response = await axios.post("/user_address_post", formData, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if (response.status === 200) {
+              event.target.reset();
+
+              const newAddress = response.data;
+              const dynamicAddress = document.getElementById('dynamicAddress');
+              const newAddressHTML = `
+       <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 sm-margin-30px-bottom">
+        <input class="divInput" type="radio" name="selectedAddress" data-addressid="${newAddress._id}"
+              id="radio_${newAddress._id}" />
+              <label id="divLabel" for="radio_${newAddress._id}">
+                <div class="card card-dashboard checking" data-addressid="${newAddress._id}">
+                <div class="card-body">
+                  <h3 class="card-title">Billing Address</h3>
+                  <p>
+                    ${newAddress.name}<br>
+                    ${newAddress.phoneNo}<br>
+                    ${newAddress.streetAddress}<br>
+                    ${newAddress.city}<br>
+                    ${newAddress.pinCode}<br>
+                    ${newAddress.state}<br>
+                  </p>
+                </div>
+        </div>
+        <br>
+       `;
+              dynamicAddress.insertAdjacentHTML("beforeend", newAddressHTML);
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        function placeOrder() {
+          const paymentSelect = document.querySelector('.paymentSelect:checked').value
+          if (paymentSelect == "cashOnDelivery") {
+            cashOnDelivery(paymentSelect);
+          } else if (paymentSelect == "razorPay") {
+            console.log(paymentSelect);
+          }
+        }
+
+        async function cashOnDelivery(paymentSelect) {
+          try {
+            let selectedAddressId;
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+            const totalAmount = document.getElementById("totalAmount").textContent;
+            if (selectedAddress) {
+              selectedAddressId = selectedAddress.dataset.addressid;
+            }
+
+            const response = await axios.post(`/user_checkout_post`, {
+              totalAmount: totalAmount,
+              selectedAddressId: selectedAddressId,
+              selectedPayment: paymentSelect
+            }, {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+
+            if (response.status == 200) {
+              window.location.href = `/user_order_success_get`;
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      </script>

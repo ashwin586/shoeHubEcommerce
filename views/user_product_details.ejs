@@ -115,7 +115,7 @@
                                         <a href="/user_logout"><i class="far fa-user" style="color: #ffffff"></i>
                                             Account</a>
                                     </li>
-                                    <li><a href="/wishlist">Wishlist</a></li>
+                                    <li><a href="/user_wishlist_get">Wishlist</a></li>
                                     <% } %>
 
                         </ul>
@@ -187,94 +187,67 @@
                     </div>
                     <!--Mobile Logo-->
                     <div class="col-4 col-sm-3 col-md-3 col-lg-2">
-                        <div class="site-cart">
-                            <a href="#" class="site-header__cart" title="Cart">
-                                <i class="icon anm anm-bag-l"></i>
-                                <span id="CartCount" class="site-header__cart-count"
-                                    data-cart-render="item_count">0</span>
-                            </a>
-                            <!--Minicart Popup-->
-                            <!-- <div id="header-cart" class="block block-cart">
-                                <ul class="mini-products-list">
-                                    <li class="item">
-                                        <a class="product-image" href="#">
-                                            <img src="/css/images/product-images/cape-dress-1.jpg"
-                                                alt="3/4 Sleeve Kimono Dress" title="" />
-                                        </a>
-                                        <div class="product-details">
-                                            <a href="#" class="remove"><i class="anm anm-times-l"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" class="edit-i remove"><i class="anm anm-edit"
-                                                    aria-hidden="true"></i></a>
-                                            <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
-                                            <div class="variant-cart">Black / XL</div>
-                                            <div class="wrapQtyBtn">
-                                                <div class="qtyField">
-                                                    <span class="label">Qty:</span>
-                                                    <a class="qtyBtn minus" href="javascript:void(0);"><i
-                                                            class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                    <input type="text" id="Quantity" name="quantity" value="1"
-                                                        class="product-form__input qty">
-                                                    <a class="qtyBtn plus" href="javascript:void(0);"><i
-                                                            class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                        <% if(loggedIn) {%>
+                            <div class="site-cart">
+                                <a href="#" class="site-header__cart" title="Cart">
+                                    <i class="icon anm anm-bag-l"></i>
+                                    <span id="CartCount" class="site-header__cart-count"
+                                        data-cart-render="item_count"><%= userCartItems%></span>
+                                </a>
+                                <!--Minicart Popup-->
+                                <div id="header-cart" class="block block-cart">
+                                    <ul class="mini-products-list">
+                                        <li class="item">
+                                            <a class="product-image" href="#">
+                                                <img src="/css/images/product-images/cape-dress-1.jpg"
+                                                    alt="3/4 Sleeve Kimono Dress" title="" />
+                                            </a>
+                                            <div class="product-details">
+                                                <a href="#" class="remove"><i class="anm anm-times-l"
+                                                        aria-hidden="true"></i></a>
+                                                <a href="#" class="edit-i remove"><i class="anm anm-edit"
+                                                        aria-hidden="true"></i></a>
+                                                <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
+                                                <div class="variant-cart">Black / XL</div>
+                                                <div class="wrapQtyBtn">
+                                                    <div class="qtyField">
+                                                        <span class="label">Qty:</span>
+                                                        <a class="qtyBtn minus" href="javascript:void(0);"><i
+                                                                class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                        <input type="text" id="Quantity" name="quantity" value="1"
+                                                            class="product-form__input qty">
+                                                        <a class="qtyBtn plus" href="javascript:void(0);"><i
+                                                                class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="priceRow">
+                                                    <div class="product-price">
+                                                        <span class="money">$59.00</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="priceRow">
-                                                <div class="product-price">
-                                                    <span class="money">$59.00</span>
-                                                </div>
-                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="total">
+                                        <div class="total-in">
+                                            <span class="label">Cart Subtotal:</span><span class="product-price"><span
+                                                    class="money">$748.00</span></span>
                                         </div>
-                                    </li>
-                                    <li class="item">
-                                        <a class="product-image" href="#">
-                                            <img src="/css/images/product-images/cape-dress-2.jpg"
-                                                alt="Elastic Waist Dress - Black / Small" title="" />
-                                        </a>
-                                        <div class="product-details">
-                                            <a href="#" class="remove"><i class="anm anm-times-l"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" class="edit-i remove"><i class="anm anm-edit"
-                                                    aria-hidden="true"></i></a>
-                                            <a class="pName" href="cart.html">Elastic Waist Dress</a>
-                                            <div class="variant-cart">Gray / XXL</div>
-                                            <div class="wrapQtyBtn">
-                                                <div class="qtyField">
-                                                    <span class="label">Qty:</span>
-                                                    <a class="qtyBtn minus" href="javascript:void(0);"><i
-                                                            class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                    <input type="text" id="Quantity" name="quantity" value="1"
-                                                        class="product-form__input qty">
-                                                    <a class="qtyBtn plus" href="javascript:void(0);"><i
-                                                            class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="priceRow">
-                                                <div class="product-price">
-                                                    <span class="money">$99.00</span>
-                                                </div>
-                                            </div>
+                                        <div class="buttonSet text-center">
+                                            <a href="/user_cart_get" class="btn btn-secondary btn--small">View Cart</a>
+                                            <a href="/user_checkout_get" class="btn btn-secondary btn--small">Checkout</a>
                                         </div>
-                                    </li>
-                                </ul>
-                                <div class="total">
-                                    <div class="total-in">
-                                        <span class="label">Cart Subtotal:</span><span class="product-price"><span
-                                                class="money">$748.00</span></span>
-                                    </div>
-                                    <div class="buttonSet text-center">
-                                        <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
-                                        <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
                                     </div>
                                 </div>
-                            </div> -->
-                            <!--End Minicart Popup-->
-                        </div>
-                        <div class="site-header__search">
-                            <button type="button" class="search-trigger">
-                                <i class="icon anm anm-search-l"></i>
-                            </button>
-                        </div>
+                                <!--End Minicart Popup-->
+                            </div>
+                            <%}%>
+
+                                <div class="site-header__search">
+                                    <button type="button" class="search-trigger">
+                                        <i class="icon anm anm-search-l"></i>
+                                    </button>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -419,7 +392,7 @@
                                     <s id="ComparePrice-product-template"><span class="money">$900.00</span></s> -->
                                     <span
                                         class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                        <span id="ProductPrice-product-template"><span class="money">$
+                                        <span id="ProductPrice-product-template"><span class="money">₹
                                                 <%=product.price%>
                                             </span></span>
                                     </span>
@@ -485,17 +458,20 @@
                                         <div class="product-form__item--quantity">
                                             <div class="wrapQtyBtn">
                                                 <div class="qtyField">
+
                                                     <a class="qtyBtn minus" href="javascript:void(0);"><i
                                                             class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                    <input type="text" id="Quantity" name="quantity" value="1"
-                                                        class="product-form__input qty">
+                                                    <input type="text" name="quantity" value="1"
+                                                        class="product-form__input qty productQuantity">
                                                     <a class="qtyBtn plus" href="javascript:void(0);"><i
                                                             class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="product-form__item--submit">
-                                            <button type="button" name="add" class="btn product-form__cart-submit">
+                                            <button type="button" name="add" class="btn product-form__cart-submit"
+                                                id="addtocart" data-productid="<%=product._id%>">
                                                 <span>Add to cart</span>
                                             </button>
                                         </div>
@@ -505,8 +481,10 @@
                                 <div class="display-table shareRow">
                                     <div class="display-table-cell medium-up--one-third">
                                         <div class="wishlist-btn">
-                                            <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist"><i
-                                                    class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to
+                                            <a class="wishlist add-to-wishlist" href="#" id="wishlist"
+                                                onclick="addToWishlist(event, '<%=product._id%>')"
+                                                title="Add to Wishlist"><i class="icon anm anm-heart-l"
+                                                    aria-hidden="true"></i> <span>Add to
                                                     Wishlist</span></a>
                                         </div>
                                     </div>
@@ -1322,6 +1300,44 @@
 </div>
 
 </body>
+
+<script src="/js/axios.min.js"></script>
+<script>
+    /////////////////////// ADDING TO WISHLIST //////////////////
+    document.getElementById('wishlist').addEventListener('click', addToWishlist)
+    async function addToWishlist(event, productId) {
+        event.preventDefault();
+        console.log(productId);
+        try {
+            const response = await axios.post(`/user_wishlist_post/${productId}`);
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    /////////////////////// ADD TO CART /////////////////////////
+    document.getElementById('addtocart').addEventListener('click', function (event) {
+        const productid = event.target.dataset.productid;
+        // const quantity = document.querySelectorAll("Quantity").value;
+        const quantityInput = document.querySelector(`.productQuantity`);
+        const quantity = parseInt(quantityInput.value);
+        console.log(quantity);
+        addToCart(event, productid, quantity);
+    });
+
+    async function addToCart(event, productid, quantity) {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post(`/user_add_to_cart_post/${productid}/${quantity}`);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+</script>
 
 <!-- belle/product-layout-2.html   11 Nov 2019 12:42:40 GMT -->
 

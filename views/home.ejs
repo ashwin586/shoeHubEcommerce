@@ -105,9 +105,11 @@
                         </button>
                       </form>
                       <div class="wishlist-btn">
-                        <a class="wishlist add-to-wishlist" href="/wishlist">
-                          <i class="icon anm anm-heart-l"></i>
-                        </a>
+                        <form action="/user_wishlist_post/<%= product._id%>" method="post">
+                          <a class="wishlist add-to-wishlist" href="">
+                            <i class="icon anm anm-heart-l"></i>
+                          </a>
+                        </form>
                       </div>
                     </div>
                     <!-- end product button -->

@@ -6,6 +6,7 @@ const adminAuth = require("../controllers/adminControllers/adminAuth");
 const adminUsersManagment = require("../controllers/adminControllers/adminUsersManagment");
 const adminProductManagment = require("../controllers/adminControllers/adminProductManagment");
 const adminCategoryManagment = require("../controllers/adminControllers/adminCategoryManagment");
+const adminOrderManagment = require("../controllers/adminControllers/adminOrderManagment");
 
 ////////////ADMIN GET METHODS/////////////////////
 adminRouter.get("/admin", adminView.adminDashboard);
@@ -44,6 +45,10 @@ adminRouter.get(
   "/admin_category_edit_get/:category_id",
   adminCategoryManagment.adminCategoryEditGet
 );
+adminRouter.get(
+  "/admin_orders_view_get",
+  adminOrderManagment.adminOrderViewGet
+);
 
 ////////////ADMIn POST METHODS/////////////////////////
 adminRouter.post("/admin_login", adminAuth.adminLoginPost);
@@ -67,7 +72,7 @@ adminRouter.post(
 );
 
 // adminRouter.post(
-//   "/admin_product_image/id", 
+//   "/admin_product_image/id",
 //   adminProductManagment.adminproductImageAlterPost
 // );
 
@@ -81,6 +86,16 @@ adminRouter.post(
   "/admin_category_edit_post/:category_id",
   upload.single("image"),
   adminCategoryManagment.adminCategoryEditPost
+);
+
+adminRouter.post(
+  "/admin_delete_image_post/:id",
+  adminProductManagment.adminImageDeletePost
+);
+
+adminRouter.post(
+  "/admin_order_status_post",
+  adminOrderManagment.adminOrderStatusPost
 );
 
 module.exports = adminRouter;

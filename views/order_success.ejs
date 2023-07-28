@@ -1,0 +1,54 @@
+<%- include('header') -%>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+    }
+
+    .success {
+        margin-top: 8%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .success-message {
+        color: #4caf50;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .link-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .link-container a {
+        color: #007bff;
+        text-decoration: none;
+        margin: 5px;
+        padding: 8px 16px;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+    }
+
+    .link-container a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>
+<div class="success">
+    <div class="success-message">Order has been successful</div>
+    <div class="link-container">
+        <a href="/user_account_details_get">View Order</a>
+        <a href="/user_product_view_get">Continue Shopping</a>
+    </div>
+</div>
+    
+
+
+<%- include('footer') -%>

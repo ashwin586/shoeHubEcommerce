@@ -65,7 +65,7 @@
         window.location.href = "/admin_category_view_get";
       }
     } catch (err) {
-      if (err.response.status === 404) {
+      if (err.response.status === 400) {
         const errors = err.response.data.error;
         Object.keys(errors).forEach((key) => {
           document.getElementById(key).textContent = errors[key];

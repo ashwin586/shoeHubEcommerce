@@ -92,15 +92,15 @@ exports.adminProductAddPost = async (req, res) => {
 exports.adminProductEditGet = async (req, res) => {
   try {
     // if (req.session.adminEmail) {
-      const id = req.params.product_id;
-      const product = await Product.findById(id).populate("category");
-      const category = await Category.find();
-      res.render("admin_product_edit", {
-        product: product,
-        category: category,
-      });
+    const id = req.params.product_id;
+    const product = await Product.findById(id).populate("category");
+    const category = await Category.find();
+    res.render("admin_product_edit", {
+      product: product,
+      category: category,
+    });
     // } else {
-      // res.render("admin_login");
+    // res.render("admin_login");
     // }
   } catch (err) {
     res.status(500).send(err);
@@ -110,44 +110,45 @@ exports.adminProductEditGet = async (req, res) => {
 exports.adminProductEditPost = async (req, res) => {
   try {
     // if (req.session.adminEmail) {
-      const id = req.params.product_id;
-      const { name, description, price, stock, category, selectedImages } = req.body;
-      const files = req.files;
-      const existingProduct = await Product.findById(id);
+    const id = req.params.product_id;
+    const { name, description, price, stock, category, selectedImages } =
+      req.body;
+    const files = req.files;
+    const existingProduct = await Product.findById(id);
 
-      if(selectedImages && selectedImages.length > 0){
-        existingProduct.imageUrl.forEach(image => {
-          if (selectedImages.includes(image.url)) {
-            image.isVisible = true; 
-          } else {
-            image.isVisible = false;
-          }
-        })
-      }
-
-      if (existingProduct) {
-        existingProduct.name = name;
-        existingProduct.description = description;
-        existingProduct.price = price;
-        existingProduct.stock = stock;
-        existingProduct.category = category;
-        if (files) {
-          for (const file of files) {
-            const result = await cloudinary.uploader.upload(file.path, {
-              folder: "Product",
-            });
-
-            existingProduct.imageUrl.push({
-              public_id: result.public_id,
-              url: result.secure_url,
-            });
-          }
+    if (selectedImages && selectedImages.length > 0) {
+      existingProduct.imageUrl.forEach((image) => {
+        if (selectedImages.includes(image.url)) {
+          image.isVisible = true;
+        } else {
+          image.isVisible = false;
         }
-        await existingProduct.save();
-        res.status(200).end();
-      } else {
-        res.status(404).send("Product not found");
+      });
+    }
+
+    if (existingProduct) {
+      existingProduct.name = name;
+      existingProduct.description = description;
+      existingProduct.price = price;
+      existingProduct.stock = stock;
+      existingProduct.category = category;
+      if (files) {
+        for (const file of files) {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "Product",
+          });
+
+          existingProduct.imageUrl.push({
+            public_id: result.public_id,
+            url: result.secure_url,
+          });
+        }
       }
+      await existingProduct.save();
+      res.status(200).end();
+    } else {
+      res.status(404).send("Product not found");
+    }
     // }
   } catch (err) {
     console.log(err);
@@ -157,35 +158,48 @@ exports.adminProductEditPost = async (req, res) => {
 };
 
 exports.adminproductImageAlterPost = async (req, res) => {
-  try{
+  try {
     const selectedImageId = req.query.imageUrl;
     const isChecked = req.body.checked;
-    // console.log(isChecked);
-    // console.log(selectedImageId);
-    // console.log(typeof(selectedImageId));
-    // const existingProduct = await Product.findOne(
-    //   { "imageUrl.url": selectedImageId },
-    //   { "imageUrl.$": 1 }
-    // );
-
-    // if(isChecked){
-    //   existingProduct
-    // }
-    // console.log(existingProduct); 
-    const existingProduct = await Product.findOne({ "imageUrl.url": selectedImageId });
-    const imageToUpdate = existingProduct.imageUrl.find(image => image.url === selectedImageId);
-    if(isChecked){
+    const existingProduct = await Product.findOne({
+      "imageUrl.url": selectedImageId,
+    });
+    const imageToUpdate = existingProduct.imageUrl.find(
+      (image) => image.url === selectedImageId
+    );
+    if (isChecked) {
       imageToUpdate.isVisible = false;
     } else {
       imageToUpdate.isVisible = true;
     }
     await existingProduct.save();
     console.log(existingProduct);
-  }catch(err){
-    console.log(10)
+  } catch (err) {
+    console.log(10);
     console.log(err);
   }
-}
+};
+
+exports.adminImageDeletePost = async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    const product = await Product.findOne({ "imageUrl._id": id });
+    // const deleteImage = product.imageUrl.find(
+    //   (image) => image._id.toString() === id
+    // );
+    if (product) {
+      const imageIndex = product.imageUrl.findIndex(image => image._id.toString() === id);
+      if(imageIndex > -1){
+        product.imageUrl.splice(imageIndex, 1);
+        await product.save();
+        return res.status(200).end();
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 function validationProduct(data, files) {
   const errors = {};

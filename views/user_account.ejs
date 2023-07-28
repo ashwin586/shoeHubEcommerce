@@ -1,0 +1,457 @@
+<%- include('header')-%>
+
+    <main class="main" style="margin-top: 5%;">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title mb-4">My Account</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <!-- <li class="nav-item">
+                                <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
+                                    href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
+                                    aria-selected="true">Dashboard</a>
+                            </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
+                                        role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
+                                        role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
+                                        role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/user_logout">Sign Out</a>
+                                </li>
+                            </ul>
+                        </aside><!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-account" role="tabpanel"
+                                    aria-labelledby="tab-account-link">
+                                    <form id="profileForm">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>First Name </label>
+                                                <input type="text" class="form-control" name="firstName"
+                                                    value="<%=user.firstName %>" disabled>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label>Last Name </label>
+                                                <input type="text" class="form-control" name="lastName"
+                                                    value="<%=user.lastName%>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <label>Phone Number </label>
+                                        <input type="text" class="form-control" name="phoneNo" value="<%=user.phoneNo%>"
+                                            disabled>
+
+                                        <label>Email address </label>
+                                        <input type="email" class="form-control" name="email" value="<%=user.email%>"
+                                            disabled>
+
+                                        <label>Current password</label>
+                                        <input type="password" class="form-control" name="currentPassword"
+                                            value="<%=user.password%>" disabled>
+
+                                        <label>New password</label>
+                                        <input type="password" class="form-control" name="newPassword" disabled>
+
+                                        <label>Confirm new password</label>
+                                        <input type="password" class="form-control mb-2" name="confirmNewPassword"
+                                            disabled>
+
+                                        <button type="submit" class="btn btn-outline-primary-2" id="editButton">
+                                            <span>EDIT</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-primary-2 d-none" id="saveButton">
+                                            <span>SAVE</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary-2 d-none"
+                                            id="cancelButton">
+                                            <span>CANCEL</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+
+                                <div class="tab-pane fade" id="tab-orders" role="tabpanel"
+                                    aria-labelledby="tab-orders-link">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm card-table table-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-2 text-center">Order Id</th>
+                                                    <th class="col-3 text-center">
+                                                        <a class="text-dark">Ordered Products</a>
+                                                    </th>
+                                                    <th class="col-2 text-center">
+                                                        <a class="text-dark">Address</a>
+                                                    </th>
+                                                    <th class="col-2 text-center">
+                                                        <a class="text-dark">Total Amount</a>
+                                                    </th>
+
+                                                    <th class="col-3 text-center">Order Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="list">
+                                                <% order.forEach(orderItem=> {%>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <%= orderItem.orderId%>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <% orderItem.product.forEach(product=>{%>
+                                                                <p>
+                                                                    <%= product.name%> <br>
+                                                                </p>
+                                                                <%})%>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <% userAddresses.forEach(address=>{%>
+                                                                <% if(address._id==orderItem.address){%>
+                                                                    <p>
+                                                                        <%= address.name%> <br>
+                                                                            <%= address.streetAddress%>,
+                                                                                <%= address.city%>, <br>
+                                                                                    <%= address.pinCode%>, <br>
+                                                                                        <%= address.state%>
+                                                                    </p>
+                                                                    <%}%>
+                                                                        <%})%>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span>₹</span>
+                                                            <%= orderItem.total%>
+                                                        </td>
+                                                        <% if(orderItem.status=="Pending" ){%>
+                                                            <td class="text-center text-danger">
+                                                                <%= orderItem.status%>
+                                                            </td>
+                                                            <%} else if(orderItem.status=="Shipped" ){%>
+                                                                <td class="text-center text-warning">
+                                                                    <%= orderItem.status%>
+                                                                </td>
+                                                                <%} else if(orderItem.status=="Delivered" ){%>
+                                                                    <td class="text-center text-success">
+                                                                        <%= orderItem.status%>
+                                                                    </td>
+                                                                    <%}%>
+                                                    </tr>
+
+                                                    <%})%>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div>
+                                    <!-- <p>No order has been made yet.</p>
+                                <a href="/user_product_view_get" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                        class="icon-long-arrow-right"></i></a> -->
+                                    <!-- .End .tab-pane -->
+                                </div>
+                                <div class="tab-pane fade" id="tab-address" role="tabpanel"
+                                    aria-labelledby="tab-address-link">
+                                    <p>The following addresses will be used on the checkout page</p>
+
+                                    <div class="row" id="dynamicAddress">
+                                        <% userAddresses.forEach(address=> {%>
+                                            <div class="col-lg-4">
+                                                <div class="card card-dashboard" id="address_<%= address._id %>">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Billing Address</h3>
+                                                        <p>
+                                                            <%= address.name%><br>
+                                                                <%= address.email%><br>
+                                                                    <%= address.phoneNo%><br>
+                                                                        <%= address.streetAddress%><br>
+                                                                            <%= address.pinCode%><br>
+                                                                                <%= address.state%><br>
+                                                                                    <a href="#"><i
+                                                                                            class="fa-solid fa-pen-to-square"
+                                                                                            style="color: #beca1c;"></i></a>
+                                                                                    <a href="#">
+                                                                                        <i class="fa-solid fa-trash"
+                                                                                            style="color: #eb0a0a;"
+                                                                                            data-addressid="<%= address._id%>"></i>
+                                                                                    </a>
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <%})%>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group form-check col-md-12 col-lg-12 col-xl-12">
+                                            <label class="form-check-label padding-15px-left">
+                                                <button class="btn btn--small">Add New Address</button>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div id="billing-details-container"
+                                        class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
+                                        <div class="create-ac-content bg-light-gray padding-20px-all">
+                                            <form id="addAddress" accept-charset="UTF-8">
+                                                <fieldset>
+                                                    <h2 class="login-title mb-3">Billing details</h2>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                                                            <label>Full Name <span class="required-f">*</span></label>
+                                                            <input name="fullName" value="" id="input-firstname"
+                                                                type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>E-Mail <span class="required-f">*</span></label>
+                                                            <input name="email" value="" id="input-email"
+                                                                type="email" />
+                                                        </div>
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>Phone Number <span
+                                                                    class="required-f">*</span></label>
+                                                            <input name="phoneNo" value="" id="input-telephone"
+                                                                type="tel" />
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+
+                                                <fieldset>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>Address <span class="required-f">*</span></label>
+                                                            <input name="address" value="" id="input-address-1"
+                                                                type="text" />
+                                                        </div>
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>City <span class="required-f">*</span></label>
+                                                            <input name="city" value="" id="input-city" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>Pin Code <span class="required-f">*</span></label>
+                                                            <input name="pinCode" value="" id="input-postcode"
+                                                                type="text" />
+                                                        </div>
+                                                        <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                                            <label>State <span class="required-f">*</span></label>
+                                                            <select name="stateId" id="input-zone">
+                                                                <option value="">--- Please Select ---</option>
+                                                                <option value="AP">Andhra Pradesh</option>
+                                                                <option value="AR">Arunachal Pradesh</option>
+                                                                <option value="AS">Assam</option>
+                                                                <option value="BR">Bihar</option>
+                                                                <option value="CT">Chhattisgarh</option>
+                                                                <option value="GA">Gujarat</option>
+                                                                <option value="HR">Haryana</option>
+                                                                <option value="HP">Himachal Pradesh</option>
+                                                                <option value="JK">Jammu and Kashmir</option>
+                                                                <option value="GA">Goa</option>
+                                                                <option value="JH">Jharkhand</option>
+                                                                <option value="KA">Karnataka</option>
+                                                                <option value="KL">Kerala</option>
+                                                                <option value="MP">Madhya Pradesh</option>
+                                                                <option value="MH">Maharashtra</option>
+                                                                <option value="MN">Manipur</option>
+                                                                <option value="ML">Meghalaya</option>
+                                                                <option value="MZ">Mizoram</option>
+                                                                <option value="NL">Nagaland</option>
+                                                                <option value="OR">Odisha</option>
+                                                                <option value="PB">Punjab</option>
+                                                                <option value="RJ">Rajasthan</option>
+                                                                <option value="SK">Sikkim</option>
+                                                                <option value="TN">Tamil Nadu</option>
+                                                                <option value="TG">Telangana</option>
+                                                                <option value="TR">Tripura</option>
+                                                                <option value="UT">Uttarakhand</option>
+                                                                <option value="UP">Uttar Pradesh</option>
+                                                                <option value="WB">West Bengal</option>
+                                                                <option value="AN">Andaman and Nicobar Islands</option>
+                                                                <option value="CH">Chandigarh</option>
+                                                                <option value="DN">Dadra and Nagar Haveli</option>
+                                                                <option value="DD">Daman and Diu</option>
+                                                                <option value="DL">Delhi</option>
+                                                                <option value="LD">Lakshadweep</option>
+                                                                <option value="PY">Puducherry</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn--small">
+                                                            Add Address
+                                                        </button>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div><!-- .End .tab-pane -->
+
+                                <!-- .End .tab-pane -->
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+
+
+    <%- include('footer') -%>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="/js/axios.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $(".create-ac-content").hide();
+
+                $(".btn--small").on("click", function () {
+                    $(".create-ac-content").toggle();
+                });
+            });
+
+            document.getElementById("addAddress").addEventListener("submit", addAddress);
+
+            async function addAddress(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                try {
+                    const response = await axios.post("/user_address_post", formData, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    if (response.status === 200) {
+                        event.target.reset();
+
+                        const newAddress = response.data;
+                        const dynamicAddress = document.getElementById('dynamicAddress');
+                        const newAddressHTML = `
+       <div class="col-lg-4">
+                <div class="card card-dashboard " data-addressid="${newAddress._id} id="address_${newAddress._id}">
+                <div class="card-body">
+                  <h3 class="card-title">Billing Address</h3>
+                  <p>
+                    ${newAddress.name}<br>
+                    ${newAddress.phoneNo}<br>
+                    ${newAddress.streetAddress}<br>
+                    ${newAddress.city}<br>
+                    ${newAddress.pinCode}<br>
+                    ${newAddress.state}<br>
+                    <a href="#"> <i class="fa-solid fa-pen-to-square"
+                        style="color: #beca1c;"></i>
+                    </a>
+                    <a href="#"> <i class="fa-solid fa-trash"
+                            style="color: #eb0a0a;"
+                            data-addressid="${address._id}"></i>
+                    </a>
+                  </p>
+                </div>
+        </div>
+        <br>
+       `;
+                        dynamicAddress.insertAdjacentHTML("beforeend", newAddressHTML);
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            document.querySelectorAll('.fa-trash').forEach(address => {
+                address.addEventListener('click', function (event) {
+                    const addressId = event.currentTarget.dataset.addressid;
+                    deleteAddress(event, addressId)
+                })
+
+                async function deleteAddress(event, addressId) {
+                    event.preventDefault();
+                    try {
+                        const response = await axios.post(`/user_address_remove_post?addressId=${addressId}`)
+                        if (response.status == 200) {
+                            const deleteAddress = document.getElementById(`address_${addressId}`);
+                            if (deleteAddress) {
+                                deleteAddress.remove();
+                            }
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+            })
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('profileForm');
+                const editButton = document.getElementById('editButton');
+                const saveButton = document.getElementById('saveButton');
+                const cancelButton = document.getElementById('cancelButton');
+
+                function enableFormFields(event) {
+                    event.preventDefault();
+                    const inputs = form.querySelectorAll("input");
+                    inputs.forEach((input) => {
+                        input.removeAttribute("disabled");
+                    });
+                    editButton.classList.add("d-none");
+                    saveButton.classList.remove("d-none");
+                    cancelButton.classList.remove("d-none");
+                }
+
+                function cancelEdit(event) {
+                    event.preventDefault();
+                    const inputs = form.querySelectorAll("input");
+                    inputs.forEach((input) => {
+                        input.setAttribute("disabled", "disabled");
+                    });
+                    editButton.classList.remove("d-none");
+                    saveButton.classList.add("d-none");
+                    cancelButton.classList.add("d-none");
+                }
+
+                editButton.addEventListener("click", enableFormFields);
+                cancelButton.addEventListener("click", cancelEdit);
+
+                saveButton.addEventListener('click', async function () {
+                    const formData = new FormData(form);
+
+                    const formDataObject = {};
+                    formData.forEach((value, key) => {
+                        formDataObject[key] = value;
+                    });
+
+                    const response = await axios.post('/user_account_edit_post', formDataObject)
+
+                })
+
+            })
+        </script>

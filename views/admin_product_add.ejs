@@ -39,7 +39,7 @@
           <div class="from-group mt-4">
             <label class="form-label"> Price: </label>
             <div class="input-group">
-              <span class="input-group-text">$</span>
+              <span class="input-group-text">₹</span>
               <input type="text" class="form-control" name="price" />
             </div>
             <p id="productPriceError" class="text-danger"></p>
@@ -113,11 +113,14 @@
       });
     const formData = new FormData(event.target);
     try {
+      document.getElementById('loader').classList.remove("visually-hidden")
       const response = await axios.post("/admin_product_add_post", formData);
+      document.getElementById('loader').classList.add("visually-hidden")
       if (response.status === 200) {
         window.location.href = "/admin_product_view_get";
       }
     } catch (err) {
+      document.getElementById('loader').classList.add("visually-hidden");
       if (err.response.status === 400) {
         const errors = err.response.data.error;
         Object.keys(errors).forEach((key) => {

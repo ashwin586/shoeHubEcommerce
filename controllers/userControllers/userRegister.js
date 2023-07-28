@@ -5,9 +5,9 @@ let otpMap = new Map();
 exports.signinGet = (req, res) => {
   if(req.session.userData){
     delete req.session.userData;
-    return res.render('register');
+    return res.render('register', {loggedIn: false});
   }
-  res.render("register");
+  res.render("register", {loggedIn: false});
 };
 
 exports.siginPost = async (req, res) => {
@@ -53,7 +53,7 @@ exports.siginPost = async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error occurred:", error);
-        res.render("register");
+        res.render("register", {loggedIn: false});
       } else {
         console.log("Email sent successfully:", info.response);
         return res.status(200).end();
@@ -65,8 +65,16 @@ exports.siginPost = async (req, res) => {
 };
 
 exports.userOtpGet = (req, res) => {
-  res.render("user_otp");
+  res.render("user_otp", {loggedIn: false});
 };
+
+exports.registerOtpGet = (req, res) => {
+  res.render("registerOtp", {loggedIn: false});
+}
+
+exports.registerOtpPost = (req, res) => {
+  
+}
 
 exports.userotpPost = async (req, res) => {
   const data = req.session.userData;
@@ -77,7 +85,7 @@ exports.userotpPost = async (req, res) => {
     delete req.session.userData;
     res.redirect("/login");
   } else {
-    res.render("user_otp");
+    res.render("user_otp", {loggedIn: false});
   }
 };
 

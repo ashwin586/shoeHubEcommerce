@@ -79,12 +79,15 @@ exports.adminCategoryEditGet = async (req, res) => {
 };
 
 exports.adminCategoryEditPost = async (req, res) => {
+  const valid = await validationCategoryName(req.body);
+
   try {
     if (req.session.adminEmail) {
       const id = req.params.category_id;
       const { name } = req.body;
       const file = req.file;
       const existingCategory = await Category.findById(id);
+
 
       if (existingCategory) {
         existingCategory.categoryName = name;
@@ -108,8 +111,13 @@ exports.adminCategoryEditPost = async (req, res) => {
           };
         }
 
-        await existingCategory.save();
-        res.status(200).end();
+        if(valid.isValid){
+          await existingCategory.save();
+          res.status(200).end();
+        } else {
+          res.status(400).json({ error: valid.errors });
+        }
+
       } else {
         res.status(404).json({ error: "Category not found" });
       }
@@ -127,6 +135,29 @@ async function validationCategory(data, file) {
   if (!file) {
     errors.categoryImageError = "Category should have an image";
   }
+
+  const { name } = data;
+  const lowercaseName = name.toLowerCase();
+  const nameRegex = /^[A-Za-z]+$/;
+  const existingCategory = await Category.findOne({
+    categoryName: { $regex: new RegExp("^" + lowercaseName, "i") },
+  });
+
+  if (!name) {
+    errors.categoryNameError = "Category name cannot be empty";
+  } else if (!nameRegex.test(name)) {
+    errors.categoryNameError = "Category name should contain only alphabets";
+  } else if (existingCategory) {
+    errors.categoryNameError = "Category already exists";
+  }
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
+}
+
+async function validationCategoryName(data) {
+  const errors = {};
 
   const { name } = data;
   const lowercaseName = name.toLowerCase();

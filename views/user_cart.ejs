@@ -1,0 +1,201 @@
+<%- include('header')-%>
+    <!--End Mobile Menu-->
+
+    <!--Body Content-->
+    <div id="page-content">
+        <!--Page Title-->
+        <div class="page section-header text-center">
+            <div class="page-title">
+                <div class="wrapper">
+                    <h1 class="page-width">Your cart</h1>
+                </div>
+            </div>
+        </div>
+        <!--End Page Title-->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
+                    <form action="#" method="post" class="cart style2">
+                        <% if(cart && cart.length> 0) {%>
+                            <table>
+                                <thead class="cart__row cart__header">
+                                    <tr>
+                                        <th colspan="2" class="text-center">Product</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-right">Total</th>
+                                        <th class="action">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% cart.forEach(cart=> {%>
+                                        <tr class="cart__row border-bottom line1 cart-flex border-top"
+                                            id="product_<%= cart.product.id%>">
+                                            <td class="cart__image-wrapper cart-flex-item">
+                                                <a href="#"><img class="cart__image"
+                                                        src="<%= cart.product.imageUrl[0].url%>"
+                                                        alt="Shoes-1 / Small"></a>
+                                            </td>
+                                            <td class="cart__meta small--text-left cart-flex-item">
+                                                <div class="list-view-item__title">
+                                                    <a href="#">
+                                                        <%= cart.product.name%>
+                                                    </a>
+                                                </div>
+
+                                                <!-- <div class="cart__meta-text">
+                                                    Color: Light Blue<br>Size: Small<br>
+                                                </div> -->
+                                            </td>
+                                            <td class="cart__price-wrapper cart-flex-item">
+                                                <span class="money">$<%= cart.product.price%></span>
+                                            </td>
+
+                                            <td class="cart__update-wrapper cart-flex-item text-right">
+                                                <div class="cart__qty text-center">
+
+                                                    <div class="qtyField">
+                                                        <a class="qtyBtn minus" href="javascript:void(0);"
+                                                            data-productid="<%= cart.product._id%>"><i
+                                                                class="icon icon-minus"></i></a>
+                                                        <input class="cart__qty-input qty" type="text" name="updates[]"
+                                                            id="quantity_<%= cart.product._id %>" value="<%= cart.quantity%>" pattern="[0-9]*">
+                                                        <a class="qtyBtn plus" id="plus" href="javascript:void(0);"
+                                                            data-productid="<%= cart.product._id%>"><i
+                                                                class="icon icon-plus"></i></a>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                            <td class="text-right small--hide cart-price">
+                                                <% if (cart.product) { %>
+                                                    <div>
+                                                      <span class="money_<%= cart.product._id %>">₹
+                                                        <% const total = cart.product.price * cart.quantity; %>
+                                                        <%= total %>
+                                                      </span>
+                                                    </div>
+                                                  <% } %>
+                                            </td>
+                                            <td class="text-center small--hide"><a
+                                                    data-productid="<%= cart.product._id%>"
+                                                    class="btn btn--secondary cart__remove cartremove"
+                                                    title="Remove tem"><i class="icon icon anm anm-times-l"></i></a>
+                                            </td>
+                                        </tr>
+                                        <%})%>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-left"><a href="/user_product_view_get"
+                                                class="btn--link cart-continue"><i
+                                                    class="icon icon-arrow-circle-left"></i>
+                                                Continue shopping</a></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <%} else {%>
+                                <h1 class="text-center">Your cart is empty!!</h1>
+                                <%}%>
+
+                                    <hr>
+
+                    </form>
+                </div>
+                <% if(cart && cart.length > 0) {%>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
+                        <div class="solid-border">
+                            <div class="row">
+                                <span class="col-12 col-sm-6 cart__subtotal-title"><strong>Total</strong></span>
+                                <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span
+                                        class="money">$<%=subTotal%></span></span>
+                            </div>
+                            <div class="cart__shipping"></div>
+                            <a href="/user_checkout_get">
+                                <input type="submit" name="checkout" id="cartCheckout" class="btn btn--small-wide checkout"
+                                    value="Checkout">
+                            </a>
+    
+                            <div class="paymnet-img"><img src="/images/payment-img.jpg" alt="Payment"></div>
+                        </div>
+                    </div>
+                <%}%>
+                
+            </div>
+        </div>
+
+    </div>
+    <!--End Body Content-->
+
+    <!--Footer-->
+    <%-include('footer')-%>
+
+        <script src="/js/axios.min.js"></script>
+        <script>
+            document.querySelectorAll('.cartremove').forEach(button => {
+                button.addEventListener('click', function (event) {
+                    const productid = event.currentTarget.dataset.productid;
+                    cartRemove(event, productid);
+                });
+            });
+
+            ////////////////// FOR DECREMENTING THE QUANTITY //////////////// 
+            document.querySelectorAll('.minus').forEach(click => {
+                click.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const productid = event.currentTarget.dataset.productid;
+                    const quantityInput = document.getElementById(`quantity_${productid}`);
+                    const currentQuantity = parseInt(quantityInput.value);
+                    const newQuantity = currentQuantity - 0;
+                    quantityInput.value = newQuantity;
+                    // console.log(newQuantity)
+                    await updateCartQuantity(productid, newQuantity);
+                })
+            })
+
+            // ///////////////// FOR INCREMENTING THE QUANTITY ///////////////
+            document.querySelectorAll('.plus').forEach(click => {
+                click.addEventListener("click", async function (event) {
+                    event.preventDefault();
+                    const productid = event.currentTarget.dataset.productid;
+                    const quantityInput = document.getElementById(`quantity_${productid}`);
+                    const currentQuantity = parseInt(quantityInput.value);
+                    // console.log(currentQuantity);
+                    const newQuantity = currentQuantity + 0;
+                    quantityInput.value = newQuantity;
+                    // console.log(newQuantity);
+                    await updateCartQuantity(productid, newQuantity);
+                });
+            })
+
+
+            async function cartRemove(event, productid) {
+                event.preventDefault();
+                try {
+                    const response = await axios.post(`/user_cart_remove/${productid}`);
+                    if (response.status == 200) {
+                        const cartProduct = document.getElementById(`product_${productid}`)
+                        if (cartProduct) {
+                            cartProduct.remove();
+                        }
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            async function updateCartQuantity(productid, quantity) {
+                console.log(quantity);
+                try {
+                    const response = await axios.post(`/user_add_to_cart_post/${productid}/${quantity}`);
+                    // const amount = document.querySelector(`.money_${productid}`);
+                    // if(response.status == 200){
+                    //     amount.textContent = `$${response.data.newAmount}`;
+                    // }
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        </script>

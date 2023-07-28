@@ -4,12 +4,12 @@ const nodemailer = require("nodemailer");
 const otpMap = new Map();
 
 exports.verifyEmailGet = (req, res) => {
-  res.render("user_email_verify");
+  res.render("user_email_verify", {loggedIn: false});
 };
 
 exports.verifyEmailPost = (req, res) => {
   const email = req.body.email;
-
+  req.session.email = email;
   const otpGenerator = () => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     return otp.toString();
@@ -42,7 +42,7 @@ exports.verifyEmailPost = (req, res) => {
 };
 
 exports.verifyOtpGet = (req, res) => {
-  res.render("user_otp");
+  res.render("forgotPasswordOtp", {loggedIn: false});
 };
 
 exports.verifyOtpPost = async (req, res) => {
@@ -57,11 +57,41 @@ exports.verifyOtpPost = async (req, res) => {
 };
 
 exports.resendOtp = (req, res) => {
-  
+  const email = req.session.email;
+  console.log(email);
+  if (otpMap.has(email)){
+    console.log("already send");
+  }
+  const otpGenerator = () => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    return otp.toString();
+  };
+
+  const otp = otpGenerator();
+  otpMap.set(email, otp);
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAILPASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: "ashwinv586@gmail.com",
+    to: email,
+    subject: "Shophub OTP verification",
+    text: `The OTP for your verification is: ${otp}`,
+  };
+
+  transporter.sendMail(mailOptions);
 }
 
 exports.confirmPasswordGet = (req, res) => {
-  res.render("confirm_password");
+  res.render("confirm_password", {loggedIn: false});
 };
 
 exports.confirmPasswordPost = async (req, res) => {

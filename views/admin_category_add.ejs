@@ -1,5 +1,8 @@
-<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+<%-include('admin_header')%> <%-include('admin_sidebar')%>
 
+<div id="loader" class="spinner-border position-fixed start-50 top-50" role="status" style="z-index: 10;">
+  <span class="sr-only"></span> 
+</div>
 <div class="main-content">
   <div class="container-fluid pb-7">
     <div class="d-flex align-items-start mt-5">
@@ -55,15 +58,18 @@
       });
     const formData = new FormData(event.target);
     try {
+      document.getElementById('loader').classList.remove('visually-hidden')
       const response = await axios.post("/admin_category_add_post", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      document.getElementById('loader').classList.add('visually-hidden');
       if (response.status === 200) {
         window.location.href = "/admin_category_view_get";
       }
     } catch (err) {
+      document.getElementById('loader').classList.add('visually-hidden');
       if (err.response.status === 400) {
         const errors = err.response.data.error;
         Object.keys(errors).forEach((key) => {
