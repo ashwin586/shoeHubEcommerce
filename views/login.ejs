@@ -18,7 +18,7 @@
           <div>
             <p id="isBlockedError" class="text-danger error-msg"></p>
           </div>
-          <form id="userLoginForm" accept-charset="UTF-8" class="contact-form">
+          <form id="userLoginForm" onsubmit="validation(event)" accept-charset="UTF-8" class="contact-form">
             <div class="row" id="inside">
               <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <p class="text-center text-danger error-msg" id="loginError"></p>
@@ -73,9 +73,6 @@
 <!--End Body Content-->
 <script src="/js/axios.min.js"></script>
 <script>
-  document
-    .getElementById("userLoginForm")
-    .addEventListener("submit", validation);
   async function validation(event) {
     event.preventDefault();
     const formData = new FormData(event.target);

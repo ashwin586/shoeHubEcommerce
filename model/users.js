@@ -47,20 +47,20 @@ const usersSchema = new mongoose.Schema({
         type: Number,
         default: 1,
       },
-    }
+    },
   ],
 
   address: [
     {
-      name:{
-        type:String,
-        required: true
-      }, 
-      
-      email:{
+      name: {
         type: String,
         required: true,
-      }, 
+      },
+
+      email: {
+        type: String,
+        required: true,
+      },
 
       phoneNo: {
         type: Number,
@@ -79,24 +79,45 @@ const usersSchema = new mongoose.Schema({
 
       pinCode: {
         type: Number,
-        required: true
+        required: true,
       },
 
       state: {
-        type: String, 
-        required: true
-      }, 
+        type: String,
+        required: true,
+      },
 
       isSelected: {
         type: Boolean,
         required: true,
-        default: false
-      }
-    }
-  ]
-  
-});
+        default: false,
+      },
+    },
+  ],
 
+  wallet: {
+    balance: {
+      type: Number,
+      default: 0,
+    },
+    transactions: [
+      {
+        date: {
+          type: Date,
+        },
+        details: {
+          type: String,
+        },
+        amount: {
+          type: Number,
+        },
+        status: {
+          type: String,
+        },
+      },
+    ],
+  },
+});
 
 const User = mongoose.model("users", usersSchema);
 module.exports = User;

@@ -1,3 +1,5 @@
+@import url('https://db.onlinewebfonts.com/c/1fc3df287d7a7298701e0121cb1eb236?family=Spartan+MB+SemiBold');
+
 :root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
@@ -40,6 +42,16 @@
         scroll-behavior: smooth
     }
 }
+
+@font-face {
+    font-family: "Spartan MB SemiBold";
+    src: url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.eot");
+    src: url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/1fc3df287d7a7298701e0121cb1eb236.svg#Spartan MB SemiBold")format("svg");
+  }
 
 body {
     margin: 0;

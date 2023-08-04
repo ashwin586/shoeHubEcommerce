@@ -38,7 +38,7 @@ const orderSchema = new mongoose.Schema({
 
   address: {
     type: String,
-    required: true
+    required: true,
   },
 
   total: {
@@ -48,17 +48,17 @@ const orderSchema = new mongoose.Schema({
 
   orderId: {
     type: String,
-    required: true
+    required: true,
   },
 
   paymentMethod: {
     type: String,
-    required: true
+    required: true,
   },
 
   status: {
     type: String,
-    enum: ["Pending", "Shipped", "Delivered"],
+    enum: ["Pending", "Shipped", "Delivered", "Cancelled", "Returned"],
     default: "Pending",
   },
 
@@ -69,9 +69,24 @@ const orderSchema = new mongoose.Schema({
 
   expectedDate: {
     type: Date,
-  }, 
+  },
 
+  deliveredDate: {
+    type: Date,
+  },
+
+  returnEndDate: {
+    type: Date,
+  },
+
+  discountAmount: {
+    type: Number,
+    default: 0,
+  },
+  amountAfterDiscount: {
+    type: Number,
+  },
 });
 
-const order = mongoose.model('Order', orderSchema);
+const order = mongoose.model("Order", orderSchema);
 module.exports = order;

@@ -1,0 +1,149 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+        <style>
+            #addCouponForm {
+                width: 400px;
+                background-color: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-label {
+                display: block;
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            input[type="text"],
+            input[type="date"] {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            input[type="text"]:focus,
+            input[type="date"]:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+
+            .text-danger {
+                color: #dc3545;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+            .btn-primary,
+            .btn-link {
+                padding: 10px 20px;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+            .btn-primary {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+            }
+
+            .btn-link {
+                background-color: transparent;
+                color: #007bff;
+                border: none;
+            }
+
+            .btn-primary:hover,
+            .btn-link:hover {
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        </style>
+        <div class="main-content">
+            <div class="container-fluid pb-7">
+                <div class="d-flex align-items-start mt-5">
+                    <h2 class="mb-0">Add Coupons</h2>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12 col-xl-7">
+                        <form id="addCouponForm" onsubmit="addCoupon(event)">
+                            <div class="form-group">
+                                <label class="form-label">Coupon Code:</label>
+                                <input type="text" name="code" value="" />
+                                <p id="couponCodeError" class="text-danger"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Coupon Discount (In percentage):</label>
+                                <input type="text" name="discount" />
+                                <p id="couponDiscountError" class="text-danger"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Coupon min discount:</label>
+                                <input type="text" name="minDiscount" />
+                                <p id="couponMinDiscountError" class="text-danger"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Coupon max discount:</label>
+                                <input type="text" name="maxdiscount" />
+                                <p id="couponMaxDiscountError" class="text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Coupon Expiry Date:</label>
+                                <input type="date" name="expiryDate" />
+                                <p id="couponDateError" class="text-danger"></p>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-lg-12 col-md-6 p-0">
+                                    <div class="d-grid gap-3 mt-5">
+                                        <button class="btn btn-primary btn-lg hover-lift-light" type="submit">Add
+                                            Coupon</button>
+                                        <button class="btn btn-link">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/axios.min.js"></script>
+        <script>
+
+            async function addCoupon(event) {
+                event.preventDefault();
+                event.target.querySelectorAll("p").forEach((element) => { element.textContent = ""; });
+                const formData = new FormData(event.target);
+
+                try {
+                    const response = await axios.post("/admin_coupon_add_post", formData, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                   
+                    if (response.status === 200) {
+                        window.location.href = '/admin_coupon_view_get';
+                    }
+                } catch (err) {
+                    if (err.response.status === 400) {
+                        const errors = err.response.data.error;
+                        Object.keys(errors).forEach((key) => {
+                            document.getElementById(key).textContent = errors[key];
+                        });
+                    } else {
+                        alert("Something went wrong");
+                    }
+                }
+            }
+        </script>
+        <%-include('admin_footer') -%>

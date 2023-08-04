@@ -11,6 +11,7 @@ const userWishlist = require("../controllers/userControllers/userWishlist.js");
 const userCart = require("../controllers/userControllers/userCart.js");
 const userCheckout = require("../controllers/userControllers/userCheckout.js");
 const userAddress = require('../controllers/userControllers/userAddress.js');
+const userOrders = require("../controllers/userControllers/userOrders.js");
 const userOrderSuccess = require('../controllers/userControllers/userOrderSuccess.js');
 const userHeaderMiddleware = require('../middleware/userHeader.js');
 
@@ -31,6 +32,8 @@ userRouter.get('/user_cart_get',userHeaderMiddleware, userCart.userCartGet);
 userRouter.get('/user_checkout_get', userHeaderMiddleware, userCheckout.userCheckOutGet);
 userRouter.get('/user_account_details_get', userHeaderMiddleware, userAccountDetails.userAccountDeatailsGet);
 userRouter.get('/user_order_success_get', userHeaderMiddleware, userOrderSuccess.userOrderSuccessGet);
+userRouter.get('/user_order_history_get', userHeaderMiddleware, userOrders.userOrderHistoryGet);
+userRouter.get('/user_order_details_get', userHeaderMiddleware, userOrders.userOrderDetailsGet);
 
 
 
@@ -50,6 +53,10 @@ userRouter.post('/user_address_post', userHeaderMiddleware, userAddress.userAddr
 userRouter.post('/user_address_remove_post', userHeaderMiddleware, userAddress.userAddressRemovePost);
 userRouter.post('/user_checkout_post', userHeaderMiddleware, userCheckout.userCheckOutPost);
 userRouter.post('/user_account_edit_post', userHeaderMiddleware, userAccountDetails.userAccountDetailsEditPost);
+userRouter.post('/user_cart_quantity_update', userHeaderMiddleware, userCart.userCartQuantityUpdate);
+userRouter.post('/user_order_cancel', userHeaderMiddleware, userOrders.userOrderCancel);
+userRouter.post('/user_order_returned', userHeaderMiddleware, userOrders.userOrderReturn);
+userRouter.post('/user_coupon_check', userHeaderMiddleware, userCheckout.userCouponCheck);
 
 
 module.exports = userRouter;

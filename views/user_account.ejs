@@ -70,14 +70,14 @@
                                         <input type="password" class="form-control" name="currentPassword"
                                             value="<%=user.password%>" disabled>
 
-                                        <label>New password</label>
-                                        <input type="password" class="form-control" name="newPassword" disabled>
+                                        <div class="d-none" id="newPassword">
+                                            <label>New password</label>
+                                            <input type="password" class="form-control" name="newPassword">
 
-                                        <label>Confirm new password</label>
-                                        <input type="password" class="form-control mb-2" name="confirmNewPassword"
-                                            disabled>
-
-                                        <button type="submit" class="btn btn-outline-primary-2" id="editButton">
+                                            <label>Confirm new password</label>
+                                            <input type="password" class="form-control mb-2" name="confirmNewPassword">
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-primary-2 mt-2" id="editButton">
                                             <span>EDIT</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
@@ -94,83 +94,15 @@
                                     </form>
                                 </div>
 
-
                                 <div class="tab-pane fade" id="tab-orders" role="tabpanel"
                                     aria-labelledby="tab-orders-link">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm card-table table-nowrap">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col-2 text-center">Order Id</th>
-                                                    <th class="col-3 text-center">
-                                                        <a class="text-dark">Ordered Products</a>
-                                                    </th>
-                                                    <th class="col-2 text-center">
-                                                        <a class="text-dark">Address</a>
-                                                    </th>
-                                                    <th class="col-2 text-center">
-                                                        <a class="text-dark">Total Amount</a>
-                                                    </th>
-
-                                                    <th class="col-3 text-center">Order Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="list">
-                                                <% order.forEach(orderItem=> {%>
-                                                    <tr>
-                                                        <td class="text-center">
-                                                            <%= orderItem.orderId%>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <% orderItem.product.forEach(product=>{%>
-                                                                <p>
-                                                                    <%= product.name%> <br>
-                                                                </p>
-                                                                <%})%>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <% userAddresses.forEach(address=>{%>
-                                                                <% if(address._id==orderItem.address){%>
-                                                                    <p>
-                                                                        <%= address.name%> <br>
-                                                                            <%= address.streetAddress%>,
-                                                                                <%= address.city%>, <br>
-                                                                                    <%= address.pinCode%>, <br>
-                                                                                        <%= address.state%>
-                                                                    </p>
-                                                                    <%}%>
-                                                                        <%})%>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span>₹</span>
-                                                            <%= orderItem.total%>
-                                                        </td>
-                                                        <% if(orderItem.status=="Pending" ){%>
-                                                            <td class="text-center text-danger">
-                                                                <%= orderItem.status%>
-                                                            </td>
-                                                            <%} else if(orderItem.status=="Shipped" ){%>
-                                                                <td class="text-center text-warning">
-                                                                    <%= orderItem.status%>
-                                                                </td>
-                                                                <%} else if(orderItem.status=="Delivered" ){%>
-                                                                    <td class="text-center text-success">
-                                                                        <%= orderItem.status%>
-                                                                    </td>
-                                                                    <%}%>
-                                                    </tr>
-
-                                                    <%})%>
-                                            </tbody>
-                                        </table>
+                                    <div>
+                                        <p>View all orders.</p>
+                                        <a href="/user_order_history_get" class="btn btn-outline-primary-2"><span>View
+                                                Order History</span><i class="icon-long-arrow-right"></i></a>
                                     </div>
                                 </div>
-                                <div>
-                                    <!-- <p>No order has been made yet.</p>
-                                <a href="/user_product_view_get" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
-                                        class="icon-long-arrow-right"></i></a> -->
-                                    <!-- .End .tab-pane -->
-                                </div>
+
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                     aria-labelledby="tab-address-link">
                                     <p>The following addresses will be used on the checkout page</p>
@@ -214,7 +146,7 @@
                                     <div id="billing-details-container"
                                         class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
                                         <div class="create-ac-content bg-light-gray padding-20px-all">
-                                            <form id="addAddress" accept-charset="UTF-8">
+                                            <form id="addAddress" onsubmit="addAddress(event)" accept-charset="UTF-8">
                                                 <fieldset>
                                                     <h2 class="login-title mb-3">Billing details</h2>
                                                     <div class="row">
@@ -341,8 +273,6 @@
                 });
             });
 
-            document.getElementById("addAddress").addEventListener("submit", addAddress);
-
             async function addAddress(event) {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -387,7 +317,7 @@
                     console.log(err);
                 }
             }
-
+            ////////////////// USER ADDRESS DELETE ////////////////////
             document.querySelectorAll('.fa-trash').forEach(address => {
                 address.addEventListener('click', function (event) {
                     const addressId = event.currentTarget.dataset.addressid;
@@ -410,11 +340,13 @@
                 }
             })
 
+            ////////////////// USER ACCOUNT EDIT BUTTONS DISPLAY ///////////////////
             document.addEventListener('DOMContentLoaded', function () {
                 const form = document.getElementById('profileForm');
                 const editButton = document.getElementById('editButton');
                 const saveButton = document.getElementById('saveButton');
                 const cancelButton = document.getElementById('cancelButton');
+                const newPassword = document.getElementById('newPassword');
 
                 function enableFormFields(event) {
                     event.preventDefault();
@@ -425,6 +357,7 @@
                     editButton.classList.add("d-none");
                     saveButton.classList.remove("d-none");
                     cancelButton.classList.remove("d-none");
+                    newPassword.classList.remove('d-none')
                 }
 
                 function cancelEdit(event) {
@@ -436,6 +369,7 @@
                     editButton.classList.remove("d-none");
                     saveButton.classList.add("d-none");
                     cancelButton.classList.add("d-none");
+                    newPassword.classList.add('d-none');
                 }
 
                 editButton.addEventListener("click", enableFormFields);
@@ -450,8 +384,16 @@
                     });
 
                     const response = await axios.post('/user_account_edit_post', formDataObject)
-
+                    if (response.status == 200) {
+                        const inputs = form.querySelectorAll("input");
+                        inputs.forEach((input) => {
+                            input.setAttribute("disabled", "disabled");
+                        });
+                        editButton.classList.remove("d-none");
+                        saveButton.classList.add("d-none");
+                        cancelButton.classList.add("d-none");
+                        newPassword.classList.add('d-none');
+                    }
                 })
-
             })
         </script>

@@ -1,4 +1,270 @@
-<%-include('header') -%>
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>ShoeHub</title>
+  <meta name="description" content="description" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Favicon -->
+  <link href="/images/favicon.png" />
+  <!-- Plugins CSS -->
+  <link rel="stylesheet" href="/css/plugins.css" />
+  <!-- Bootstap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <!-- Main Style CSS -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="stylesheet" href="/css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.js"></script>
+
+  <style>
+    .lvl1.parent {
+      position: relative;
+    }
+
+    .lvl1.parent .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+    }
+
+    .lvl1.parent:hover .dropdown {
+      display: block;
+      padding: 5px 0;
+    }
+
+    .lvl1.parent .dropdown li {
+      display: block;
+    }
+
+    .lvl1.parent .dropdown li a {
+      color: #333333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .lvl1.parent .dropdown li a:hover {
+      color: #ff0000;
+    }
+
+    @media (max-width: 767px) {
+      .lvl1.parent .dropdown {
+        position: static;
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body class="template-index belle home7-shoes">
+  <div id="pre-loader">
+    <img src="/images/loader.gif" alt="Loading..." />
+  </div>
+  <div class="pageWrapper">
+    <!--Search Form Drawer-->
+    <div class="search">
+      <div class="search__form">
+        <form class="search-bar__form" action="#" method="get">
+          <button class="go-btn search__button" type="submit">
+            <i class="icon anm anm-search-l"></i>
+          </button>
+          <input class="search__input" type="search" name="keyword" placeholder="Search entire store..."
+            aria-label="Search" autocomplete="off" />
+          <input hidden name="category" value="<%=category%>">
+          <input hidden name="priceRange" value="<%=priceRange%>">
+          <input hidden name="sort" value="<%=sort%>">
+        </form>
+        <button type="button" class="search-trigger close-btn">
+          <i class="anm anm-times-l"></i>
+        </button>
+      </div>
+    </div>
+    <!--End Search Form Drawer-->
+    <!--Top Header-->
+    <div class="top-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-10 col-sm-8 col-md-5 col-lg-4">
+            <p class="phone-no">
+              <i class="anm anm-phone-s"></i> +91 7356873619
+            </p>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
+            <div class="text-center">
+              <p class="top-header_middle-text">Worldwide Express Shipping</p>
+            </div>
+          </div>
+          <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
+            <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
+            <ul class="customer-links list-inline">
+              <% if(!locals.loggedIn) {%>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Create Account</a></li>
+                <% } else if (locals.loggedIn) {%>
+                  <li>
+                    <a data-isBlocked="<%= locals.isBlocked%>" href="/user_account_details_get"><i class="far fa-user"
+                        style="color: #ffffff"></i>
+                      Account</a>
+                  </li>
+                  <li><a href="/user_wishlist_get">Wishlist</a></li>
+                  <% } %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Top Header-->
+    <!--Header-->
+    <div class="header-wrap classicHeader animated d-flex">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <!--Desktop Logo-->
+          <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+            <a href="/">
+              <img src="/images/logo.svg" alt="Belle Multipurpose Html Template"
+                title="Belle Multipurpose Html Template" />
+            </a>
+          </div>
+          <!--End Desktop Logo-->
+          <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+            <div class="d-block d-lg-none">
+              <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                <i class="icon anm anm-times-l"></i>
+                <i class="anm anm-bars-r"></i>
+              </button>
+            </div>
+            <!--Desktop Menu-->
+            <nav class="grid__item" id="AccessibleNav">
+              <!-- for mobile -->
+              <ul id="siteNav" class="site-nav medium center hidearrow">
+                <li class="lvl1 parent megamenu">
+                  <a href="/">Home <i class="anm anm-angle-down-l"></i></a>
+                </li>
+                <!-- <li class="lvl1 parent megamenu">
+                    <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
+                  </li> -->
+                <li class="lvl1 parent megamenu">
+                  <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
+                  <ul class="dropdown">
+                    <%categories.forEach(category=> {%>
+                      <li>
+                        <a href="/user_category_product_view_get?category=<%= category._id%>">
+                          <%= category.categoryName%>
+                        </a>
+                      </li>
+                      <%}) %>
+                  </ul>
+                </li>
+
+                <li class="lvl1 parent megamenu">
+                  <a href="/user_product_view_get">Product <i class="anm anm-angle-down-l"></i></a>
+                </li>
+
+                <li class="lvl1">
+                  <a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a>
+                </li>
+              </ul>
+            </nav>
+            <!--End Desktop Menu-->
+          </div>
+          <!--Mobile Logo-->
+          <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+            <div class="logo">
+              <a href="/">
+                <img src="/images/logo.svg" alt="Belle Multipurpose Html Template"
+                  title="Belle Multipurpose Html Template" />
+              </a>
+            </div>
+          </div>
+          <!--Mobile Logo-->
+          <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+            <% if(loggedIn) {%>
+              <div class="site-cart">
+                <a href="#" class="site-header__cart" title="Wallet">
+                  <i class="fa-solid fa-wallet" style="font-size: 20px; padding-right: 15px;"></i>
+                </a>
+                <a href="/user_cart_get" title="Cart">
+                  <i class="icon anm anm-bag-l" style="font-size: 20px;"></i>
+                  <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">
+                    <%= cartItemsCount%>
+                  </span>
+                </a>
+                <!--Minicart Popup-->
+                <div id="header-cart">
+                  <h3>Wallet balance: <span>
+                      <%= locals.userWallet%>
+                    </span></h3>
+                </div>
+                <!--End Minicart Popup-->
+              </div>
+
+              <%}%>
+                <div class="site-header__search">
+                  <button type="button" class="search-trigger">
+                    <i class="icon anm anm-search-l"></i>
+                  </button>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Header-->
+    <!--Mobile Menu-->
+    <div class="mobile-nav-wrapper" role="navigation">
+      <div class="closemobileMenu">
+        <i class="icon anm anm-times-l pull-right"></i> Close Menu
+      </div>
+      <ul id="MobileNav" class="mobile-nav">
+        <li class="lvl1 parent megamenu">
+          <a href="index.html">Home <i class="anm anm-plus-l"></i></a>
+        </li>
+        <li class="lvl1 parent megamenu">
+          <a href="#">Shop <i class="anm anm-plus-l"></i></a>
+        </li>
+        <li class="lvl1 parent megamenu">
+          <a href="product-layout-1.html">Product <i class="anm anm-plus-l"></i></a>
+        </li>
+        <li class="lvl1 parent megamenu">
+          <a href="about-us.html">Pages <i class="anm anm-plus-l"></i></a>
+        </li>
+        <li class="lvl1 parent megamenu">
+          <a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
+        </li>
+        <li class="lvl1">
+          <a href="#"><b>Buy Now!</b></a>
+        </li>
+      </ul>
+    </div>
+    <!--End Mobile Menu-->
+  </div>
+  <script>
+    const anchorTag = document.querySelector('a[data-isBlocked]');
+    const isBlockedValue = anchorTag.getAttribute('data-isBlocked');
+    if (isBlockedValue === "true") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'You are Blocked',
+        text: 'Your account has been blocked.',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+    }
+  </script>
+</body>
+
+</html>
   
 </div>
   <div class="container">
@@ -18,8 +284,8 @@
               <ul class="sidebar_categories">
                 <%categories.forEach(category=> {%>
                   <li class="level1" data-categoryid="<%=category._id%>">
-                    <a href="#" class="site-nav categoryLink">
-                      <%= category.categoryName%>
+                    <a href="user_product_view_get?category=<%=category.categoryName%>&sort=<%=sort%>&keyword=<%=keyword%>&priceRange=<%= priceRange%>" class="site-nav categoryLink">
+                      <%=category.categoryName%>
                     </a>
                   </li>
                   <%})%>
@@ -32,22 +298,26 @@
             <div class="widget-title">
               <h2>Price</h2>
             </div>
-            <form action="#" method="post" class="price-filter">
-              <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-min="10" data-max="2000">
+              <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
+              <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+              <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <p class="no-margin">
+                  <span>
+                    <input id="minamount" type="text" />
+                    <input type="text" id="maxamount" />
+                  </span>
+                </p>
               </div>
-              <div class="row">
-                <div class="col-6">
-                  <p class="no-margin"><input id="amount" type="text" /></p>
-                </div>
-                <div class="col-6 text-right margin-25px-top">
-                  <button class="btn btn-secondary btn--small">filter</button>
-                </div>
+              <div class="col-6 text-right margin-25px-top">
+                <button class="btn btn-secondary btn--small" onclick="priceRange()">Filter</button>
               </div>
-            </form>
+            </div>
           </div>
+          
           <!--End Price Filter-->
           <!--Size Swatches-->
           <!-- <div class="sidebar_widget filterBox filter-widget size-swacthes">
@@ -162,13 +432,20 @@
                 <div class="col-4 col-md-4 col-lg-4 text-right">
                   <div class="filters-toolbar__item">
                     <label for="SortBy" class="hidden">Sort</label>
-                    <select name="SortBy" onchange="handleOption(this)" id="SortBy"
+                    <select name="SortBy" onchange="redirecter(this.value)" id="SortBy"
                       class="filters-toolbar__input filters-toolbar__input--sort">
                       <option value="title-ascending" selected="selected">
                         Sort
                       </option>
-                      <option>Price, low to high</option>
-                      <option>Price, high to low</option>
+                      <option value="/user_product_view_get?sort=lowToHigh&category=<%= category%>&keyword=<%= keyword%>&priceRange=<%= priceRange%>"
+                        <% if(sort == "lowToHigh") {%> selected <%} %> > Price: low to high
+                      </option>
+                      <option value="/user_product_view_get?sort=highToLow&category=<%= category%>&keyword=<%= keyword%>&priceRange=<%= priceRange%>"
+                        <% if(sort == "highToLow") {%> selected <%} %> > Price, high to low
+                      </option>
+                      <option value="/user_product_view_get?sort=false&category=<%= category%>&keyword=<%= keyword%>&priceRange=<%= priceRange%>"
+                        <% if(!sort) {%> selected <%} %> > Default 
+                      </option>
                     </select>
                     <input class="collection-header__default-sort" type="hidden" value="manual" />
                   </div>
@@ -177,8 +454,9 @@
             </div>
           </div>
           <!--End Toolbar-->
-          <div class="grid-products grid--view-items mainContent">
+          <div class="grid-products grid--view-items mainContent" id="productList">
             <div class="row">
+              
               <%products.forEach(product=> {%>
                 <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
                   <!-- start product image -->
@@ -271,31 +549,23 @@
         </div>
         <hr class="clear" />
 
-        <!-- <div class="pagination">
-          <ul>
-            <li class="page"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li class="next"><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
-          </ul>
-        </div> -->
-
         <div class="pagination">
           <ul>
             <li>
               <% if (currentPage> 1) { %>
-                <a class="page" href="?page=<%= currentPage - 1 %>">Previous</a>
+                <a class="page" href="/user_product_view_get?page=<%= currentPage - 1 %>&sort=<%= sort%>>=<%= category%>&keyword=<%= keyword%>&pricerange=<%= priceRange%>">Previous</a>
                 <% } %>
             </li>
             <% for (let page=1; page <=totalPages; page++) { %>
               <li>
-                <a class="page" href="?page=<%= page %>">
+                <a class="page" href="/user_product_view_get?page=<%= page %>&sort=<%= sort%>&category=<%= category%>&keyword=<%= keyword%>&pricerange=<%= priceRange%>">
                   <%= page %>
                 </a>
               </li>
               <% } %>
                 <li>
                   <% if (currentPage < totalPages) { %>
-                    <a class="page" href="?page=<%= currentPage + 1 %>">Next</a>
+                    <a class="page" href="/user_product_view_get?page=<%= currentPage + 1 %>&sort=<%= sort%>&category=<%= category%>&keyword=<%= keyword%>&priceRange=<%= priceRange%>">Next</a>
                     <% } %>
                 </li>
           </ul>
@@ -330,45 +600,31 @@
         event.preventDefault();
         console.log(productid)
         try {
-          const response = await axios.post(`/user_add_to_cart_post/${productid}`);
+          const response = await axios.get(`/user_add_to_cart_post/${productid}`);
         } catch (err) {
           console.log(err);
         }
       }
 
-
-      document.querySelectorAll(".categoryLink").forEach(category => {
-        category.addEventListener('click', function (event) {
-          event.preventDefault();
-          const categoryId = category.parentElement.dataset.categoryid;
-          filterByCategory(categoryId);
-        })
-      })
-
-      async function filterByCategory(categoryId, page) {
-        try {
-          const response = await axios.post(`/user_filter_category_post/${categoryId}`);
-          const categorizedProduct = response.data.categorizedProduct;
-          const wishlistedProduct = response.data.wishlistedProduct;
-          const page = response.data.page;
-          const totalPages = response.data.totalPages;
-          updatedProducts(categorizedProduct, wishlistedProduct);
-          currentPage = page;
-        } catch (err) {
-          console.log(err);
-        }
-      }
-
-      function updatedProducts(products, wishlistedProduct) {
+      async function fetchProducts(){
+        const category = '<%= category%>';
+        const sort = '<%= sort%>';
+        const keyword = '<%= keyword%>';
+        const page = '<%= currentPage%>';
+        const priceRange = '<%= priceRange%>';
         const mainContent = document.getElementsByClassName('grid-products grid--view-items')[0];
         mainContent.innerHTML = '';
 
         const rowElement = document.createElement('div');
-        rowElement.classList.add('row');
-
-
-        products.forEach((product) => {
-          const productContainer = document.createElement('div');
+        rowElement.classList.add('row')
+        try{
+          const response = await axios.get(`/user_product_view_get?category=${category}&sort=${sort}&keyword=${keyword}&page=${page}&priceRange=${priceRange}`);
+          let productList = document.querySelector('#productList .row');
+          if(response.data.length == 0){
+            productList.insertAdjacentElement('afterend', '<h4 class="text-center pt-4 text-black-50 fw-bold">You reached the end <i class="fa fa-sad-tear"></i></h4>')
+          } else {
+            response.data.forEach(product =>{
+              const productContainer = document.createElement('div');
           productContainer.classList.add('col-6', 'col-sm-6', 'col-md-4', 'col-lg-4', 'item');
 
           const productImage = document.createElement('div');
@@ -422,8 +678,19 @@
           
         });
         mainContent.appendChild(rowElement);
-      };
+          }
+        }catch(err){
+          console.log(err);
+        }
+      } 
 
+      function priceRange() {
+        const min = document.getElementById('minamount').value;
+        const max = document.getElementById('maxamount').value; 
+        window.location.href = `/user_product_view_get?priceRange=${min}-${max}&category=<%=category%>&sort=<%=sort%>&keyword=<%=keyword%>`;
+        }
 
-
+      function redirecter(url) {
+            window.location.href = url;
+        }
     </script>

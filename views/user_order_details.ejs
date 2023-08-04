@@ -1,0 +1,379 @@
+<%- include('header') %>
+
+    <style>
+        .product.product-list .product-list-action {
+            padding: 0
+        }
+
+
+        .widget-clean {
+
+            padding-bottom: 1rem;
+        }
+
+        .order-one {
+            font-size: 12pt;
+            font-weight: 500;
+            color: rgb(90, 90, 90);
+        }
+
+        .order-two {
+            font-size: 12pt;
+            font-weight: 500;
+            color: #c96;
+        }
+
+        .product-cat a {
+            font-size: 13pt;
+        }
+
+        .product-title {
+            font-size: 20pt;
+            font-weight: 400;
+            margin-top: 1rem;
+        }
+
+
+        .product-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-info p {
+            font-size: 13pt;
+            font-weight: 400;
+        }
+
+        .product-info span p {
+            color: #c96;
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+
+        .product.product-list .ratings-container {
+            margin-bottom: 0rem;
+        }
+
+        .mt-1 {
+            margin-top: 0rem !important;
+        }
+
+        .ratings-container {
+
+            margin-bottom: 0rem;
+
+        }
+
+        .product.product-list .product-content {
+
+            margin-bottom: 1.5rem;
+            padding-top: 0.5rem;
+        }
+
+        .summary {
+            padding: 2.5rem 1.2rem 3rem;
+        }
+
+        .product p:hover {
+            cursor: pointer;
+        }
+
+        .fa-regular.fa-file-lines {
+            color: black;
+            transition: 200ms;
+        }
+
+        .btn-outline-dark-2:hover .fa-regular.fa-file-lines {
+            color: #c96;
+            transition: 200ms;
+        }
+
+        .success-message {
+            display: flex;
+
+            justify-content: start;
+            align-items: center;
+        }
+
+        .success-message i {
+            margin-right: 5px;
+            margin-top: 4px;
+            font-size: 2rem;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            margin-top: 1.8rem;
+            margin-left: 0.3rem;
+        }
+
+        .refund-message p {
+            padding-left: 2.8rem;
+            margin-top: -13px;
+            font-size: 9pt;
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 1.4rem;
+            opacity: 0.9;
+            letter-spacing: -.01em;
+            margin-bottom: 1.8rem;
+        }
+
+        .product-desc-content h6 {
+            font-size: 1.8rem;
+            letter-spacing: -.01em;
+        }
+    </style>
+
+    <main class="main" style="margin-top: 5%;">
+        <div class="page-header text-center">
+            <div class="container">
+                <h1 class="page-title">Order Details</h1>
+            </div>
+
+        </div>
+
+        <div class="page-content" style="margin-top: 4%;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="products mb-3">
+                            <div class="product product-list">
+                                <% orders.product.forEach(order=> { %>
+                                    <div class="row mb-3">
+                                        <div class="col-6 col-lg-3">
+                                            <figure class="product-media">
+                                                <a href="">
+                                                    <img src="<%= order.image %>" alt="Product image"
+                                                        class="product-image">
+                                                </a>
+                                            </figure>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <div class="product-body prduct-action-inner pt-3">
+                                                <h3 class="product-title mb-1">
+                                                    <%= order.name %>
+                                                </h3>
+                                                <div class="product-cat">
+                                                    <p><strong>Price:</strong><span> ₹</span>
+                                                        <%= order.price %>
+                                                    </p>
+                                                    <p><strong>Quantity:</strong>
+                                                        <%= order.quantity %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 product product-list pb-0">
+                                    <div>
+                                        <h5>Order Date</h5>
+                                        <p>
+                                            <%= orders.date.toLocaleDateString(undefined, { weekday: 'short' ,
+                                                month: 'short' , day: 'numeric', year: 'numeric' }) %>
+                                        </p>
+                                    </div>
+                                    <% if(orders.status !="Delivered" ){%>
+                                        <div>
+                                            <h5>Expected Delivery</h5>
+                                            <p>
+                                                <%= orders.expectedDate.toLocaleDateString(undefined, { weekday: 'short' ,
+                                                month: 'short' , day: 'numeric', year: 'numeric' })%>
+                                            </p>
+                                        </div>
+                                        <%}%>
+
+                                            <div class="product-desc-content mt-4">
+                                                <h6>Delivery & returns</h6>
+                                                <p>
+                                                    We hope you’ll love every purchase, but if you ever need to return
+                                                    an item
+                                                    you can do so
+                                                    within <strong>7 days </strong>of receipt. For further assistance,
+                                                    contact
+                                                    our customer support team.
+                                                    We're here to
+                                                    help!"</p>
+                                                <%if(orders.status=="Delivered" ) {%>
+                                                    <div>
+                                                        <% if(orders.returnEndDate < new Date()){%>
+                                                            <button class="btn-danger"
+                                                            onclick="toggleCancelBtn()">Return</button>
+                                                        <%} else {%>
+                                                            <button class="btn-danger"
+                                                            >Return</button>
+                                                        <%}%>
+                                                       
+                                                        <div id="cancelDropdown"
+                                                            style="display: none; margin-top: 10px;">
+                                                            <h5>Select the reason for returning:</h5>
+
+                                                            <p id="returnError" class="text-danger h5"></p>
+
+                                                            <input type="radio" name="cancelReason" value="Reason 1">
+                                                            Delivered wrong product<br>
+                                                            <input type="radio" name="cancelReason" value="Reason 2">
+                                                            Not the color I ordered<br>
+                                                            <input type="radio" name="cancelReason" value="Reason 3">
+                                                            Damaged Product<br>
+                                                            <input type="radio" name="cancelReason" value="Reason 5">
+                                                            Other<br>
+                                                            <button class="btn-primary" data-orderid="<%= orders._id%>"
+                                                                onclick="orderReturn(event)">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                    <%} else if (orders.status=="Shipped" || orders.status=="Pending" )
+                                                        {%>
+                                                        <div>
+                                                            <button class="btn-danger"
+                                                                onclick="toggleCancelBtn()">Cancel
+                                                                orders</button>
+                                                            <div id="cancelDropdown"
+                                                                style="display: none; margin-top: 10px;">
+
+                                                                <h5>Select the reason for canceling:</h5>
+
+                                                                <p id="cancelError" class="text-danger h5"></p>
+
+                                                                <input type="radio" name="cancelReason"
+                                                                    value="Reason 1">
+                                                                Ordered wrong product<br>
+                                                                <input type="radio" name="cancelReason"
+                                                                    value="Reason 2">
+                                                                Changed my mind<br>
+                                                                <input type="radio" name="cancelReason"
+                                                                    value="Reason 3">
+                                                                Long delivery time<br>
+                                                                <input type="radio" name="cancelReason"
+                                                                    value="Reason 4">
+                                                                High shipping cost<br>
+                                                                <input type="radio" name="cancelReason"
+                                                                    value="Reason 5">
+                                                                Other<br>
+                                                                <button class="btn-primary"
+                                                                    data-orderid="<%= orders._id%>"
+                                                                    onclick="orderCancel(event)">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                        <%}%>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- col-lg-9 end -->
+                    <div class="col-lg-3">
+                        <div class="summary">
+                            <div class="sidebar sidebar-shop">
+                                <div class="widget widget-clean">
+                                    <p style="font-size: 16pt; font-weight: 600; color: #c96;">Order Summary</p>
+                                </div>
+                                <div class="product-list-action">
+                                    <table class="table table-summary">
+                                        <tr>
+                                            <td class="order-one">Grand Total :</td>
+                                            <td class="order-two" style="text-align: end;">₹ <%= orders.total%>
+                                            </td>
+                                            <input type="hidden" id="grandTotal" value="<%= orders.total%>">
+                                        </tr>
+                                        <tr>
+                                            <td class="order-one">Payment method :</td>
+                                            <td class="order-two" id="paymentMethod">
+                                                <%= orders.paymentMethod%>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-summary">
+                                        <h6 class="mt-2" style="color: #c96;">Delivery Address</h6>
+                                        <div class="address-data">
+                                            <tr>
+                                                <td>Name: <br>Mobile: <br>Email: <br> Home: <br>City: <br>State:
+                                                    <br>Pincode:
+                                                </td>
+                                                <td>
+                                                    <%= address.name%> <br>
+                                                        <%= address.phoneNo%> <br>
+                                                            <%= address.email%> <br>
+                                                                <%= address.streetAddress%> <br>
+                                                                    <%= address.city%> <br>
+                                                                        <%= address.state%> <br>
+                                                                            <%= address.pinCode%>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End .page-content -->
+    </main>
+    <!-- End .main -->
+
+    <%- include('footer') %>
+
+        <script src="/js/axios.min.js"></script>
+        <script>
+            function toggleCancelBtn() {
+                const dropdown = document.getElementById("cancelDropdown");
+                if (dropdown.style.display == "none") {
+                    dropdown.style.display = "block";
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            }
+
+            async function orderCancel(event) {
+                const isChecked = document.querySelector('input[name="cancelReason"]:checked');
+                const orderId = event.currentTarget.dataset.orderid;
+                try {
+                    const response = await axios.post("/user_order_cancel", { isChecked, orderId });
+                    if (response.status == 200) {
+                        await showDialogue();
+                    }
+                } catch (err) {
+                    if (err.response && err.response.status == 400) {
+                        document.getElementById('cancelError').textContent = err.response.data.error;
+                    }
+                }
+            }
+
+            function showDialogue() {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Cancel",
+                    text: "Order has been successfully cancelled",
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#30d636',
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/user_order_history_get';
+                    }
+                })
+            }
+
+            async function orderReturn(event){
+                const isChecked = document.querySelector('input[name="cancelReason"]:checked');
+                const orderId = event.currentTarget.dataset.orderid;
+                try{
+                    const response = await axios.post('/user_order_returned', {isChecked, orderId})
+                    if(response.status == 200){
+                        window.location.href = '/user_order_history_get';
+                    }
+                }catch (err){
+                    if (err.response && err.response.status == 400) {
+                        document.getElementById('returnError').textContent = err.response.data.error;
+                    }
+                }
+                
+            }
+        </script>

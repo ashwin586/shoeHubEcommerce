@@ -1,39 +1,51 @@
 <script src="/js/vendor.min.js"></script>
 
 
-  <!-- Main Theme file -->
-  <script src="/js/theme.min.js"></script>
+<!-- Main Theme file -->
+<script src="/js/theme.min.js"></script>
 
 
-  <script type="text/javascript">
-    $(function () {
-      // datepicker
-      function cb(start, end) {
-        $('[data-datepicker] span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'))
+<script>
+  const currentPath = window.location.pathname;
+
+  const navLinks = document.querySelectorAll('.nav-link-item');
+  navLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+    }
+  })
+</script>
+
+<script type="text/javascript">
+  $(function () {
+    // datepicker
+    function cb(start, end) {
+      $('[data-datepicker] span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'))
+    }
+
+    var startDate = moment().subtract(17, 'days')
+    var endDate = moment()
+
+    $('[data-datepicker]').daterangepicker({
+      startDate: startDate,
+      endDate: endDate,
+      opens: 'left',
+      applyButtonClasses: "btn-purple",
+      ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       }
+    }, cb)
 
-      var startDate = moment().subtract(17, 'days')
-      var endDate = moment()
-
-      $('[data-datepicker]').daterangepicker({
-        startDate: startDate,
-        endDate: endDate,
-        opens: 'left',
-        applyButtonClasses: "btn-purple",
-        ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-      }, cb)
-
-      cb(startDate, endDate)
-    })
-  </script>
+    cb(startDate, endDate)
+  })
+</script>
 </body>
 
 <!-- Mirrored from themeforesight.netlify.app/index-ecommerce.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Jul 2023 05:40:03 GMT -->
+
 </html>

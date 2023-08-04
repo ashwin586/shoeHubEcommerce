@@ -1,0 +1,133 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+
+<style>
+    /* Add some padding and border to the table */
+    .table {
+      border: 1px solid #dee2e6;
+      padding: 8px;
+    }
+  
+    /* Style table header */
+    .table thead th {
+      font-weight: bold;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+  
+    /* Center align the content in table cells */
+    .table td,
+    .table th {
+      text-align: center;
+    }
+  
+    /* Add alternating background colors to table rows */
+    .table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  
+    /* Style the "Active" status cell in green */
+    .text-success {
+      color: green;
+      font-weight: bold;
+    }
+  
+    /* Style the "Expired" status cell in red */
+    .text-danger {
+      color: red;
+      font-weight: bold;
+    }
+  
+    /* Make the table responsive on smaller screens */
+    @media (max-width: 768px) {
+      .table-responsive-sm {
+        overflow-x: auto;
+      }
+    }
+  </style>
+        <div class="main-content">
+            <div class="container-fluid mt-4 pt-2 mb-6">
+                <!-- header -->
+                <div class="d-md-flex align-items-center">
+                    <h3 class="mb-3 mb-md-0">Coupons</h3>
+                    <a href="/admin_coupon_add_get"
+                        class="btn btn-purple hover-lift-light shadow-light-sm ms-auto me-3">
+                        <span class="svg-icon svg-icon-sm text-white me-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                                <title>ionicons-v5-a</title>
+                                <line x1="256" y1="112" x2="256" y2="400" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+                                <line x1="400" y1="256" x2="112" y2="256" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+                            </svg>
+                        </span>
+                        Add Coupons
+                    </a>
+                </div>
+
+                <!-- report -->
+
+
+                <div class="table-responsive table-responsive-sm mt-5">
+                    <table class="table table-sm card-table table-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sl No</th>
+                                <th class="text-center">Coupon Code</th>
+                                <th class="text-center">Coupon Discount</th>
+                                <th class="text-center">Coupon Min Discount</th>
+                                <th class="text-center">Coupon Max Discount</th>
+                                <th class="text-center">Coupon Expiry Date </th>
+                                <th class="text-center">Coupon Status</th>
+                            </tr>
+                            <% coupons.forEach((coupon, index)=> {%>
+                                <tr>
+                                    <td class="text-center">
+                                        <%= index + 1%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= coupon.code%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= coupon.discount%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= coupon.minDiscount%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= coupon.maxDiscount%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= coupon.expiryDate.toLocaleDateString(undefined, { day: 'numeric' ,
+                                            month: 'short' , year: 'numeric' })%>
+                                    </td>
+                                    <% if(coupon.status == true){%>
+                                        <td class="text-center text-success">
+                                            Active
+                                        </td>
+                                    <%} else {%>
+                                        <td class="text-center text-danger">Expired</td>
+                                    <%} %>
+                                </tr>
+                                <%})%>
+
+                        </thead>
+                        <tbody class="list">
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        <%-include('admin_footer')-%>

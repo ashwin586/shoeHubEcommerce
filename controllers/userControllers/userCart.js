@@ -35,17 +35,41 @@ exports.userCartPost = async (req, res) => {
         (item) => item.product.toString() === productId
       );
       if (cartItem) {
-        cartItem.quantity = quantity;
+        cartItem.quantity += quantity;
       } else {
         user.cart.push({ product: productId, quantity: quantity });
       }
       await user.save();
+      return res.status(200).end();
     } catch (err) {
       console.log(err);
     }
   }
 };
 
+exports.userCartQuantityUpdate = async (req, res) => {
+  const { productId, newQuantity } = req.body;
+  const user = await User.findOne({ email: req.session.email });
+  const cartItem = user.cart.find(
+    (item) => item.product.toString() == productId
+  );
+  const product = await Product.findById(cartItem.product);
+  try {
+    if (cartItem) {
+      cartItem.quantity = newQuantity;
+    }
+    const total = cartItem.quantity * product.price;
+    const fullCartTotal = user.cart.reduce((acc, item) => {
+      const productPrice = item.product.price;
+      return acc + productPrice * item.quantity;
+    }, 0);
+
+    await user.save();
+    res.status(200).json({ updatedQuantity: cartItem.quantity, total, fullCartTotal });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.userCartRemovePost = async (req, res) => {
   if (req.session.email) {

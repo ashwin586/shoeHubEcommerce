@@ -72,10 +72,6 @@ exports.registerOtpGet = (req, res) => {
   res.render("registerOtp", {loggedIn: false});
 }
 
-exports.registerOtpPost = (req, res) => {
-  
-}
-
 exports.userotpPost = async (req, res) => {
   const data = req.session.userData;
   const storedOtp = otpMap.get(data.email);

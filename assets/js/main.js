@@ -619,21 +619,50 @@
 	/*-----------------------------------
 	 13. Price Range Slider
 	-------------------------------------*/
-	function price_slider(){
+	// function price_slider1(){
+	// 	$("#slider-range").slider({
+	// 		range: true,
+	// 		min: 10,
+	// 		value: [10],
+	// 		slide: function(event, ui) {
+	// 			$("#minamount").val("$" + ui.values[0] + " - $" );
+	// 		}
+	// 	});
+	// 	$("#minamount").val("$" + $("#slider-range").slider("values", 0) +
+	// 	" - $" + $("#slider-range").slider("values", 1));
+	// }
+	// price_slider1();
+
+	// function price_slider2(){
+	// 	$("#slider-range").slider({
+	// 		range: true,
+	// 		max: 2000,
+	// 		value: [500],
+	// 		slide: function(event, ui) {
+	// 			$("#maxamount").val(+ ui.values[1]);
+	// 		}
+	// 	});
+	// 	$("#maxamount").val("$" + $("#slider-range").slider("values", 0) +
+	// 	" - $" + $("#slider-range").slider("values", 1));
+	// }
+	// price_slider2();
+
+	function price_slider() {
 		$("#slider-range").slider({
-			range: true,
-			min: 12,
-			max: 200,
-			values: [0, 100],
-			slide: function(event, ui) {
-				$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-			}
+		  range: true,
+		  min: 10,
+		  max: 2000,
+		  values: [10, 2000], // Set initial values for min and max
+		  slide: function(event, ui) {
+			$("#minamount").val("₹" + ui.values[0]);
+			$("#maxamount").val("₹" + ui.values[1]);
+		  }
 		});
-		$("#amount").val("$" + $("#slider-range").slider("values", 0) +
-		" - $" + $("#slider-range").slider("values", 1));
-	}
+	  
+		$("#minamount").val("₹" + $("#slider-range").slider("values", 0));
+		$("#maxamount").val("₹" + $("#slider-range").slider("values", 1));
+	  }
 	price_slider();
-	
 	/*-----------------------------------
 	 14. Color Swacthes
 	-------------------------------------*/

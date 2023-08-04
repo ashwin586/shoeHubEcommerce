@@ -7,7 +7,11 @@ const userHeaderMiddleware = async (req, res, next) => {
     const user = await User.findOne({ email: req.session.email });
     if (user) {
       const userCartItems = user.cart.length;
+      const isBlocked = user.isBlocked;
+      const userWallet = user.wallet.balance;
       res.locals.cartItemsCount = userCartItems;
+      res.locals.isBlocked = isBlocked;
+      res.locals.userWallet = userWallet;
     } 
     res.locals.categories = categories;
     next();

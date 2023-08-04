@@ -45,7 +45,7 @@
       <div class="row billing-fields">
         <div id="billing-details-container" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
           <div class="create-ac-content bg-light-gray padding-20px-all">
-            <form id="addAddress" accept-charset="UTF-8">
+            <form id="addAddress" onsubmit="addAddress(event)" accept-charset="UTF-8">
               <fieldset>
                 <h2 class="login-title mb-3">Billing details</h2>
                 <div class="row">
@@ -136,6 +136,25 @@
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+          <div class="customer-box customer-coupon">
+            <h3 class="font-15 xs-font-13"><i class="icon anm anm-gift-l"></i> Have a coupon? <a href="#have-coupon"
+                class="text-white text-decoration-underline" data-toggle="collapse">Click here to enter your code</a>
+            </h3>
+
+            <div id="have-coupon" class="collapse coupon-checkout-content">
+              <div class="discount-coupon">
+                <div id="coupon" class="coupon-dec tab-pane active">
+                  <p class="margin-10px-bottom">Enter your coupon code if you have one.</p>
+                  <label class="required get" for="coupon-code"><span class="required-f">*</span> Coupon</label>
+                  <input id="coupon-code" type="text" class="mb-3">
+                  <p id="couponSuccess" class="text-success"></p>
+                  <p id="couponError" class="text-danger"></p>
+                  <button class="coupon-btn btn" type="submit" onclick="couponCheck(event)">Apply Coupon</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
           <div class="your-order-payment">
             <div class="your-order">
               <h2 class="order-title mb-4">Your Order</h2>
@@ -178,6 +197,14 @@
                           <%= totalPrice%>
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="3" class="text-right">Discounted Applied</td>
+                        <td id="discountedPrice">0</td>
+                      </tr>
+                     <tr>
+                      <td colspan="3" class="text-right">New Total</td>
+                      <td id="newTotal"><%= totalPrice%></td>
+                     </tr>
                     </tfoot>
                 </table>
               </div>
@@ -202,6 +229,22 @@
                   </span>
                 </div>
 
+                <div>
+                  <span>
+                    <input class="paymentSelect" type="radio" name="paymentMethod" value="wallet"
+                      onclick="toggleWallet()" />
+                    <label class="h4">Wallet</label>
+                  </span>
+                  <div id="wallet-clicked" style="display: none;">
+                    <p style="color: cadetblue;">Your wallet has <span id='walletBalance'>
+                        <%= userWallet%>
+                      </span>balance</p>
+                  </div>
+                  <div id="insuficient-wallet-bal" class="d-none">
+                    <p class="text-danger">Insufficient balance in your wallet</p>
+                  </div>
+                </div>
+
                 <div class="order-button-payment">
                   <button class="btn" value="Place order" type="submit" onclick="placeOrder()">
                     Place order
@@ -212,6 +255,7 @@
           </div>
         </div>
       </div>
+
       <div class="row" id="dynamicAddress">
         <% userAddresses.forEach(address=> {%>
           <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 sm-margin-30px-bottom">
@@ -242,7 +286,7 @@
 
     <!--Footer-->
     <%- include('footer')-%>
-
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       <script src="/js/axios.min.js"></script>
       <script>
@@ -254,8 +298,7 @@
           });
         });
 
-        document.getElementById("addAddress").addEventListener("submit", addAddress);
-
+        ////////////////////// ADDING NEW ADDRESS ////////////////////////
         async function addAddress(event) {
           event.preventDefault();
           const formData = new FormData(event.target);
@@ -265,6 +308,7 @@
                 "Content-Type": "application/json",
               },
             });
+
             if (response.status === 200) {
               event.target.reset();
 
@@ -302,15 +346,22 @@
           if (paymentSelect == "cashOnDelivery") {
             cashOnDelivery(paymentSelect);
           } else if (paymentSelect == "razorPay") {
-            console.log(paymentSelect);
+            razorPay(paymentSelect);
+          } else if (paymentSelect == "wallet") {
+            wallet(paymentSelect);
           }
         }
 
-        async function cashOnDelivery(paymentSelect) {
+
+        ///////////////// CASH ON DELIVERY FUNCTION ////////////////////
+        async function cashOnDelivery(paymentSelect, updatedBalance) {
           try {
             let selectedAddressId;
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
             const totalAmount = document.getElementById("totalAmount").textContent;
+            const couponCode = document.getElementById("coupon-code").value;
+            // const discountedPrice = document.getElementById('discountedPrice')
+            const newTotal = document.getElementById("newTotal").textContent;
             if (selectedAddress) {
               selectedAddressId = selectedAddress.dataset.addressid;
             }
@@ -318,7 +369,10 @@
             const response = await axios.post(`/user_checkout_post`, {
               totalAmount: totalAmount,
               selectedAddressId: selectedAddressId,
-              selectedPayment: paymentSelect
+              selectedPayment: paymentSelect,
+              walletBalance: updatedBalance,
+              couponCode: couponCode, 
+              newTotal: newTotal,
             }, {
               headers: {
                 'Content-Type': 'application/json'
@@ -326,10 +380,118 @@
             })
 
             if (response.status == 200) {
-              window.location.href = `/user_order_success_get`;
+              Swal.fire({
+                icon: "success",
+                title: "Order Placed",
+                text: "Order has been placed successfully",
+                confirmButtonText: 'Ok',
+                confirmButtonColor: '#30d636',
+              }).then(result => {
+                if (result.isConfirmed) {
+                  window.location.href = `/user_order_success_get`
+                }
+              })
+            }
+
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        ///////////////// RAZOR PAY FUNCTION //////////////////////// 
+        async function razorPay(paymentSelect) {
+          try {
+            const razorpayApiKey = '<%= razorpayApiKey %>';
+            const newTotal = Number(document.getElementById("newTotal").textContent);
+
+            var options = {
+              "key": razorpayApiKey, 
+              "amount": newTotal * 100,
+              "currency": "INR",
+              "name": "ShoeHub",
+              "description": "Order payment",
+              "order_id": undefined, 
+              "handler": function (response) {
+                cashOnDelivery(paymentSelect)
+              },
+              "theme": {
+                "color": "#3399cc"
+              }
+            }
+
+            const rzp = new Razorpay(options);
+
+            rzp.open();
+
+          } catch (error) {
+            console.log(error);
+          }
+
+        }
+
+        ////////////////////////// WALLET PAYMENT FUNCTION//////////////////////
+        function toggleWallet() {
+          const walletClicked = document.getElementById("wallet-clicked");
+          const walletRadio = document.querySelector('input[name="paymentMethod"][value="wallet"]:checked');
+          if (walletRadio.checked) {
+            walletClicked.style.display = ("block")
+          } else {
+            walletClicked.style.display = ("none");
+          }
+
+        }
+
+        async function wallet(selectedPayment) {
+          try {
+            const walletClicked = document.getElementById("wallet-clicked");
+            const walletBalance = Number(document.getElementById('walletBalance').innerText);
+            console.log(typeof(walletBalance));
+            const totalAmount = Number('<%= totalPrice%>');
+            console.log(typeof(totalAmount))
+            const insufficienWalletBalance = document.getElementById("insuficient-wallet-bal");
+            if (walletBalance > totalAmount) {
+              const updatedBalance = walletBalance - totalAmount;
+              cashOnDelivery(selectedPayment, updatedBalance)
+            } else {
+              walletClicked.style.display = ('none');
+              insufficienWalletBalance.classList.add('d-block')
             }
           } catch (err) {
             console.log(err);
           }
         }
+
+        /////////////////////////////// COUPON CHECKING FUNCTION ///////////////////////////
+
+        async function couponCheck(event) {
+          event.preventDefault();
+          try {
+            const enteredCoupon = document.getElementById('coupon-code').value;
+            const totalAmount = document.getElementById('totalAmount').innerText;
+
+            const response = await axios.post(`/user_coupon_check`, {enteredCoupon, totalAmount});
+
+            if (response.status == 200) {
+              document.getElementById('couponSuccess').textContent = response.data.success;
+              document.getElementById('newTotal').textContent = response.data.discountedPrice;
+              document.getElementById('discountedPrice').textContent = response.data.discountAmount;
+              document.getElementById('couponSuccess').textContent = response.data.success;
+            }
+          } catch (err) {
+            if (err.response.status == 400) {
+              const errors = err.response.data.error;
+              Object.keys(errors).forEach((key) => {
+                document.getElementById(key).textContent = errors[key];
+              });
+            } else if(err.response.status == 401){
+              document.getElementById('couponError').textContent = err.response.data.error;
+            } else if(err.response.status == 402){
+              document.getElementById('couponError').textContent = err.response.data.error;
+            } else {
+              alert("Something went wrong");
+            }
+            console.log(err);
+          }
+        }
+
       </script>

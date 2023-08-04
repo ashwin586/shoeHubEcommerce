@@ -41,6 +41,7 @@ exports.userAccountDetailsEditPost = async (req, res) => {
         }
       }
       await user.save();
+      return res.status(200).end();
     } else {
       res.render('home', {loggedIn: false});
     }

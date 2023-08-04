@@ -37,18 +37,13 @@
                     <span class="text-danger">●</span>
                     Blocked <%}%>
                   </td>
-                  <td>
-                    <% if(user.isBlocked==false) {%>
-                    <a href="/user_block/<%=user._id%>" class="btn btn-danger"> Block </a>
-                    <%} else if(user.isBlocked==true) {%>
-                    <a
-                      href="/user_unblock/<%=user._id%>"
-                      class="btn btn-success"
-                    >
-                      Unblock
-                    </a>
-                    <%}%>
-                  </td>
+                 <td>
+                  <% if (user.isBlocked == false) { %>
+                    <button data-userid="<%= user._id %>" data-isblocked="false" class="btn btn-danger block-btn">Block</button>
+                  <% } else { %>
+                    <button data-userid="<%= user._id %>" data-isblocked="true" class="btn btn-success unblock-btn">Unblock</button>
+                  <% } %>
+                 </td>
                 </tr>
                 <%});%>
               </tbody>
@@ -60,3 +55,43 @@
   </div>
   <%-include('admin_footer')-%>
 </div>
+
+<script src="/js/axios.min.js"></script>
+<script>
+  document.querySelectorAll('.block-btn, .unblock-btn').forEach(button => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    const userId = event.target.getAttribute('data-userid');
+    const isBlocked = event.target.getAttribute('data-isblocked') === 'true';
+    showConfirmationDialog(userId, isBlocked);
+  });
+});
+
+function showConfirmationDialog(userId, isBlocked) {
+  const action = isBlocked ? 'Unblock': 'Block'
+  Swal.fire({
+    icon: 'warning',
+    title: 'Confirmation',
+    text: `Are you sure you want to ${action} this user?`,
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      performAction(userId, isBlocked);
+    }
+  });
+}
+
+async function performAction(userId, isBlocked) {
+  const action = isBlocked ? 'unblock' : 'block'
+  const url = `/user_${action}/${userId}`;
+
+  const response = await axios.post(url);
+  if(response.status == 200){
+    window.location.reload();
+  }
+}
+</script>

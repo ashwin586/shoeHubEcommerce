@@ -1,0 +1,122 @@
+<%- include('header')-%>
+
+<main class="main" style="margin-top: 5%">
+  <div class="page-header text-center">
+    <div class="container">
+      <h1 class="page-title mb-4">Order History</h1>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="dashboard">
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-sm card-table table-nowrap mt-4 mb-5">
+                    <thead>
+                        <tr>
+                            <th class="col-1 text-left">Ordered Date</th>
+                            <th class="col-1 text-left">Order Id</th>
+                            <th class="col-2 text-left">
+                                Ordered Products
+                            </th>
+                            <th class="col-2 text-left">
+                                <a class="text-dark">Address</a>
+                            </th>
+                            <th class="col-1 text-left">
+                                <a class="text-dark">Total Amount</a>
+                            </th>
+                            <th class="col-2 text-left">Order Status</th>
+                            <th class="col-2 text-left">More Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        <% order.forEach(orderItem=> {%>
+                            <tr>
+                                <td class="align-middle text-left">
+                                    <%= orderItem.date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })%>
+                                </td>
+                                <td class="align-middle text-left">
+                                    <%= orderItem.orderId%>
+                                </td>
+                                <td class="align-middle text-left">
+                                    <% orderItem.product.forEach(product=>{%>
+                                        <p>
+                                            <li>
+                                                <%= product.name%> <br>
+                                            </li>
+                                            
+                                        </p>
+                                        <%})%>
+                                </td>
+                                <td class=" align-middle text-left">
+                                    <% userAddresses.forEach(address=>{%>
+                                        <% if(address._id==orderItem.address){%>
+                                            <p>
+                                                <%= address.name%> <br>
+                                                    <%= address.streetAddress%>,
+                                                        <%= address.city%>, <br>
+                                                            <%= address.pinCode%>, <br>
+                                                                <%= address.state%>
+                                            </p>
+                                            <%}%>
+                                                <%})%>
+                                </td>
+                                <td class="align-middle text-left">
+                                    <span>₹</span>
+                                    <%= orderItem.total%>
+                                </td>
+                                <% if(orderItem.status=="Pending" ){%>
+                                    <td class=" align-middle text-left text-danger">
+                                        <%= orderItem.status%>
+                                    </td>
+                                    <%} else if(orderItem.status=="Shipped" ){%>
+                                        <td class="align-middle text-left text-warning">
+                                            <%= orderItem.status%>
+                                        </td>
+                                        <%} else if(orderItem.status=="Delivered" ){%>
+                                            <td class="align-middle text-left text-success">
+                                                <%= orderItem.status%>
+                                            </td>
+                                            <%} else if (orderItem.status == "Cancelled"){%>
+                                                <td class="align-middle text-left text-danger">
+                                                    <%= orderItem.status%>
+                                                </td>
+                                            <%} else if(orderItem.status == "Returned") {%>
+                                                <td class="align-middle text-left text-success">
+                                                    <%= orderItem.status%>
+                                                </td>
+                                            <%}%>
+
+                                            <td>
+                                                <a href="#" class="btn btn-light more-details-link" data-orderid="<%= orderItem._id%>">More Details</a>
+                                            </td>
+                            </tr>
+
+                            <%})%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</main>
+
+<%- include('footer')-%>
+<script src="/js/axios.min.js"></script>
+<script>
+    document.querySelectorAll(".more-details-link").forEach(details =>{
+        details.addEventListener('click', function(event){
+            const orderId = event.currentTarget.dataset.orderid;
+            moreDetails(orderId)
+        })
+    })
+
+    async function moreDetails(orderId){
+       try{
+        window.location.href = `/user_order_details_get?orderId=${orderId}`;
+
+       }catch(err){
+        console.log(err);
+       }
+    }
+</script>

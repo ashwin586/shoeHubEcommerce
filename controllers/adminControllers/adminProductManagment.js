@@ -91,7 +91,6 @@ exports.adminProductAddPost = async (req, res) => {
 
 exports.adminProductEditGet = async (req, res) => {
   try {
-    // if (req.session.adminEmail) {
     const id = req.params.product_id;
     const product = await Product.findById(id).populate("category");
     const category = await Category.find();
@@ -99,9 +98,6 @@ exports.adminProductEditGet = async (req, res) => {
       product: product,
       category: category,
     });
-    // } else {
-    // res.render("admin_login");
-    // }
   } catch (err) {
     res.status(500).send(err);
   }
@@ -109,7 +105,7 @@ exports.adminProductEditGet = async (req, res) => {
 
 exports.adminProductEditPost = async (req, res) => {
   try {
-    // if (req.session.adminEmail) {
+    if (req.session.adminEmail) {
     const id = req.params.product_id;
     const { name, description, price, stock, category, selectedImages } =
       req.body;
@@ -144,12 +140,15 @@ exports.adminProductEditPost = async (req, res) => {
           });
         }
       }
-      await existingProduct.save();
+      console.log(await existingProduct.save());
+      
       res.status(200).end();
     } else {
       res.status(404).send("Product not found");
     }
-    // }
+    } else {
+      res.render("admin_login");
+    }
   } catch (err) {
     console.log(err);
     console.log(err.stack);
@@ -173,16 +172,13 @@ exports.adminproductImageAlterPost = async (req, res) => {
       imageToUpdate.isVisible = true;
     }
     await existingProduct.save();
-    console.log(existingProduct);
   } catch (err) {
-    console.log(10);
     console.log(err);
   }
 };
 
 exports.adminImageDeletePost = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   try {
     const product = await Product.findOne({ "imageUrl._id": id });
     // const deleteImage = product.imageUrl.find(

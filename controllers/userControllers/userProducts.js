@@ -1,8 +1,56 @@
 const Products = require("../../model/products");
 const User = require("../../model/users");
+const Categories = require("../../model/category");
 
 exports.userProductsViewGet = async (req, res) => {
+  let result, category, sort, keyword, priceRange;
+  let sortOption = {};
+  const query = {};
+  
   try {
+    /////////////////////// GETTING CATEGORY IF ANY ////////////////////////
+    if(req.query.category && req.query.category !== 'false'){
+      category = req.query.category;
+    } else {
+      category = false;
+    }
+    
+    //////////////////////// GETTING SORT VALUE IF ANY //////////////////////
+    if(req.query.sort && req.query.sort !== "false"){
+      sort = req.query.sort;
+      if(req.query.sort == "lowToHigh"){
+        sortOption.price = 1;
+      } else if(req.query.sort == "highToLow"){
+        sortOption.price = -1;
+      }
+    } else {
+      sort = false;
+    }
+
+    /////////////////////// GETTING PRICE RANGE VALID IF ANY /////////////////////
+    if(req.query.priceRange && req.query.priceRange !== 'false'){
+      priceRange = req.query.priceRange;
+      let priceRangeParts = priceRange.replaceAll(/₹/g, '').trim();
+      priceRangeParts = priceRangeParts.split("-");
+      query.price = {$gt: parseFloat(priceRangeParts[0]), $lt: parseFloat(priceRangeParts[1])};
+    } else {
+      priceRange = false;
+    }
+
+    //////////////////////// GETTING KEYWORD IF ANY ////////////////////////////////
+    if(req.query.keyword && req.query.keyword !== "false"){
+      keyword = req.query.keyword;
+      query.name = new RegExp(keyword, 'i');
+    } else {
+      keyword = false;
+    }
+
+    const categories = await Categories.findOne({categoryName: category});
+    if(categories){
+      query.category = categories._id;
+    }
+    const totalProduct = await Products.countDocuments(query);
+    const value = await Products.find(query).populate('category').sort(sortOption);
     const user = await User.findOne({ email: req.session.email });
     let wishlistedProduct = [];
     if (user) {
@@ -12,26 +60,36 @@ exports.userProductsViewGet = async (req, res) => {
     const productsPerPage = 6;
     const skip = (currentPage - 1) * productsPerPage;
 
-    const totalCount = await Products.countDocuments();
+    const totalCount = await Products.countDocuments(query);
     const totalPages = Math.ceil(totalCount / productsPerPage);
-    const products = await Products.find().skip(skip).limit(productsPerPage);
+    const products = await Products.find(query).sort(sortOption).skip(skip).limit(productsPerPage);
     if (req.session.email && !user.isBlocked) {
       res.render("user_product_view", {
-        loggedIn: true,
         products,
+        loggedIn: true,
         totalCount,
         totalPages,
         currentPage,
         wishlistedProduct,
+        category, 
+        noMoredata: Boolean(false), 
+        sort,
+        keyword,
+        priceRange
       });
     } else {
       res.render("user_product_view", {
-        loggedIn: false,
         products,
+        loggedIn: false,
         totalCount,
         totalPages,
         currentPage,
         wishlistedProduct,
+        category, 
+        noMoreData: Boolean(false), 
+        sort,
+        keyword,
+        priceRange
       });
     }
   } catch (err) {

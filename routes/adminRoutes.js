@@ -7,6 +7,7 @@ const adminUsersManagment = require("../controllers/adminControllers/adminUsersM
 const adminProductManagment = require("../controllers/adminControllers/adminProductManagment");
 const adminCategoryManagment = require("../controllers/adminControllers/adminCategoryManagment");
 const adminOrderManagment = require("../controllers/adminControllers/adminOrderManagment");
+const adminCouponManagment = require("../controllers/adminControllers/adminCouponManagment");
 
 ////////////ADMIN GET METHODS/////////////////////
 adminRouter.get("/admin", adminView.adminDashboard);
@@ -17,8 +18,8 @@ adminRouter.get(
   "/admin_users_managment",
   adminUsersManagment.adminUserManagmentGet
 );
-adminRouter.get("/user_block/:userId", adminUsersManagment.userBlock);
-adminRouter.get("/user_unblock/:userId", adminUsersManagment.userUnblock);
+adminRouter.post("/user_block/:userId", adminUsersManagment.userBlock);
+adminRouter.post("/user_unblock/:userId", adminUsersManagment.userUnblock);
 
 adminRouter.get(
   "/admin_product_add_get",
@@ -50,14 +51,14 @@ adminRouter.get(
   adminOrderManagment.adminOrderViewGet
 );
 
+adminRouter.get("/admin_coupon_view_get", adminCouponManagment.adminCouponView);
+adminRouter.get(
+  "/admin_coupon_add_get",
+  adminCouponManagment.adminCouponAddView
+);
+
 ////////////ADMIn POST METHODS/////////////////////////
 adminRouter.post("/admin_login", adminAuth.adminLoginPost);
-
-// adminRouter.post(
-//   "/admin_product_add_post",
-//   upload.single("image"),
-//   adminProductManagment.adminProductAddPost
-// );
 
 adminRouter.post(
   "/admin_product_add_post",
@@ -96,6 +97,11 @@ adminRouter.post(
 adminRouter.post(
   "/admin_order_status_post",
   adminOrderManagment.adminOrderStatusPost
+);
+
+adminRouter.post(
+  "/admin_coupon_add_post",
+  adminCouponManagment.admincouponAddPost
 );
 
 module.exports = adminRouter;

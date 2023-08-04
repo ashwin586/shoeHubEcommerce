@@ -21,6 +21,9 @@
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.js"></script>
+
   <style>
     .lvl1.parent {
       position: relative;
@@ -76,7 +79,7 @@
           <button class="go-btn search__button" type="submit">
             <i class="icon anm anm-search-l"></i>
           </button>
-          <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..."
+          <input class="search__input" type="search" name="keyword" placeholder="Search entire store..."
             aria-label="Search" autocomplete="off" />
         </form>
         <button type="button" class="search-trigger close-btn">
@@ -107,7 +110,8 @@
                 <li><a href="/register">Create Account</a></li>
                 <% } else if (locals.loggedIn) {%>
                   <li>
-                    <a href="/user_account_details_get"><i class="far fa-user" style="color: #ffffff"></i>
+                    <a data-isBlocked="<%= locals.isBlocked%>" href="/user_account_details_get"><i class="far fa-user"
+                        style="color: #ffffff"></i>
                       Account</a>
                   </li>
                   <li><a href="/user_wishlist_get">Wishlist</a></li>
@@ -184,58 +188,22 @@
           <div class="col-4 col-sm-3 col-md-3 col-lg-2">
             <% if(loggedIn) {%>
               <div class="site-cart">
-                <a href="/user_cart_get" class="site-header__cart" title="Cart">
-                  <i class="icon anm anm-bag-l"></i>
+                <a href="#" class="site-header__cart" title="Wallet">
+                  <i class="fa-solid fa-wallet" style="font-size: 20px; padding-right: 15px;"></i>
+                </a>
+                <a href="/user_cart_get" title="Cart">
+                  <i class="icon anm anm-bag-l" style="font-size: 20px;"></i>
                   <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">
                     <%= cartItemsCount%>
                   </span>
                 </a>
-                <!--Minicart Popup-->
-                <div id="header-cart" class="block block-cart">
-                  <ul class="mini-products-list">
-                    <li class="item">
-                      <a class="product-image" href="#">
-                        <img src="/css/images/product-images/cape-dress-1.jpg" alt="3/4 Sleeve Kimono Dress" title="" />
-                      </a>
-                      <div class="product-details">
-                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                        <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
-                        <div class="variant-cart">Black / XL</div>
-                        <div class="wrapQtyBtn">
-                          <div class="qtyField">
-                            <span class="label">Qty:</span>
-                            <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r"
-                                aria-hidden="true"></i></a>
-                            <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                            <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r"
-                                aria-hidden="true"></i></a>
-                          </div>
-                        </div>
-                        <div class="priceRow">
-                          <div class="product-price">
-                            <span class="money">$59.00</span>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <div class="total">
-                    <div class="total-in">
-                      <span class="label">Cart Subtotal:</span><span class="product-price"><span
-                          class="money">$748.00</span></span>
-                    </div>
-                    <div class="buttonSet text-center">
-                      <a href="/user_cart_get" class="btn btn-secondary btn--small">View Cart</a>
-                      <% if(cartItemsCount> 0){%>
-                        <a href="/user_checkout_get" class="btn btn-secondary btn--small">Checkout</a>
-                        <%}%>
-
-                    </div>
-                  </div>
+                <div id="header-cart">
+                  <h3>Wallet balance: <span>
+                      <%= locals.userWallet%>
+                    </span></h3>
                 </div>
-                <!--End Minicart Popup-->
               </div>
+
               <%}%>
                 <div class="site-header__search">
                   <button type="button" class="search-trigger">
@@ -275,6 +243,20 @@
     </div>
     <!--End Mobile Menu-->
   </div>
+  <script>
+    const anchorTag = document.querySelector('a[data-isBlocked]');
+    const isBlockedValue = anchorTag.getAttribute('data-isBlocked');
+    if (isBlockedValue === "true") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'You are Blocked',
+        text: 'Your account has been blocked.',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+    }
+  </script>
 </body>
 
 </html>

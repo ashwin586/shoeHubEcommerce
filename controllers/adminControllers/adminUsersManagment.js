@@ -20,6 +20,7 @@ exports.userBlock = async (req, res) => {
         await blockedUser.save();
     }
     res.render("admin_user_managment", {users, status: "Unactive"})
+    return res.status(200).end();
   } catch (err) {
     console.log(err);
   }
@@ -35,6 +36,7 @@ exports.userUnblock = async (req, res) => {
       await unblockUser.save();
     }
     res.render("admin_user_managment", { users, status: "Active" });
+    return res.status(200).end();
   } catch (err) {
     console.log(err);
   }

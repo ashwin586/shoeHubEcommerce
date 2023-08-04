@@ -19,7 +19,7 @@
         </div>
         <div class="row mt-5">
           <div class="col-12 col-xl-7">
-            <form id="editProductForm">
+            <form onsubmit="showConfirmationDialog(event)">
               <div class="from-group mt-4 pt-3">
                 <label class="form-label"> Product name: </label>
                 <input type="text" class="form-control" name="name" value="<%= product.name%>" />
@@ -71,7 +71,30 @@
                               style="width: 100%; height: auto">
                           </label>
                         </div>
-                          <div class="ms-5">
+                        <div class="ms-5">
+                          <a class="imageDelete" data-imageid="<%= image._id%>">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" class="svgs">
+                              <style>
+                                svg {
+                                  fill: #eb0a0a
+                                }
+                              </style>
+                              <path
+                                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                      <%} else {%>
+                        <div class="d-flex align-items-center">
+                          <div>
+                            <label class="imageHover">
+                              <input type="checkbox" name="selectedImages" value="<%= image.url %>" id="selectedImage">
+                              <img class="pb-5" src="<%= image.url %>" alt="Product Image"
+                                style="width: 100%; height: auto">
+                            </label>
+                          </div>
+                          <div>
                             <a class="imageDelete" data-imageid="<%= image._id%>">
                               <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" class="svgs">
                                 <style>
@@ -84,29 +107,6 @@
                               </svg>
                             </a>
                           </div>
-                      </div>
-                      <%} else {%>
-                        <div class="d-flex align-items-center">
-                          <div>
-                            <label class="imageHover">
-                              <input type="checkbox" name="selectedImages" value="<%= image.url %>" id="selectedImage">
-                              <img class="pb-5" src="<%= image.url %>" alt="Product Image"
-                                style="width: 100%; height: auto">
-                            </label>
-                          </div>
-                         <div>
-                          <a class="imageDelete" data-imageid="<%= image._id%>">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" class="svgs">
-                              <style>
-                                svg {
-                                  fill: #eb0a0a
-                                }
-                              </style>
-                              <path
-                                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
-                            </svg>
-                          </a>
-                         </div>
                         </div>
                         <%}%>
 
@@ -138,14 +138,27 @@
     <script>
       const productId = '<%= product._id %>'
 
-      document
-        .getElementById("editProductForm")
-        .addEventListener("submit", addProduct);
-      async function addProduct(event) {
+      function showConfirmationDialog(event) {
         event.preventDefault();
-        document
-          .getElementById("editProductForm")
-          .querySelectorAll("p")
+        Swal.fire({
+          icon: 'warning',
+          title: 'Confirmation',
+          text: `Save Changes`,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            editProduct(event);
+          }
+        });
+      }
+
+      async function editProduct(event) {
+        event.preventDefault();
+          event.target.querySelectorAll("p")
           .forEach((element) => {
             element.textContent = "";
           });
@@ -178,20 +191,37 @@
       document.querySelectorAll(".imageDelete").forEach(click => {
         click.addEventListener('click', function (event) {
           const imageid = event.currentTarget.dataset.imageid;
-          deleteImage(event, imageid);
+          showConfirmationDialog(event, imageid);
         });
+
+        function showConfirmationDialog(event, imageid) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Confirmation',
+            text: `Are you sure you want to delete this image?`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              deleteImage(event, imageid);
+            }
+          });
+        }
 
         async function deleteImage(event, imageId) {
           event.preventDefault();
-          try{
+          try {
             const response = await axios.post(`/admin_delete_image_post/${imageId}`);
-            if(response.status == 200){
+            if (response.status == 200) {
               const deleteImage = document.getElementById(`image_${imageId}`);
-              if(deleteImage){
+              if (deleteImage) {
                 deleteImage.remove();
               }
             }
-          }catch(err){
+          } catch (err) {
             console.log(err);
           }
         }
