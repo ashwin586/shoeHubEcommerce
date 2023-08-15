@@ -75,6 +75,21 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                   <div class="form-group">
                     <input
+                      type="text"
+                      name="referral"
+                      placeholder="Referral (If any)"
+                      id="referral"
+                      class=""
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autofocus=""
+                    />
+                    <p id="referralError" class="text-danger text-left error-msg"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <input
                       type="password"
                       value=""
                       name="password"
@@ -114,6 +129,7 @@
     </div>
   </div>
   <!--End Body Content-->
+  
   <script src="/js/axios.min.js"></script>
   <script>
     document

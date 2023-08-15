@@ -6,7 +6,7 @@ const bannerSchema = new mongoose.Schema({
     required: true,
   },
 
-  subtitle: {
+  subTitle: {
     type: String,
     required: true,
   },

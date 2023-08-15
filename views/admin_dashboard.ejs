@@ -1,180 +1,307 @@
 <%- include('admin_header')-%> <%- include('admin_sidebar')-%>
-<div class="main-content">
-  <nav class="navbar navbar-expand-lg navbar-light bg-white d-none d-lg-flex">
-    <div class="container-fluid">
-      <!-- Form -->
-      <form>
-        <div class="input-group input-group-flush">
-          <div class="input-group-text">
-            <i class="fas fa-search relative-top--2"></i>
+
+    <style>
+      .cardS {
+        width: 18rem;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .card {
+        width: 100%;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      .card-body {
+        padding: 20px;
+      }
+
+      .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .card-text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007bff;
+      }
+
+      .date-input {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      input[type="date"] {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #555;
+      }
+
+      /* Style the date picker arrow */
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        font-size: 16px;
+        margin-left: 4px;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+
+      /* Hide the default clear button for the date input */
+      input[type="date"]::-webkit-clear-button {
+        display: none;
+      }
+
+      /* Hide the default spin buttons for the date input */
+      input[type="date"]::-webkit-inner-spin-button,
+      input[type="date"]::-webkit-outer-spin-button {
+        display: none;
+      }
+    </style>
+    <div class="main-content">
+
+      <div class="container-fluid mt-4 mt-md-5 mb-6">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="text-center text-md-start m-0">Good morning Admin</h3>
           </div>
 
-          <input
-            type="text"
-            class="form-control dropdown-toggle"
-            data-bs-toggle="dropdown"
-            placeholder="Search..."
-            aria-label="Search"
-            aria-expanded="false"
-          />
-        </div>
-      </form>
-
-      <!-- User -->
-      <div class="d-flex align-items-center">
-        <div class="dropdown d-none d-md-flex">
-          <a
-            href="#"
-            class="svg-icon svg-icon-sm"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-          </a>
-          <!-- <div
-            class="dropdown-menu dropdown-menu-end dropdown-menu-card shadow-light-sm me-n3"
-          ></div> -->
-        </div>
-        <div class="dropdown ms-2">
-          <a
-            href="#"
-            class="d-flex align-items-center"
-            data-bs-toggle="dropdown"
-          >
-            <span class="text-dark ms-2">Adrian, G.</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="/admin_logout">Log out</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container-fluid mt-4 mt-md-5 mb-6">
-    <div class="row">
-      <div class="col-12">
-        <h3 class="text-center text-md-start m-0">Good morning Admin</h3>
-      </div>
-
-      <div class="col-12 mt-4">
-        <div class="card">
-          <div class="card-header text-center">
-            <div class="card-header-title mb-2 mb-md-0">Your earnings</div>
-
-            <div
-              class="w-100 w-md-250 bg-white border rounded d-flex align-items-center fs-sm fw-bold ms-md-auto py-1 px-3"
-              role="button"
-              data-datepicker
-            >
-              <div class="svg-icon me-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="512"
-                  height="512"
-                  viewBox="0 0 512 512"
-                >
-                  <title>ionicons-v5-e</title>
-                  <rect
-                    x="48"
-                    y="80"
-                    width="416"
-                    height="384"
-                    rx="48"
-                    ry="48"
-                    style="
-                      fill: none;
-                      stroke: #000;
-                      stroke-linejoin: round;
-                      stroke-width: 32px;
-                    "
-                  />
-                  <path
-                    d="M397.82,80H114.18C77.69,80,48,110.15,48,147.2V208H64c0-16,16-32,32-32H416c16,0,32,16,32,32h16V147.2C464,110.15,434.31,80,397.82,80Z"
-                  />
-                  <circle cx="296" cy="232" r="24" />
-                  <circle cx="376" cy="232" r="24" />
-                  <circle cx="296" cy="312" r="24" />
-                  <circle cx="376" cy="312" r="24" />
-                  <circle cx="136" cy="312" r="24" />
-                  <circle cx="216" cy="312" r="24" />
-                  <circle cx="136" cy="392" r="24" />
-                  <circle cx="216" cy="392" r="24" />
-                  <circle cx="296" cy="392" r="24" />
-                  <line
-                    x1="128"
-                    y1="48"
-                    x2="128"
-                    y2="80"
-                    style="
-                      fill: none;
-                      stroke: #000;
-                      stroke-linecap: round;
-                      stroke-linejoin: round;
-                      stroke-width: 32px;
-                    "
-                  />
-                  <line
-                    x1="384"
-                    y1="48"
-                    x2="384"
-                    y2="80"
-                    style="
-                      fill: none;
-                      stroke: #000;
-                      stroke-linecap: round;
-                      stroke-linejoin: round;
-                      stroke-width: 32px;
-                    "
-                  />
-                </svg>
+          <div style="display: flex;">
+            <div class="card cardS" style="width: 18rem; margin-top: 7%; border-left: 5px solid #007bff;">
+              <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text" style="color: #007bff;">
+                  <%=totalUsers%>
+                </p>
               </div>
-              <span class="mt-1"></span>
+            </div>
+
+            <div class="card cardS"
+              style="width: 18rem; margin-top: 7%; margin-left: 3%; border-left: 5px solid rgb(255, 166, 2);">
+              <div class="card-body">
+                <h5 class="card-title">Total Products</h5>
+                <p class="card-text" style="color: rgb(255, 166, 2);">
+                  <%=totalProducts%>
+                </p>
+              </div>
+            </div>
+
+            <div class="card cardS"
+              style="width: 18rem; margin-top: 7%; margin-left: 3%; border-left: 5px solid rgb(11, 236, 49);">
+              <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <p class="card-text" style="color: rgb(11, 236, 49);">
+                  <%=totalOrders%>
+                </p>
+              </div>
+            </div>
+
+            <div class="card cardS"
+              style="width: 18rem; margin-top: 7%; margin-left: 3%; border-left: 5px solid rgb(250, 8, 40);">
+              <div class="card-body">
+                <h5 class="card-title">Total Revenue</h5>
+                <p class="card-text" style="color: rgb(250, 8, 40);">₹ <%=totalRevenue%>
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="card-body">
-            <div class="chart">
-              <canvas class="chart-canvas" id="ecommerceChart"></canvas>
+          <div class="col-12 mt-4">
+            <div style="border: 2px solid rgba(18, 125, 196, 0.418);" class="card">
+              <div class="card-header text-center border-bottom">
+                <div
+                  class="w-100 w-md-250 bg-white border rounded d-flex align-items-center fs-sm fw-bold ms-md-auto py-1 px-3"
+                  role="button" data-datepicker>
+                  <div class="svg-icon me-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                      <title>ionicons-v5-e</title>
+                      <rect x="48" y="80" width="416" height="384" rx="48" ry="48"
+                        style="fill:none;stroke:#000;stroke-linejoin:round;stroke-width:32px" />
+                      <path
+                        d="M397.82,80H114.18C77.69,80,48,110.15,48,147.2V208H64c0-16,16-32,32-32H416c16,0,32,16,32,32h16V147.2C464,110.15,434.31,80,397.82,80Z" />
+                      <circle cx="296" cy="232" r="24" />
+                      <circle cx="376" cy="232" r="24" />
+                      <circle cx="296" cy="312" r="24" />
+                      <circle cx="376" cy="312" r="24" />
+                      <circle cx="136" cy="312" r="24" />
+                      <circle cx="216" cy="312" r="24" />
+                      <circle cx="136" cy="392" r="24" />
+                      <circle cx="216" cy="392" r="24" />
+                      <circle cx="296" cy="392" r="24" />
+                      <line x1="128" y1="48" x2="128" y2="80"
+                        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" />
+                      <line x1="384" y1="48" x2="384" y2="80"
+                        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" />
+                    </svg>
+                  </div>
+                  <span class="mt-1"></span>
+                </div>
+              </div>
+
+              <!-- canvas -->
+              <div class="card-body">
+                <div class="chart">
+                  <canvas class="chart-canvas" id="ecommerceChart"></canvas>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="card-footer py-3 bg-dark">
-            <div class="row row-cols-2 row-cols-md-5">
-              <div class="col text-center">
-                <div class="text-uppercase-xs text-pastel-purple">
-                  Total sales
-                </div>
-                <h4 class="text-white mt-1 mt-md-3 mb-0">$362,201</h4>
+          <!-- FOR SELECTING SALES DATE -->
+          <div style="margin-top: 4%;">
+            <form onsubmit="pdfDownload(event)">
+              <div>
+                <p class="text-danger" id="reportDateError"></p>
               </div>
-              <div class="col text-center">
-                <div class="text-uppercase-xs text-pastel-purple">Visits</div>
-                <h4 class="text-white mt-1 mt-md-3 mb-0">3,210</h4>
+              <div class="date-input">
+                <label>From: </label>
+                <input type="date" name="fromDate">
+                <p class="text-danger" id="fromDateError"></p>
               </div>
-              <div class="col text-center mt-4 mt-md-0">
-                <div class="text-uppercase-xs text-pastel-purple">
-                  Today's orders
-                </div>
-                <h4 class="text-white mt-1 mt-md-3 mb-0">18</h4>
+              <div class="date-input">
+                <label>To: </label>
+                <input type="date" name="toDate">
+                <p class="text-danger" id="toDateError"></p>
               </div>
-              <div class="col text-center mt-4 mt-md-0">
-                <div class="text-uppercase-xs text-pastel-purple">
-                  Today's visitors
-                </div>
-                <h4 class="text-white mt-1 mt-md-3 mb-0">891</h4>
+              <div>
+                <button class="btn btn-danger">Download Report</button>
               </div>
-              <div class="col text-center mt-4 mt-md-0">
-                <div class="text-uppercase-xs text-pastel-purple">
-                  Avg. order value
-                </div>
-                <h4 class="text-white mt-1 mt-md-3 mb-0">$247</h4>
-              </div>
-            </div>
           </div>
+          </form>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-<%- include('admin_footer')-%>
+
+        <%- include('admin_footer')-%>
+
+          <script src="/js/axios.min.js"></script>
+          <script>
+            /////////////////////////// PDF DOWNLOAD ///////////////////////////
+            async function pdfDownload(event) {
+              event.preventDefault();
+              const formData = new FormData(event.target);
+              try {
+                const response = await axios.post('/admin_salesReport', formData, {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  responseType: 'arraybuffer',
+                });
+
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+
+                const url = window.URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", "order_report.pdf");
+
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+              } catch (err) {
+                if (err.response.status == 400) {
+                  alert("No Data")
+                } else if(err.response && err.response.status == 401){
+                  document.getElementById('reportDateError').textContent = err.response.data.error;
+                }
+                console.log(err);
+              }
+            }
+
+            /////////////////////////// CHART /////////////////////////////
+            $(async function () {
+              // datepicker
+              async function cb(start, end) {
+                $('[data-datepicker] span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+
+                try {
+                  const response = await axios.get('/admin_chart', { params: { startDate: start.format('YYYY-MM-DD'), endDate: end.format('YYYY-MM-DD') } });
+
+                  if (response.status === 200) {
+                    updateChart(response.data);
+                  }
+                } catch (err) {
+                  alert(err.response?.data?.error || err);
+                }
+              }
+
+              var startDate = moment().subtract(17, 'days')
+              var endDate = moment()
+
+              $('[data-datepicker]').daterangepicker({
+                startDate: startDate,
+                endDate: endDate,
+                opens: 'left',
+                applyButtonClasses: "btn-purple",
+                ranges: {
+                  'Today': [moment(), moment()],
+                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+              }, cb)
+
+              await cb(startDate, endDate);
+            });
+
+            let chart;
+
+            function updateChart(data) {
+              let chartCanvas = document.getElementById('ecommerceChart').getContext("2d");
+
+              if (chart) {
+                chart.destroy();
+              }
+
+              chart = new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                  labels: data.labels,
+                  datasets: [{
+                    label: 'Order Amount',
+                    data: data.values,
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    lineTension: 0.2
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  legend: {
+                    display: false
+                  },
+                  scales: {
+                    x: {
+                      display: true,
+                      title: {
+                        display: true,
+                        text: 'Date'
+                      }
+                    },
+                    y: {
+                      display: true,
+                      title: {
+                        display: true,
+                        text: 'Amount'
+                      }
+                    }
+                  }
+                }
+              });
+            }
+          </script>

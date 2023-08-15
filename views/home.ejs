@@ -4,45 +4,30 @@
     <!--Home slider-->
     <div class="slideshow slideshow-wrapper pb-section sliderFull">
       <div class="home-slideshow">
-        <div class="slide slideshow--medium">
-          <div class="blur-up lazyload bg-size">
-            <img class="blur-up lazyload bg-img" data-src="/images/slideshow-banners/home7-banner1.jpg"
-              src="/images/slideshow-banners/home7-banner1.jpg" alt="Modern Sophistication"
-              title="Modern Sophistication" />
-            <div class="slideshow__text-wrap slideshow__overlay classic middle">
-              <div class="slideshow__text-content classic left">
-                <div class="container">
-                  <div class="wrap-caption left">
-                    <h2 class="h1 mega-title slideshow__title">
-                      Modern Sophistication
-                    </h2>
-                    <span class="mega-subtitle slideshow__subtitle">Ecco Sharp comfort and innovation</span>
-                    <span class="btn">Shop now</span>
+        <% banners.forEach(banner =>{%>
+          <div class="slide slideshow--medium">
+            <div class="blur-up lazyload bg-size">
+              <img class="blur-up lazyload bg-img" data-src="<%=banner.image.url%>"
+                src="<%=banner.image.url%>" alt="<%=banner.title%>"
+                title="<%=banner.title%>" />
+              <div class="slideshow__text-wrap slideshow__overlay classic middle">
+                <div class="slideshow__text-content classic left">
+                  <div class="container">
+                    <div class="wrap-caption left">
+                      <h2 class="h1 mega-title slideshow__title">
+                        <%=banner.title%>
+                      </h2>
+                      <span class="mega-subtitle slideshow__subtitle"><%=banner.subTitle%></span>
+                      <span class="btn"><a href="/user_product_view_get" style="text-decoration: none; color: white;">
+                        <%=banner.label%>
+                      </a></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="slide slideshow--medium">
-          <div class="blur-up lazyload bg-size">
-            <img class="blur-up lazyload bg-img" data-src="/images/slideshow-banners/home7-banner2.jpg"
-              src="/images/slideshow-banners/home7-banner2.jpg" alt="New Season Styles" title="New Season Styles" />
-            <div class="slideshow__text-wrap slideshow__overlay classic middle">
-              <div class="slideshow__text-content classic middle">
-                <div class="container">
-                  <div class="wrap-caption right">
-                    <h2 class="h1 mega-title slideshow__title">
-                      New Season Styles
-                    </h2>
-                    <span class="mega-subtitle slideshow__subtitle">Break all boundaries with our new arrival
-                      footwears</span>
-                    <span class="btn">Shop now</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <%})%>
         </div>
       </div>
     </div>
@@ -94,11 +79,6 @@
 
                     <!-- product button -->
                     <div class="button-set">
-                      <!-- <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view"
-                      data-toggle="modal" data-target="#content_quickview">
-                      <i class="icon anm anm-search-plus-r"></i>
-                    </a> -->
-                      <!-- Start product button -->
                       <form class="variants add" action="#" onclick="window.location.href='cart.html'" method="post">
                         <button class="btn cartIcon btn-addto-cart" type="button" tabindex="0">
                           <i class="icon anm anm-bag-l"></i>

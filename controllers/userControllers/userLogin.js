@@ -18,6 +18,7 @@ exports.loginPost = async (req, res) => {
   }
 };
 
+
 async function validation(data) {
   const { email, password } = data;
   const errors = {};

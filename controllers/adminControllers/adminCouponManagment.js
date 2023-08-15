@@ -1,13 +1,8 @@
 const Coupons = require("../../model/coupon");
 
 exports.adminCouponView = async (req, res) => {
-  if(req.session.adminEmail){
-    const coupons = await Coupons.find();
-    res.render("admin_coupon_view", {coupons});
-  } else {
-    res.render("admin_login");
-  }
-  
+  const coupons = await Coupons.find();
+  res.render("admin_coupon_view", { coupons });
 };
 
 exports.adminCouponAddView = async (req, res) => {
@@ -17,20 +12,23 @@ exports.adminCouponAddView = async (req, res) => {
 exports.admincouponAddPost = async (req, res) => {
   const valid = couponValidation(req.body);
   try {
-    if(!valid.isValid){
+    if (!valid.isValid) {
       const error = new Error();
       error.code = 400;
       error.errors = valid.errors;
-      return res.status(400).json({error: valid.errors});
+      return res.status(400).json({ error: valid.errors });
     }
 
     const { code, discount, minDiscount, maxdiscount, expiryDate } = req.body;
 
+    const expiryDateObj = new Date(expiryDate); // Convert expiryDate to Date object
+    const currentDate = new Date();
+
     let status;
-    if (expiryDate > new Date().toISOString().slice(0, 10)) {
-      status = true;
-    } else {
+    if (expiryDateObj < currentDate) {
       status = false;
+    } else {
+      status = true;
     }
 
     const coupon = new Coupons({
@@ -38,14 +36,14 @@ exports.admincouponAddPost = async (req, res) => {
       discount: discount,
       minDiscount: minDiscount,
       maxDiscount: maxdiscount,
-      expiryDate: expiryDate,
+      expiryDate: expiryDateObj,
       status: status,
     });
-      await coupon.save();
-      return res.status(200).end();
+    await coupon.save();
+    return res.status(200).end();
   } catch (err) {
-    if(err.code == 400){
-      return res.status(400).json({error: err.errors});
+    if (err.code == 400) {
+      return res.status(400).json({ error: err.errors });
     }
   }
 };

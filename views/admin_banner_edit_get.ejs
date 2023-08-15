@@ -1,0 +1,61 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+
+        <div class="main-content">
+            <div class="container-fluid pb-7">
+                <div class="d-flex align-items-start mt-5">
+                    <h2 class="mb-0">Edit Banner</h2>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12 col-xl-7">
+                        <form onsubmit="editBannerPost(event)">
+                            <div class="from-group mt-4 pt-3">
+                                <input type="text" name="bannerId" value="<%=banner._id%>" hidden />
+
+                                <label class="form-label"> Banner Title: </label>
+                                <input type="text" class="form-control" name="title" value="<%= banner.title%>" />
+                                <p id="bannerTitleError" class="text-danger"></p>
+                            </div>
+
+                            <div class="from-group mt-4 pt-3">
+                                <label class="form-label"> Banner Sub Title: </label>
+                                <input type="text" class="form-control" name="subTitle" value="<%= banner.subTitle%>" />
+                                <p id="bannerSubTitleError" class="text-danger"></p>
+                            </div>
+
+                            <div class="from-group mt-4 pt-3">
+                                <label class="form-label"> Banner Label: </label>
+                                <input type="text" class="form-control" name="label" value="<%= banner.label%>" />
+                                <p id="bannerLabelError" class="text-danger"></p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <label class="imageHover">
+                                        <img class="pb-5" src="<%= banner.image.url %>" alt="Product Image"
+                                            style="max-width: 100%; max-height: 100%" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-lg-12 col-md-6 p-0">
+                                    <div class="from-group mt-4">
+                                        <label class="form-label mb-0">Choose another Banner image:
+                                        </label>
+                                        <input type="file" class="form-control" name="image" />
+                                        <p id="bannerImageError" class="text-danger text-left"></p>
+                                    </div>
+                                    <div class="d-grid gap-3 mt-5">
+                                        <button class="btn btn-primary btn-lg hover-lift-light" type="submit">
+                                            Edit Banner
+                                        </button>
+                                        <button class="btn btn-link">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%-include('admin_footer') -%>

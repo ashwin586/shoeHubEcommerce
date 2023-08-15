@@ -1,16 +1,23 @@
- const User = require("../../model/users");
+const User = require("../../model/users");
 const nodemailer = require("nodemailer");
 let otpMap = new Map();
 
 exports.signinGet = (req, res) => {
-  if(req.session.userData){
+  if (req.session.userData) {
     delete req.session.userData;
-    return res.render('register', {loggedIn: false});
+    return res.render("register", { loggedIn: false });
   }
-  res.render("register", {loggedIn: false});
+  res.render("register", { loggedIn: false });
 };
 
 exports.siginPost = async (req, res) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const charLength = characters.length;
+  let referralCode = "";
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * charLength);
+    referralCode += characters[randomIndex];
+  }
   const data = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -18,8 +25,15 @@ exports.siginPost = async (req, res) => {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
+    referralCode: referralCode,
     isBlocked: false,
   };
+  const referral = req.body.referral;
+  const user = await User.findOne({referralCode: referral});
+
+  if(user){
+    req.session.referral = referral;
+  }
 
   const valid = await validation(req.body);
 
@@ -31,7 +45,7 @@ exports.siginPost = async (req, res) => {
     };
 
     const otp = otpGenerator();
-    otpMap.set(data.email, otp)
+    otpMap.set(data.email, otp);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -53,7 +67,7 @@ exports.siginPost = async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error occurred:", error);
-        res.render("register", {loggedIn: false});
+        res.render("register", { loggedIn: false });
       } else {
         console.log("Email sent successfully:", info.response);
         return res.status(200).end();
@@ -65,23 +79,36 @@ exports.siginPost = async (req, res) => {
 };
 
 exports.userOtpGet = (req, res) => {
-  res.render("user_otp", {loggedIn: false});
+  res.render("user_otp", { loggedIn: false });
 };
 
 exports.registerOtpGet = (req, res) => {
-  res.render("registerOtp", {loggedIn: false});
-}
+  res.render("registerOtp", { loggedIn: false });
+};
 
 exports.userotpPost = async (req, res) => {
   const data = req.session.userData;
   const storedOtp = otpMap.get(data.email);
-  console.log(storedOtp);
+
   if (req.body.otp == storedOtp) {
-    await User.create(data);
+    const referedUser = await User.findOne({referralCode: req.session.referral});
+    if(referedUser){
+      referedUser.wallet.balance += 250;
+      await referedUser.save();
+    }
+    
+    const newUser = await User.create(data);
+    if(referedUser){
+      newUser.wallet.balance += 100;
+      await newUser.save();
+    }
+
     delete req.session.userData;
+    delete req.session.referral;
+
     res.redirect("/login");
   } else {
-    res.render("user_otp", {loggedIn: false});
+    res.render("user_otp", { loggedIn: false });
   }
 };
 
@@ -91,14 +118,14 @@ async function validation(data) {
   const errors = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
-  const existingUser = await User.findOne({email:email});
+  const existingUser = await User.findOne({ email: email });
 
   if (!email) {
     errors.emailError = "Please Enter an Email";
   } else if (!emailRegex.test(email)) {
     errors.emailError = "please provide an valid Email";
-  } else if(existingUser && email == existingUser.email){
-    errors.emailError = 'This email is already registered';
+  } else if (existingUser && email == existingUser.email) {
+    errors.emailError = "This email is already registered";
   }
 
   if (!firstName) {

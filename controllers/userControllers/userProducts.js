@@ -5,22 +5,22 @@ const Categories = require("../../model/category");
 exports.userProductsViewGet = async (req, res) => {
   let result, category, sort, keyword, priceRange;
   let sortOption = {};
-  const query = {};
-  
+  const query = { isVisible: true };
+
   try {
     /////////////////////// GETTING CATEGORY IF ANY ////////////////////////
-    if(req.query.category && req.query.category !== 'false'){
+    if (req.query.category && req.query.category !== "false") {
       category = req.query.category;
     } else {
       category = false;
     }
-    
+
     //////////////////////// GETTING SORT VALUE IF ANY //////////////////////
-    if(req.query.sort && req.query.sort !== "false"){
+    if (req.query.sort && req.query.sort !== "false") {
       sort = req.query.sort;
-      if(req.query.sort == "lowToHigh"){
+      if (req.query.sort == "lowToHigh") {
         sortOption.price = 1;
-      } else if(req.query.sort == "highToLow"){
+      } else if (req.query.sort == "highToLow") {
         sortOption.price = -1;
       }
     } else {
@@ -28,68 +28,83 @@ exports.userProductsViewGet = async (req, res) => {
     }
 
     /////////////////////// GETTING PRICE RANGE VALID IF ANY /////////////////////
-    if(req.query.priceRange && req.query.priceRange !== 'false'){
+    if (req.query.priceRange && req.query.priceRange !== "false") {
       priceRange = req.query.priceRange;
-      let priceRangeParts = priceRange.replaceAll(/₹/g, '').trim();
+      let priceRangeParts = priceRange.replaceAll(/₹/g, "").trim();
       priceRangeParts = priceRangeParts.split("-");
-      query.price = {$gt: parseFloat(priceRangeParts[0]), $lt: parseFloat(priceRangeParts[1])};
+      query.price = {
+        $gt: parseFloat(priceRangeParts[0]),
+        $lt: parseFloat(priceRangeParts[1]),
+      };
     } else {
       priceRange = false;
     }
 
     //////////////////////// GETTING KEYWORD IF ANY ////////////////////////////////
-    if(req.query.keyword && req.query.keyword !== "false"){
+    if (req.query.keyword && req.query.keyword !== "false") {
       keyword = req.query.keyword;
-      query.name = new RegExp(keyword, 'i');
+      query.name = new RegExp(keyword, "i");
     } else {
       keyword = false;
     }
 
-    const categories = await Categories.findOne({categoryName: category});
-    if(categories){
+    const categories = await Categories.findOne({ categoryName: category });
+    if (categories && categories.isAvailable) {
       query.category = categories._id;
     }
-    const totalProduct = await Products.countDocuments(query);
-    const value = await Products.find(query).populate('category').sort(sortOption);
+
     const user = await User.findOne({ email: req.session.email });
     let wishlistedProduct = [];
     if (user) {
       wishlistedProduct = user.wishlist;
     }
+
     const currentPage = parseInt(req.query.page) || 1;
     const productsPerPage = 6;
     const skip = (currentPage - 1) * productsPerPage;
 
-    const totalCount = await Products.countDocuments(query);
+    const totalCount = await Products.countDocuments(query).sort();
     const totalPages = Math.ceil(totalCount / productsPerPage);
-    const products = await Products.find(query).sort(sortOption).skip(skip).limit(productsPerPage);
+    const products = await Products.find(query)
+      .populate({
+        path: "category",
+        match: { isAvailable: true },
+        select: "_id",
+      })
+      .sort(sortOption)
+      .skip(skip)
+      .limit(productsPerPage);
+    const filteredProducts = products.filter(
+      (product) => product.category !== null
+    );
+
     if (req.session.email && !user.isBlocked) {
       res.render("user_product_view", {
-        products,
+        filteredProducts,
         loggedIn: true,
         totalCount,
         totalPages,
         currentPage,
         wishlistedProduct,
-        category, 
-        noMoredata: Boolean(false), 
+        category,
+        noMoredata: Boolean(false),
         sort,
         keyword,
-        priceRange
+        priceRange,
       });
     } else {
       res.render("user_product_view", {
-        products,
+        filteredProducts,
         loggedIn: false,
         totalCount,
         totalPages,
         currentPage,
         wishlistedProduct,
-        category, 
-        noMoreData: Boolean(false), 
+        category,
+        noMoreData: Boolean(false),
         sort,
         keyword,
-        priceRange
+        priceRange,
       });
     }
   } catch (err) {
@@ -132,8 +147,12 @@ exports.userProductDetailsGet = async (req, res) => {
   const id = req.params.product_id;
   const product = await Products.findById(id);
   const user = await User.findOne({ email: req.session.email });
+  let outOfStock = "";
+  if (product.stock == 0) {
+    outOfStock = "Currently Out Of Stock";
+  }
   let userCartItems = 0;
-  if(user){
+  if (user) {
     userCartItems = user.cart.length;
   }
   if (req.session.email && !user.isBlocked) {
@@ -141,12 +160,13 @@ exports.userProductDetailsGet = async (req, res) => {
       loggedIn: true,
       product,
       userCartItems,
+      outOfStock,
     });
   } else {
     res.render("user_product_details", {
       loggedIn: false,
       product,
-      
+      outOfStock,
     });
   }
 };

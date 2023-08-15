@@ -117,6 +117,10 @@ const usersSchema = new mongoose.Schema({
       },
     ],
   },
+
+  referralCode: {
+    type: String,
+},
 });
 
 const User = mongoose.model("users", usersSchema);

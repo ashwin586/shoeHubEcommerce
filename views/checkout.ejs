@@ -340,34 +340,49 @@
             console.log(err);
           }
         }
-
+////////////////////////////////// FUNCTION TO PLACE ORDER /////////////////////////////////
         function placeOrder() {
-          const paymentSelect = document.querySelector('.paymentSelect:checked').value
-          if (paymentSelect == "cashOnDelivery") {
-            cashOnDelivery(paymentSelect);
-          } else if (paymentSelect == "razorPay") {
-            razorPay(paymentSelect);
-          } else if (paymentSelect == "wallet") {
-            wallet(paymentSelect);
+          const paymentSelect = document.querySelector('.paymentSelect:checked');
+          if(!paymentSelect){
+            Swal.fire({
+                icon: "warning",
+                title: "Payment method error",
+                text: "Please select a payment method",
+              })
+              return;
+          }
+          const selectedPayment = paymentSelect.value;
+
+          if (selectedPayment == "cashOnDelivery") {
+            cashOnDelivery(selectedPayment);
+          } else if (selectedPayment == "razorPay") {
+            razorPay(selectedPayment);
+          } else if (selectedPayment == "wallet") {
+            wallet(selectedPayment);
           }
         }
 
 
-        ///////////////// CASH ON DELIVERY FUNCTION ////////////////////
+////////////////////////////////// CASH ON DELIVERY FUNCTION ///////////////////////////////////////
         async function cashOnDelivery(paymentSelect, updatedBalance) {
           try {
             let selectedAddressId;
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-            const totalAmount = document.getElementById("totalAmount").textContent;
             const couponCode = document.getElementById("coupon-code").value;
-            // const discountedPrice = document.getElementById('discountedPrice')
             const newTotal = document.getElementById("newTotal").textContent;
             if (selectedAddress) {
               selectedAddressId = selectedAddress.dataset.addressid;
             }
+            if(!selectedAddressId){
+              Swal.fire({
+                icon: "warning",
+                title: "Billing Address error",
+                text: "Please select a billing address",
+              })
+              return;
+            }
 
             const response = await axios.post(`/user_checkout_post`, {
-              totalAmount: totalAmount,
               selectedAddressId: selectedAddressId,
               selectedPayment: paymentSelect,
               walletBalance: updatedBalance,
@@ -398,9 +413,20 @@
           }
         }
 
-        ///////////////// RAZOR PAY FUNCTION //////////////////////// 
+////////////////////////////////////// RAZOR PAY FUNCTION //////////////////////////////////////// 
         async function razorPay(paymentSelect) {
           try {
+            let selectedAddressId;
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+            if(!selectedAddressId){
+              Swal.fire({
+                icon: "warning",
+                title: "Billing Address error",
+                text: "Please select a billing address",
+              })
+              return;
+            }
+
             const razorpayApiKey = '<%= razorpayApiKey %>';
             const newTotal = Number(document.getElementById("newTotal").textContent);
 
@@ -429,7 +455,7 @@
 
         }
 
-        ////////////////////////// WALLET PAYMENT FUNCTION//////////////////////
+////////////////////////////////////////////// WALLET PAYMENT FUNCTION ////////////////////////////////////
         function toggleWallet() {
           const walletClicked = document.getElementById("wallet-clicked");
           const walletRadio = document.querySelector('input[name="paymentMethod"][value="wallet"]:checked');
@@ -461,15 +487,13 @@
           }
         }
 
-        /////////////////////////////// COUPON CHECKING FUNCTION ///////////////////////////
+///////////////////////////////////////////// COUPON CHECKING FUNCTION //////////////////////////////////////////
 
         async function couponCheck(event) {
           event.preventDefault();
           try {
             const enteredCoupon = document.getElementById('coupon-code').value;
-            const totalAmount = document.getElementById('totalAmount').innerText;
-
-            const response = await axios.post(`/user_coupon_check`, {enteredCoupon, totalAmount});
+            const response = await axios.post(`/user_coupon_check`, {enteredCoupon});
 
             if (response.status == 200) {
               document.getElementById('couponSuccess').textContent = response.data.success;
@@ -477,6 +501,7 @@
               document.getElementById('discountedPrice').textContent = response.data.discountAmount;
               document.getElementById('couponSuccess').textContent = response.data.success;
             }
+            
           } catch (err) {
             if (err.response.status == 400) {
               const errors = err.response.data.error;

@@ -1,14 +1,11 @@
-require('dotenv').config();
+require("dotenv").config();
 
-
+/////////////////////////////// ADMIN LOGIN PAGE RENDER /////////////////////////////
 exports.adminLoginGet = (req, res) => {
-    if(req.session.adminEmail){
-        res.redirect('/admin')
-    } else {
-        res.render("admin_login");
-    }
+  res.redirect("/admin");
 };
 
+//////////////////////////////// ADMIN LOGIN AUTH //////////////////////////////////
 exports.adminLoginPost = (req, res) => {
   if (
     req.body.email == process.env.ADMINEMAIL &&
@@ -23,5 +20,5 @@ exports.adminLoginPost = (req, res) => {
 
 exports.adminLogoutGet = (req, res) => {
   delete req.session.adminEmail;
-  res.redirect('/admin_login');
-}
+  res.redirect("/admin_login");
+};

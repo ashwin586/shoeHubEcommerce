@@ -1,29 +1,24 @@
 const cloudinary = require("../../config/cloudinary");
 const Category = require("../../model/category");
 
+///////////////////////////////////// TO RENDER THE CATEGORIES ////////////////////////////////////
 exports.admincategoryViewGet = async (req, res) => {
-  if (req.session.adminEmail) {
-    try {
-      const category = await Category.find();
-      res.render("admin_category_view", {
-        categories: category,
-      });
-    } catch (err) {
-      res.send(500).send("Error retriving Categories");
-    }
-  } else {
-    res.render("admin_login");
+  try {
+    const category = await Category.find();
+    res.render("admin_category_view", {
+      categories: category,
+    });
+  } catch (err) {
+    res.send(500).send("Error retriving Categories");
   }
 };
 
+////////////////////////////////////////////// TO RENDER THE CATEGORY ADD ///////////////////////////////////
 exports.adminCategoryAddGet = (req, res) => {
-  if (req.session.adminEmail) {
-    res.render("admin_category_add");
-  } else {
-    res.render("admin_login");
-  }
+  res.render("admin_category_add");
 };
 
+//////////////////////////////////////////////////// TO ADD NEW CATEGORY ///////////////////////////////////
 exports.adminCategoryAddPost = async (req, res) => {
   const valid = await validationCategory(req.body, req.file);
 
@@ -46,6 +41,7 @@ exports.adminCategoryAddPost = async (req, res) => {
     };
 
     const { name } = req.body;
+    
     const category = new Category({
       categoryName: name,
       imageUrl: image,
@@ -64,70 +60,92 @@ exports.adminCategoryAddPost = async (req, res) => {
   }
 };
 
+
+/////////////////////////////////////////////// TO RENDER THE CATEGORY EDIT ////////////////////////////////////
 exports.adminCategoryEditGet = async (req, res) => {
   try {
-    if (req.session.adminEmail) {
-      const id = req.params.category_id;
-      const category = await Category.findById(id);
-      res.render("admin_category_edit", { category: category });
-    } else {
-      res.render("admin_login");
-    }
+    const id = req.params.category_id;
+    const category = await Category.findById(id);
+    res.render("admin_category_edit", { category: category });
   } catch (err) {
     res.status(500).send("Error occured");
   }
 };
 
+
+///////////////////////////////////////////////// TO EDIT THE CATEGORY ////////////////////////////////////////////
 exports.adminCategoryEditPost = async (req, res) => {
   const valid = await validationCategoryName(req.body);
-
   try {
-    if (req.session.adminEmail) {
-      const id = req.params.category_id;
-      const { name } = req.body;
-      const file = req.file;
-      const existingCategory = await Category.findById(id);
+    const id = req.params.category_id;
+    const { name } = req.body;
+    const file = req.file;
+    const existingCategory = await Category.findById(id);
 
+    if (existingCategory) {
+      existingCategory.categoryName = name;
 
-      if (existingCategory) {
-        existingCategory.categoryName = name;
-
-        if (file) {
-          if (
-            existingCategory.imageUrl &&
+      if (file) {
+        if (existingCategory.imageUrl && existingCategory.imageUrl.public_id) {
+          await cloudinary.uploader.destroy(
             existingCategory.imageUrl.public_id
-          ) {
-            await cloudinary.uploader.destroy(
-              existingCategory.imageUrl.public_id
-            );
-          }
-          const result = await cloudinary.uploader.upload(file.path, {
-            folder: "Category",
-          });
-
-          existingCategory.imageUrl = {
-            public_id: result.public_id,
-            url: result.secure_url,
-          };
+          );
         }
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "Category",
+        });
 
-        if(valid.isValid){
-          await existingCategory.save();
-          res.status(200).end();
-        } else {
-          res.status(400).json({ error: valid.errors });
-        }
-
-      } else {
-        res.status(404).json({ error: "Category not found" });
+        existingCategory.imageUrl = {
+          public_id: result.public_id,
+          url: result.secure_url,
+        };
       }
-    } else {
-      res.status(401).send("Unauthorised");
+      // if (valid.isValid) {
+        await existingCategory.save();
+        res.status(200).end();
+      // } else {
+        // res.status(400).json({ error: valid.errors });
+      // }
+    // } else {
+      // res.status(404).json({ error: "Category not found" });
     }
   } catch (err) {
     res.status(400).json({ error: "Failed to update category" });
   }
 };
+
+//////////////////////////////////////////// TO UNLIST THE CATEGORY /////////////////////////////////////////////
+exports.adminCategoryUnList = async (req, res) => {
+  try{
+    const categoryId = req.query.categoryId
+    await Category.findOneAndUpdate(
+      { _id: categoryId },
+      { $set: { isAvailable: false } },
+      { new: true }
+    );
+    return res.status(200).end();
+  }catch(err){
+    console.log(err);
+  }
+}
+
+exports.adminCategoryList = async (req, res) => {
+  try{
+    const categoryId = req.query.categoryId;
+    await Category.findOneAndUpdate(
+      { _id: categoryId },
+      { $set: { isAvailable: true } },
+      { new: true }
+    );
+    return res.status(200).end();
+  }catch(err){
+    console.log(err);
+  }
+}
+
+
+
+
 
 async function validationCategory(data, file) {
   const errors = {};

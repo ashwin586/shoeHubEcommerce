@@ -132,8 +132,8 @@
           <!--Desktop Logo-->
           <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
             <a href="/">
-              <img src="/images/logo.svg" alt="Belle Multipurpose Html Template"
-                title="Belle Multipurpose Html Template" />
+              <img src="/images/logo/shoehubLogo.svg" height="50px" alt="Shoe Hub Logo"
+                title="Shoe Hub Logo" />
             </a>
           </div>
           <!--End Desktop Logo-->
@@ -151,9 +151,6 @@
                 <li class="lvl1 parent megamenu">
                   <a href="/">Home <i class="anm anm-angle-down-l"></i></a>
                 </li>
-                <!-- <li class="lvl1 parent megamenu">
-                    <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
-                  </li> -->
                 <li class="lvl1 parent megamenu">
                   <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
                   <ul class="dropdown">
@@ -169,10 +166,6 @@
 
                 <li class="lvl1 parent megamenu">
                   <a href="/user_product_view_get">Product <i class="anm anm-angle-down-l"></i></a>
-                </li>
-
-                <li class="lvl1">
-                  <a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a>
                 </li>
               </ul>
             </nav>
@@ -283,11 +276,11 @@
             <div class="widget-content">
               <ul class="sidebar_categories">
                 <%categories.forEach(category=> {%>
-                  <li class="level1" data-categoryid="<%=category._id%>">
-                    <a href="user_product_view_get?category=<%=category.categoryName%>&sort=<%=sort%>&keyword=<%=keyword%>&priceRange=<%= priceRange%>" class="site-nav categoryLink">
-                      <%=category.categoryName%>
-                    </a>
-                  </li>
+                    <li class="level1" data-categoryid="<%=category._id%>">
+                      <a href="user_product_view_get?category=<%=category.categoryName%>&sort=<%=sort%>&keyword=<%=keyword%>&priceRange=<%= priceRange%>" class="site-nav categoryLink">
+                        <%=category.categoryName%>
+                      </a>
+                    </li>
                   <%})%>
               </ul>
             </div>
@@ -317,92 +310,6 @@
               </div>
             </div>
           </div>
-          
-          <!--End Price Filter-->
-          <!--Size Swatches-->
-          <!-- <div class="sidebar_widget filterBox filter-widget size-swacthes">
-            <div class="widget-title">
-              <h2>Size</h2>
-            </div>
-            <div class="filter-color swacth-list">
-              <ul>
-                <li><span class="swacth-btn checked">XS</span></li>
-                <li><span class="swacth-btn">S</span></li>
-                <li><span class="swacth-btn">M</span></li>
-                <li><span class="swacth-btn">L</span></li>
-                <li><span class="swacth-btn">XL</span></li>
-                <li><span class="swacth-btn">XXL</span></li>
-                <li><span class="swacth-btn">XXXL</span></li>
-              </ul>
-            </div>
-          </div> -->
-          <!--End Size Swatches-->
-
-          <!--Popular Products-->
-          <!-- <div class="sidebar_widget">
-            <div class="widget-title">
-              <h2>Popular Products</h2>
-            </div>
-            <div class="widget-content">
-              <div class="list list-sidebar-products">
-                <div class="grid">
-                  <div class="grid__item">
-                    <div class="mini-list-item">
-                      <div class="mini-view_image">
-                        <a class="grid-view-item__link" href="#">
-                          <img class="grid-view-item__image" src="assets/images/product-images/mini-product-img.jpg"
-                            alt="" />
-                        </a>
-                      </div>
-                      <div class="details"> <a class="grid-view-item__title" href="#">Cena Skirt</a>
-                        <div class="grid-view-item__meta"><span class="product-price__price"><span
-                              class="money">$173.60</span></span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="grid__item">
-                    <div class="mini-list-item">
-                      <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img
-                            class="grid-view-item__image" src="assets/images/product-images/mini-product-img1.jpg"
-                            alt="" /></a> </div>
-                      <div class="details"> <a class="grid-view-item__title" href="#">Block Button Up</a>
-                        <div class="grid-view-item__meta"><span class="product-price__price"><span
-                              class="money">$378.00</span></span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="grid__item">
-                    <div class="mini-list-item">
-                      <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img
-                            class="grid-view-item__image" src="assets/images/product-images/mini-product-img2.jpg"
-                            alt="" /></a> </div>
-                      <div class="details"> <a class="grid-view-item__title" href="#">Balda Button Pant</a>
-                        <div class="grid-view-item__meta"><span class="product-price__price"><span
-                              class="money">$278.60</span></span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="grid__item">
-                    <div class="mini-list-item">
-                      <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img
-                            class="grid-view-item__image" src="assets/images/product-images/mini-product-img3.jpg"
-                            alt="" /></a> </div>
-                      <div class="details"> <a class="grid-view-item__title" href="#">Border Dress in Black/Silver</a>
-                        <div class="grid-view-item__meta"><span class="product-price__price"><span
-                              class="money">$228.00</span></span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <!--End Popular Products-->
-          <!--Banner-->
-          <!-- <div class="sidebar_widget static-banner">
-            <img src="assets/images/side-banner-2.jpg" alt="" />
-          </div> -->
-          <!--Banner-->
         </div>
       </div>
       <!--End Sidebar-->
@@ -416,15 +323,6 @@
           <div class="toolbar">
             <div class="filters-toolbar-wrapper">
               <div class="row">
-                <!-- <div
-                  class="col-4 col-md-4 col-lg-4 filters-toolbar__item collection-view-as d-flex justify-content-start align-items-center">
-                  <a href="shop-left-sidebar.html" title="Grid View" class="change-view change-view--active">
-                    <img src="assets/images/grid.jpg" alt="Grid" />
-                  </a>
-                  <a href="shop-listview.html" title="List View" class="change-view">
-                    <img src="assets/images/list.jpg" alt="List" />
-                  </a>
-                </div> -->
                 <div
                   class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
                   <span class="filters-toolbar__product-count">Showing: <%= totalCount%></span>
@@ -456,94 +354,76 @@
           <!--End Toolbar-->
           <div class="grid-products grid--view-items mainContent" id="productList">
             <div class="row">
-              
-              <%products.forEach(product=> {%>
-                <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
-                  <!-- start product image -->
-                  <div class="product-image">
-                    <!-- start product image -->
-                    <a href="/user_product_details_get/<%=product._id%>">
-
-                      <img class="primary blur-up lazyload" data-src="<%= product.imageUrl[0].url%>"
-                        src="<%= product.imageUrl[0].url%>" alt="image" title="product" />
-
-                      <img class="hover blur-up lazyload" data-src="" src="<%= product.imageUrl[0].url%>" alt="image"
-                        title="product" />
-
-                    </a>
-
-                    <div class="variants add">
-                      <button class="btn btn-addto-cart" name="add" type="button" id="addtocart"
-                        data-productid="<%= product._id%>">
-                        Add to Cart
-                      </button>
-                    </div>
-                    <div class="button-set">
-                      <% const wishlisted=wishlistedProduct.find((p)=> p._id.toString() === product._id.toString()) %>
-                        <% if (wishlisted) { %>
-                          <div class="wishlist-btn">
-                            <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
-                              onclick="addToWishlist(event, '<%=product._id%>')">
-                              <i class="fa-solid fa-heart" style="color: #e60505;"></i>
-                            </a>
-                          </div>
+              <% if(filteredProducts.length != 0) {%>
+                <%filteredProducts.forEach(product=> {%>
+                  <% if(product.isVisible){%>
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
+                      <!-- start product image -->
+                      <div class="product-image">
+                        <!-- start product image -->
+                        <a href="/user_product_details_get/<%=product._id%>">
+                          <img class="primary blur-up lazyload" data-src="<%= product.imageUrl[0].url%>"
+                            src="<%= product.imageUrl[0].url%>" alt="image" title="product"/>
+                          <img class="hover blur-up lazyload" data-src="" src="<%= product.imageUrl[0].url%>" alt="image"
+                            title="product" />
+                        </a>
+                        <div class="button-set">
+                          <% const wishlisted=wishlistedProduct.find((p)=> p._id.toString() === product._id.toString()) %>
+                            <% if (wishlisted) { %>
+                              <div class="wishlist-btn">
+                                <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
+                                  onclick="addToWishlist(event, '<%=product._id%>')">
+                                  <i class="fa-solid fa-heart" style="color: #e60505;"></i>
+                                </a>
+                              </div>
+                              <%} else {%>
+                                <div class="wishlist-btn">
+                                  <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
+                                    onclick="addToWishlist(event, '<%=product._id%>')">
+                                    <i class="icon anm anm-heart-l"></i>
+                                  </a>
+                                </div>
+                                <%}%>
+    
+                        </div>
+                        <!-- end product button -->
+                      </div>
+                      <!-- end product image -->
+                      <!--start product details -->
+                      <div class="product-details text-center">
+                        <!-- product name -->
+                        <div class="product-name">
+                          <a href="#">
+                            <%=product.name%>
+                          </a>
+                        </div>
+                        <!-- End product name -->
+                        <!-- product price -->
+                        <div class="product-price">
+                          <% if(product.offerPrice > 0){%>
+                            <span class="old-price">₹ <%= product.price%></span>
+                            <span class="price">₹ <%= product.offerPrice%></span>
                           <%} else {%>
-                            <div class="wishlist-btn">
-                              <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
-                                onclick="addToWishlist(event, '<%=product._id%>')">
-                                <i class="icon anm anm-heart-l"></i>
-                              </a>
-                            </div>
-                            <%}%>
-
+                            <span class="price">₹ <%=product.price%></span>
+                          <%}%>
+                        </div>
+                        <!-- End product price -->
+                      </div>
+                      <!-- End product details -->
                     </div>
-                    <!-- end product button -->
+                  <%}%>
+                  <%})%>
+              <%} else {%>
+                <div class="container mt-5">
+                  <div class="text-center">
+                    <h1 class="text-muted">
+                      No Data Found
+                    </h1>
                   </div>
-                  <!-- end product image -->
-
-                  <!--start product details -->
-                  <div class="product-details text-center">
-                    <!-- product name -->
-                    <div class="product-name">
-                      <a href="#">
-                        <%=product.name%>
-                      </a>
-                    </div>
-                    <!-- End product name -->
-                    <!-- product price -->
-                    <div class="product-price">
-                      <!-- <span class="old-price">$500.00</span> -->
-                      <span class="price">₹ <%= product.price%></span>
-                    </div>
-                    <!-- End product price -->
-
-                    <!-- <div class="product-review">
-                    <i class="font-13 fa fa-star"></i>
-                    <i class="font-13 fa fa-star"></i>
-                    <i class="font-13 fa fa-star"></i>
-                    <i class="font-13 fa fa-star-o"></i>
-                    <i class="font-13 fa fa-star-o"></i>
-                  </div> -->
-                    <!-- Variant -->
-                    <!-- <ul class="swatches">
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant1.jpg"
-                        alt="image" /></li>
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant2.jpg"
-                        alt="image" /></li>
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant3.jpg"
-                        alt="image" /></li>
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant4.jpg"
-                        alt="image" /></li>
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant5.jpg"
-                        alt="image" /></li>
-                    <li class="swatch medium rounded"><img src="assets/images/product-images/variant6.jpg"
-                        alt="image" /></li>
-                  </ul> -->
-                    <!-- End Variant -->
-                  </div>
-                  <!-- End product details -->
                 </div>
-                <%}) %>
+                
+              <%}%>
+              
             </div>
           </div>
         </div>
@@ -591,11 +471,6 @@
         }
       }
 
-      document.getElementById('addtocart').addEventListener('click', addToCart
-        // const productid = event.target.dataset.productid;
-        // addToCart(event, productid);
-      );
-
       async function addToCart(event, productid) {
         event.preventDefault();
         console.log(productid)
@@ -606,6 +481,7 @@
         }
       }
 
+////////////////////////////////////////// THE INTERCONNECTION ////////////////////////////////////
       async function fetchProducts(){
         const category = '<%= category%>';
         const sort = '<%= sort%>';

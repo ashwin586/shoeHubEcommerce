@@ -86,6 +86,10 @@ const orderSchema = new mongoose.Schema({
   amountAfterDiscount: {
     type: Number,
   },
+  couponName: {
+    type: String,
+    default: "NIL",
+  },
 });
 
 const order = mongoose.model("Order", orderSchema);

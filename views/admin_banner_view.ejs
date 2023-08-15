@@ -1,0 +1,167 @@
+<%-include('admin_header')-%> <%-include('admin_sidebar')-%>
+
+    <style>
+      table.table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      table.table th,
+      table.table td {
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+
+      table.table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      table.table td {
+        text-align: center;
+      }
+
+      table.table p {
+        margin: 0;
+      }
+    </style>
+
+    <div class="main-content">
+      <div class="container-fluid mt-4 pt-2 mb-6">
+        <!-- header -->
+        <div class="d-md-flex align-items-center">
+          <h3 class="mb-3 mb-md-0">Banners</h3>
+          <a href="/admin_banner_add_get" class="btn btn-purple hover-lift-light shadow-light-sm ms-auto me-3">
+            <span class="svg-icon svg-icon-sm text-white me-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                <title>ionicons-v5-a</title>
+                <line x1="256" y1="112" x2="256" y2="400" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+                <line x1="400" y1="256" x2="112" y2="256" style="
+                fill: none;
+                stroke: #000;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 32px;
+              " />
+              </svg>
+            </span>
+            Add Banner
+          </a>
+        </div>
+
+        <!-- report -->
+        <div id="companies" class="card mt-4">
+          <div class="table-responsive">
+            <table class="table table-sm card-table table-nowrap">
+              <thead>
+                <tr>
+                  <th class="col-2 text-center">Sl NO</th>
+                  <th class="col-3 text-center">
+                    <a class="text-dark" href="">Image</a>
+                  </th>
+                  <th class="col-4 text-center">
+                    <a class="text-dark" href="">Banner Name</a>
+                  </th>
+                  <th class="col-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                <% banners.forEach((banner, index)=> {%>
+                  <tr>
+                    <td>
+                      <%= index+1%>
+                    </td>
+                    <td>
+                      <img src="<%= banner.image.url %>" alt="Banner Image"
+                        style="max-width: 100%; max-height: 100%;" />
+                    </td>
+                    <td>
+                      <%= banner.title%>
+                    </td>
+                    <td>
+                      <span>
+                        <button class="btn btn-warning" onclick="editBanner('<%=banner._id%>')">Edit</button>
+                        <% if(banner.active==true) {%>
+                          <button class="btn btn-danger" onclick="alterBanner(event, '<%=banner._id%>', 'remove')"
+                            id="removeButton">Remove</button>
+                          <%} else {%>
+                            <button class="btn btn-success" onclick="alterBanner(event, '<%=banner._id%>', 'add')"
+                              id="addButton">Add</button>
+                            <%} %>
+                      </span>
+                    </td>
+                  </tr>
+                  <%})%>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%-include('admin_footer')-%>
+
+      <script src="/js/axios.min.js"></script>
+      <script>
+        ///////////////////////////////// BANNER EDIT GET ///////////////////////////////
+        async function editBanner(bannerId) {
+          try {
+            const response = await axios.get(`/admin_banner_edit_get/?bannerId=${bannerId}`);
+            document.querySelector(".main-content").innerHTML = response.data;
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        ///////////////////////////////// BANNER EDIT POST ///////////////////////////
+        async function editBannerPost(event) {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          try {
+            document.getElementById('loader').classList.remove('visually-hidden')
+            const response = await axios.post(`/admin_banner_edit_post`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              }
+            });
+
+            document.getElementById('loader').classList.add('visually-hidden');
+            if (response.status === 200) {
+              window.location.href = "/admin_banner_view_get";
+            }
+
+          } catch (err) {
+            document.getElementById('loader').classList.add('visually-hidden');
+            console.log(err);
+          }
+        }
+
+        /////////////////////////////// BANNER ALTER POST ///////////////////////////////
+        async function alterBanner(event, bannerId, actions) {
+          event.preventDefault();
+          try {
+            let action;
+            if (actions == "remove") {
+              action = "remove";
+            } else if (actions = "add") {
+              action = "add";
+            }
+
+            const response = await axios.post(`/admin_banner_/${action}`, { bannerId });
+            if (response.status == 200) {
+             window.location.reload();
+            }
+
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      </script>

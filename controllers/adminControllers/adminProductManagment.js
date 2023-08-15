@@ -4,28 +4,20 @@ const Category = require("../../model/category");
 
 exports.adminProductViewGet = async (req, res) => {
   try {
-    if (req.session.adminEmail) {
-      const currentPage = parseInt(req.query.page) || 1;
-
-      const productsCount = await Product.countDocuments();
-      const productsPerPage = 5;
-
-      const skip = (currentPage - 1) * productsPerPage;
-
-      const totalPages = Math.ceil(productsCount / productsPerPage);
-
-      const products = await Product.find()
-        .populate("category")
-        .skip(skip)
-        .limit(productsPerPage);
-      res.render("admin_product_view", {
-        product: products,
-        currentPage,
-        totalPages,
-      });
-    } else {
-      res.render("admin_login");
-    }
+    const currentPage = parseInt(req.query.page) || 1;
+    const productsCount = await Product.countDocuments();
+    const productsPerPage = 5;
+    const skip = (currentPage - 1) * productsPerPage;
+    const totalPages = Math.ceil(productsCount / productsPerPage);
+    const products = await Product.find()
+      .populate("category")
+      .skip(skip)
+      .limit(productsPerPage);
+    res.render("admin_product_view", {
+      product: products,
+      currentPage,
+      totalPages,
+    });
   } catch (err) {
     res.status(500).send(err);
   }
@@ -33,18 +25,13 @@ exports.adminProductViewGet = async (req, res) => {
 
 exports.adminProductAddGet = async (req, res) => {
   try {
-    if (req.session.adminEmail) {
-      const category = await Category.find();
-      res.render("admin_product_add", { category: category });
-    } else {
-      res.render("admin_login");
-    }
+    const category = await Category.find({isAvailable: true});
+    res.render("admin_product_add", { category: category });
   } catch (err) {}
 };
 
 exports.adminProductAddPost = async (req, res) => {
   const valid = validationProduct(req.body, req.files);
-
   try {
     if (!valid.isValid) {
       const error = new Error();
@@ -67,12 +54,19 @@ exports.adminProductAddPost = async (req, res) => {
       productImages.push(image);
     }
 
-    const { name, description, price, stock, category } = req.body;
+    const { name, description, price,  offerPrice, stock, category } = req.body;
+    let offerprice = 0;
+    if(offerPrice){
+      offerprice = offerPrice
+    } else {
+      offerprice = 0;
+    }
     const product = new Product({
       name: name,
       description: description,
       stock: stock,
       price: price,
+      offerPrice: offerprice,
       category: category,
       imageUrl: productImages,
     });
@@ -93,7 +87,7 @@ exports.adminProductEditGet = async (req, res) => {
   try {
     const id = req.params.product_id;
     const product = await Product.findById(id).populate("category");
-    const category = await Category.find();
+    const category = await Category.find({isAvailable: true});
     res.render("admin_product_edit", {
       product: product,
       category: category,
@@ -105,10 +99,8 @@ exports.adminProductEditGet = async (req, res) => {
 
 exports.adminProductEditPost = async (req, res) => {
   try {
-    if (req.session.adminEmail) {
     const id = req.params.product_id;
-    const { name, description, price, stock, category, selectedImages } =
-      req.body;
+    const { name, description, price, offerPrice,  stock, category, selectedImages } = req.body;
     const files = req.files;
     const existingProduct = await Product.findById(id);
 
@@ -126,6 +118,7 @@ exports.adminProductEditPost = async (req, res) => {
       existingProduct.name = name;
       existingProduct.description = description;
       existingProduct.price = price;
+      existingProduct.offerPrice = offerPrice;
       existingProduct.stock = stock;
       existingProduct.category = category;
       if (files) {
@@ -140,18 +133,14 @@ exports.adminProductEditPost = async (req, res) => {
           });
         }
       }
-      console.log(await existingProduct.save());
       
+      await existingProduct.save();
       res.status(200).end();
     } else {
       res.status(404).send("Product not found");
     }
-    } else {
-      res.render("admin_login");
-    }
   } catch (err) {
     console.log(err);
-    console.log(err.stack);
     res.status(500).send(err.toString());
   }
 };
@@ -181,12 +170,11 @@ exports.adminImageDeletePost = async (req, res) => {
   const id = req.params.id;
   try {
     const product = await Product.findOne({ "imageUrl._id": id });
-    // const deleteImage = product.imageUrl.find(
-    //   (image) => image._id.toString() === id
-    // );
     if (product) {
-      const imageIndex = product.imageUrl.findIndex(image => image._id.toString() === id);
-      if(imageIndex > -1){
+      const imageIndex = product.imageUrl.findIndex(
+        (image) => image._id.toString() === id
+      );
+      if (imageIndex > -1) {
         product.imageUrl.splice(imageIndex, 1);
         await product.save();
         return res.status(200).end();
@@ -196,6 +184,34 @@ exports.adminImageDeletePost = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.adminProductunlist = async (req, res) => {
+  const productId = req.query.productId;
+  try{
+    const product = await Product.findById(productId);
+    if(product){
+      product.isVisible = false;
+      await product.save();
+      return res.status(200).end();
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+
+exports.adminProductList = async (req, res) => {
+  const productId = req.query.productId;
+  try{
+    const product = await Product.findById(productId);
+    if(product){
+      product.isVisible = true;
+      await product.save();
+      return res.status(200).end();
+    }
+  }catch(err){
+    console.log(err)
+  }
+}
 
 function validationProduct(data, files) {
   const errors = {};

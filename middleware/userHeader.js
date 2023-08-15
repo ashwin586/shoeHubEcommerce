@@ -3,7 +3,7 @@ const User = require("../model/users");
 
 const userHeaderMiddleware = async (req, res, next) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find({isAvailable: true});
     const user = await User.findOne({ email: req.session.email });
     if (user) {
       const userCartItems = user.cart.length;

@@ -61,10 +61,12 @@
                                             <%}%>
                                                 <%})%>
                                 </td>
+
                                 <td class="align-middle text-left">
                                     <span>₹</span>
-                                    <%= orderItem.total%>
+                                    <%= orderItem.amountAfterDiscount%>
                                 </td>
+                                
                                 <% if(orderItem.status=="Pending" ){%>
                                     <td class=" align-middle text-left text-danger">
                                         <%= orderItem.status%>

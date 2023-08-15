@@ -29,25 +29,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% cart.forEach(cart=> {%>
-                    <tr class="cart__row border-bottom line1 cart-flex border-top" id="product_<%= cart.product.id%>">
+                  <%cart.forEach((cart, index)=> {%>
+                    <tr class="cart__row border-bottom line1 cart-flex border-top" id="product_<%=cart.product.id%>">
                       <td class="cart__image-wrapper cart-flex-item">
-                        <a href="#"><img class="cart__image" src="<%= cart.product.imageUrl[0].url%>"
+                        <a href="#"><img class="cart__image" src="<%=cart.product.imageUrl[0].url%>"
                             alt="Shoes-1 / Small" /></a>
                       </td>
                       <td class="cart__meta small--text-left cart-flex-item">
                         <div class="list-view-item__title">
                           <a href="#">
-                            <%= cart.product.name%>
+                            <%=cart.product.name%>
                           </a>
+                          <% const error = errorMessage[index] %>
+                          <% if(error) {%>
+                            <p class="text-danger"><%=error%></p>
+                          <%}%>
+                          <p id="stockError_<%=cart.product._id %>" class="text-danger"></p>
                         </div>
-
-                        <!-- <div class="cart__meta-text">
-                                                    Color: Light Blue<br>Size: Small<br>
-                                                </div> -->
                       </td>
                       <td class="cart__price-wrapper cart-flex-item">
-                        <span class="money">$<%= cart.product.price%></span>
+                        <% if(cart.product.offerPrice> 0) {%>
+                          <span class="money">$<%=cart.product.offerPrice%></span>
+                          <%} else { %>
+                            <span class="money">$<%=cart.product.price%></span>
+                          <%}%>
                       </td>
 
                       <td class="cart__update-wrapper cart-flex-item text-right">
@@ -64,11 +69,18 @@
                       </td>
                       <td class="text-right small--hide cart-price">
                         <% if (cart.product) { %>
-                          <div>
-                            <span id="money_<%= cart.product._id %>">₹ <%= cart.product.price * cart.quantity %>
-                            </span>
-                          </div>
-                          <% } %>
+                          <% if(cart.product.offerPrice > 0){%>
+                            <div>
+                              <span id="money_<%= cart.product._id %>">₹ <%= cart.product.offerPrice * cart.quantity %>
+                              </span>
+                            </div>
+                            <%} else {%>
+                              <div>
+                                <span id="money_<%= cart.product._id %>">₹ <%= cart.product.price * cart.quantity %>
+                                </span>
+                              </div>
+                              <%}%>
+                        <%}%>
                       </td>
                       <td class="text-center small--hide">
                         <a data-productid="<%= cart.product._id%>" class="btn btn--secondary cart__remove cartremove"
@@ -102,7 +114,7 @@
               <div class="row">
                 <span class="col-12 col-sm-6 cart__subtotal-title"><strong>Total</strong></span>
                 <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money"
-                    id="fullCartTotal">$<%=subTotal%></span></span>
+                    id="fullCartTotal">₹ <%=subTotal%></span></span>
               </div>
               <div class="cart__shipping"></div>
               <a href="/user_checkout_get">
@@ -126,7 +138,7 @@
 
     <script src="/js/axios.min.js"></script>
     <script>
-      /////////////////// FOR REMOVING ITEMS FROM CART ////////////////////
+//////////////////////////////////// FOR REMOVING ITEMS FROM CART ///////////////////////////////////
       document.querySelectorAll(".cartremove").forEach((button) => {
         button.addEventListener("click", function (event) {
           const productid = event.currentTarget.dataset.productid;
@@ -143,13 +155,14 @@
             if (cartProduct) {
               cartProduct.remove();
             }
+            window.location.reload();
           }
         } catch (err) {
           console.log(err);
         }
       }
 
-      /////////////////////// UPDATING THE FULL CART TOTAL /////////////////
+///////////////////////////////////////// UPDATING THE FULL CART TOTAL //////////////////////////////////
       document.addEventListener("DOMContentLoaded", function () {
         function updateFullCartTotal() {
           let fullCartTotal = 0;
@@ -175,12 +188,15 @@
             const newQuantity = btn.classList.contains("plus")
               ? currentQuantity + 0
               : currentQuantity - 0;
+            let successProductIds = [];
             try {
               const response = await axios.post("/user_cart_quantity_update", {
                 productId,
                 newQuantity,
               });
               if (response.status == 200) {
+                successProductIds.push(productId);
+                document.getElementById("stockError_" + productId).textContent = "";
                 document.getElementById("quantity_" + productId).value =
                   response.data.updatedQuantity;
                 const moneyElement = document.getElementById("money_" + productId);
@@ -189,6 +205,13 @@
                 }
               }
             } catch (err) {
+              if (err.response.status == 400) {
+                if (err.response.data.error) {
+                  let productId = err.response.data.productId;
+                  document.getElementById("stockError_" + productId).textContent =
+                    err.response.data.error;
+                }
+              }
               console.log(err);
             }
             updateFullCartTotal();

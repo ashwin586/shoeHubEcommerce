@@ -129,8 +129,8 @@
           <!--Desktop Logo-->
           <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
             <a href="/">
-              <img src="/images/logo.svg" alt="Belle Multipurpose Html Template"
-                title="Belle Multipurpose Html Template" />
+              <img src="/images/logo/shoehubLogo.svg" height="50px" alt="Shoe Hub Logo"
+                title="Show hub Logo" />
             </a>
           </div>
           <!--End Desktop Logo-->
@@ -148,9 +148,6 @@
                 <li class="lvl1 parent megamenu">
                   <a href="/">Home <i class="anm anm-angle-down-l"></i></a>
                 </li>
-                <!-- <li class="lvl1 parent megamenu">
-                    <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
-                  </li> -->
                 <li class="lvl1 parent megamenu">
                   <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
                   <ul class="dropdown">
@@ -166,10 +163,6 @@
 
                 <li class="lvl1 parent megamenu">
                   <a href="/user_product_view_get">Product <i class="anm anm-angle-down-l"></i></a>
-                </li>
-
-                <li class="lvl1">
-                  <a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a>
                 </li>
               </ul>
             </nav>
@@ -222,41 +215,25 @@
       </div>
       <ul id="MobileNav" class="mobile-nav">
         <li class="lvl1 parent megamenu">
-          <a href="index.html">Home <i class="anm anm-plus-l"></i></a>
+          <a href="/">Home <i class="anm anm-plus-l"></i></a>
         </li>
         <li class="lvl1 parent megamenu">
-          <a href="#">Shop <i class="anm anm-plus-l"></i></a>
-        </li>
+          <a href="#">Shop <i class="anm anm-angle-down-l"></i></a>
+          <ul class="dropdown">
+              <%categories.forEach(category=> {%>
+                  <li><a href="/user_category_product_view_get?category=<%= category._id%>">
+                          <%= category.categoryName%>
+                      </a></li>
+                  <%}) %>
+          </ul>
+      </li>
         <li class="lvl1 parent megamenu">
-          <a href="product-layout-1.html">Product <i class="anm anm-plus-l"></i></a>
-        </li>
-        <li class="lvl1 parent megamenu">
-          <a href="about-us.html">Pages <i class="anm anm-plus-l"></i></a>
-        </li>
-        <li class="lvl1 parent megamenu">
-          <a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
-        </li>
-        <li class="lvl1">
-          <a href="#"><b>Buy Now!</b></a>
+          <a href="/user_product_view_get">Product <i class="anm anm-plus-l"></i></a>
         </li>
       </ul>
     </div>
     <!--End Mobile Menu-->
   </div>
-  <script>
-    const anchorTag = document.querySelector('a[data-isBlocked]');
-    const isBlockedValue = anchorTag.getAttribute('data-isBlocked');
-    if (isBlockedValue === "true") {
-      Swal.fire({
-        icon: 'warning',
-        title: 'You are Blocked',
-        text: 'Your account has been blocked.',
-        showConfirmButton: true,
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33',
-      });
-    }
-  </script>
 </body>
 
 </html>

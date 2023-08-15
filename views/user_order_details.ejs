@@ -175,93 +175,130 @@
                                         <h5>Order Date</h5>
                                         <p>
                                             <%= orders.date.toLocaleDateString(undefined, { weekday: 'short' ,
-                                                month: 'short' , day: 'numeric', year: 'numeric' }) %>
+                                                month: 'short' , day: 'numeric' , year: 'numeric' }) %>
                                         </p>
                                     </div>
                                     <% if(orders.status !="Delivered" ){%>
                                         <div>
                                             <h5>Expected Delivery</h5>
                                             <p>
-                                                <%= orders.expectedDate.toLocaleDateString(undefined, { weekday: 'short' ,
-                                                month: 'short' , day: 'numeric', year: 'numeric' })%>
+                                                <%= orders.expectedDate.toLocaleDateString(undefined, { weekday: 'short'
+                                                    , month: 'short' , day: 'numeric' , year: 'numeric' })%>
                                             </p>
                                         </div>
-                                        <%}%>
-
-                                            <div class="product-desc-content mt-4">
-                                                <h6>Delivery & returns</h6>
+                                        <%} else if(orders.status=="Delivered" ){%>
+                                            <div>
+                                                <h5>Return End Date</h5>
                                                 <p>
-                                                    We hope you’ll love every purchase, but if you ever need to return
-                                                    an item
-                                                    you can do so
-                                                    within <strong>7 days </strong>of receipt. For further assistance,
-                                                    contact
-                                                    our customer support team.
-                                                    We're here to
-                                                    help!"</p>
-                                                <%if(orders.status=="Delivered" ) {%>
-                                                    <div>
-                                                        <% if(orders.returnEndDate < new Date()){%>
-                                                            <button class="btn-danger"
-                                                            onclick="toggleCancelBtn()">Return</button>
-                                                        <%} else {%>
-                                                            <button class="btn-danger"
-                                                            >Return</button>
-                                                        <%}%>
-                                                       
-                                                        <div id="cancelDropdown"
-                                                            style="display: none; margin-top: 10px;">
-                                                            <h5>Select the reason for returning:</h5>
-
-                                                            <p id="returnError" class="text-danger h5"></p>
-
-                                                            <input type="radio" name="cancelReason" value="Reason 1">
-                                                            Delivered wrong product<br>
-                                                            <input type="radio" name="cancelReason" value="Reason 2">
-                                                            Not the color I ordered<br>
-                                                            <input type="radio" name="cancelReason" value="Reason 3">
-                                                            Damaged Product<br>
-                                                            <input type="radio" name="cancelReason" value="Reason 5">
-                                                            Other<br>
-                                                            <button class="btn-primary" data-orderid="<%= orders._id%>"
-                                                                onclick="orderReturn(event)">Submit</button>
-                                                        </div>
-                                                    </div>
-                                                    <%} else if (orders.status=="Shipped" || orders.status=="Pending" )
-                                                        {%>
-                                                        <div>
-                                                            <button class="btn-danger"
-                                                                onclick="toggleCancelBtn()">Cancel
-                                                                orders</button>
-                                                            <div id="cancelDropdown"
-                                                                style="display: none; margin-top: 10px;">
-
-                                                                <h5>Select the reason for canceling:</h5>
-
-                                                                <p id="cancelError" class="text-danger h5"></p>
-
-                                                                <input type="radio" name="cancelReason"
-                                                                    value="Reason 1">
-                                                                Ordered wrong product<br>
-                                                                <input type="radio" name="cancelReason"
-                                                                    value="Reason 2">
-                                                                Changed my mind<br>
-                                                                <input type="radio" name="cancelReason"
-                                                                    value="Reason 3">
-                                                                Long delivery time<br>
-                                                                <input type="radio" name="cancelReason"
-                                                                    value="Reason 4">
-                                                                High shipping cost<br>
-                                                                <input type="radio" name="cancelReason"
-                                                                    value="Reason 5">
-                                                                Other<br>
-                                                                <button class="btn-primary"
-                                                                    data-orderid="<%= orders._id%>"
-                                                                    onclick="orderCancel(event)">Submit</button>
-                                                            </div>
-                                                        </div>
-                                                        <%}%>
+                                                    <%= orders.returnEndDate.toLocaleDateString(undefined,
+                                                        {weekday: 'short' , month: 'short' , day: 'numeric' ,
+                                                        year: 'numeric' })%>
+                                                </p>
                                             </div>
+                                            <%}%>
+
+                                                <% if(orders.status=="Delivered" ) {%>
+                                                    <div class="mt-4">
+                                                        <button class="btn btn-danger"
+                                                            onclick="invoiceDownload(event, '<%=orders._id%>')">Download
+                                                            Invoice</button>
+                                                    </div>
+                                                    <%}%>
+
+                                                        <div class="product-desc-content mt-4">
+                                                            <h6>Delivery & returns</h6>
+                                                            <p>
+                                                                We hope you’ll love every purchase, but if you ever need
+                                                                to
+                                                                return
+                                                                an item
+                                                                you can do so
+                                                                within <strong>7 days </strong>of receipt. For further
+                                                                assistance,
+                                                                contact
+                                                                our customer support team.
+                                                                We're here to
+                                                                help!"</p>
+                                                            <%if(orders.status=="Delivered" ) {%>
+                                                                <div>
+                                                                    <% if(orders.returnEndDate> new Date()){%>
+                                                                        <button class="btn-danger"
+                                                                            onclick="toggleCancelBtn()">Return</button>
+                                                                        <%} else {%>
+                                                                            <p class="alert alert-danger">
+                                                                                <strong>
+                                                                                    Your last date to return this
+                                                                                    product has been expired.
+                                                                                </strong>
+                                                                            </p>
+                                                                            <%}%>
+
+                                                                                <div id="cancelDropdown"
+                                                                                    style="display: none; margin-top: 10px;">
+                                                                                    <h5>Select the reason for returning:
+                                                                                    </h5>
+
+                                                                                    <p id="returnError"
+                                                                                        class="text-danger h5">
+                                                                                    </p>
+
+                                                                                    <input type="radio"
+                                                                                        name="cancelReason"
+                                                                                        value="Reason 1">
+                                                                                    Delivered wrong product<br>
+                                                                                    <input type="radio"
+                                                                                        name="cancelReason"
+                                                                                        value="Reason 2">
+                                                                                    Not the color I ordered<br>
+                                                                                    <input type="radio"
+                                                                                        name="cancelReason"
+                                                                                        value="Reason 3">
+                                                                                    Damaged Product<br>
+                                                                                    <input type="radio"
+                                                                                        name="cancelReason"
+                                                                                        value="Reason 5">
+                                                                                    Other<br>
+                                                                                    <button class="btn-primary"
+                                                                                        data-orderid="<%= orders._id%>"
+                                                                                        onclick="orderReturn(event)">Submit</button>
+                                                                                </div>
+                                                                </div>
+                                                                <%} else if (orders.status=="Shipped" ||
+                                                                    orders.status=="Pending" ) {%>
+                                                                    <div>
+                                                                        <button class="btn-danger"
+                                                                            onclick="toggleCancelBtn()">Cancel
+                                                                            orders</button>
+                                                                        <div id="cancelDropdown"
+                                                                            style="display: none; margin-top: 10px;">
+
+                                                                            <h5>Select the reason for canceling:</h5>
+
+                                                                            <p id="cancelError" class="text-danger h5">
+                                                                            </p>
+
+                                                                            <input type="radio" name="cancelReason"
+                                                                                value="Reason 1">
+                                                                            Ordered wrong product<br>
+                                                                            <input type="radio" name="cancelReason"
+                                                                                value="Reason 2">
+                                                                            Changed my mind<br>
+                                                                            <input type="radio" name="cancelReason"
+                                                                                value="Reason 3">
+                                                                            Long delivery time<br>
+                                                                            <input type="radio" name="cancelReason"
+                                                                                value="Reason 4">
+                                                                            High shipping cost<br>
+                                                                            <input type="radio" name="cancelReason"
+                                                                                value="Reason 5">
+                                                                            Other<br>
+                                                                            <button class="btn-primary"
+                                                                                data-orderid="<%=orders._id%>"
+                                                                                onclick="orderCancel(event)">Submit</button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <%}%>
+                                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -323,6 +360,7 @@
 
         <script src="/js/axios.min.js"></script>
         <script>
+            /////////////////////////////// FUNCTION TO TOGGLE THE CANCEL BUTTON ////////////////////////////////
             function toggleCancelBtn() {
                 const dropdown = document.getElementById("cancelDropdown");
                 if (dropdown.style.display == "none") {
@@ -332,6 +370,7 @@
                 }
             }
 
+            //////////////////////////////// FUNCTION TO CANCEL THE ORDER /////////////////////////////////////////
             async function orderCancel(event) {
                 const isChecked = document.querySelector('input[name="cancelReason"]:checked');
                 const orderId = event.currentTarget.dataset.orderid;
@@ -361,19 +400,57 @@
                 })
             }
 
-            async function orderReturn(event){
+            ///////////////////////////////////////////// FUNCTION TO RETURN THE ORDER //////////////////////////////////////
+            async function orderReturn(event) {
                 const isChecked = document.querySelector('input[name="cancelReason"]:checked');
                 const orderId = event.currentTarget.dataset.orderid;
-                try{
-                    const response = await axios.post('/user_order_returned', {isChecked, orderId})
-                    if(response.status == 200){
-                        window.location.href = '/user_order_history_get';
+                try {
+                    const response = await axios.post('/user_order_returned', { isChecked, orderId })
+                    if (response.status == 200) {
+                        await Swal.fire({
+                            icon: "success",
+                            title: "Order ",
+                            text: 'Order has been successfully Returned',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#30d636',
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/user_order_history_get';
+                            }
+                        })
                     }
-                }catch (err){
+                } catch (err) {
                     if (err.response && err.response.status == 400) {
                         document.getElementById('returnError').textContent = err.response.data.error;
                     }
                 }
-                
+            }
+
+            ///////////////////////////////////// FUNCTION TO DOWNLOAD INVOICE ////////////////////////////////////
+            async function invoiceDownload(event, orderId) {
+                event.preventDefault();
+
+                try {
+                    const response = await axios.post('/user_order_invoice', { orderId }, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        responseType: 'arraybuffer',
+                    })
+
+                    const blob = new Blob([response.data], { type: 'application/pdf' });
+
+                    const url = window.URL.createObjectURL(blob);
+
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", "order_report.pdf");
+
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                } catch (err) {
+                    console.log(err);
+                }
             }
         </script>

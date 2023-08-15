@@ -4,6 +4,7 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   imageUrl: [
     {
       public_id: {
@@ -16,6 +17,10 @@ const categorySchema = new mongoose.Schema({
       },
     },
   ],
+  isAvailable: {
+    type:Boolean,
+    default: true,
+  }
 });
 
 const category = mongoose.model("Category", categorySchema);

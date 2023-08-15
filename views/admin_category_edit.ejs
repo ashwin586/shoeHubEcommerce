@@ -28,7 +28,7 @@
                   class="btn btn-primary btn-lg hover-lift-light"
                   type="submit"
                 >
-                  Add Category
+                  Edit Category
                 </button>
                 <button class="btn btn-link">Cancel</button>
               </div>
@@ -56,16 +56,19 @@
       });
     const formData = new FormData(event.target);
     try {
+      document.getElementById('loader').classList.remove("visually-hidden")
       const response = await axios.post(`/admin_category_edit_post/${categoryId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      document.getElementById('loader').classList.add('visually-hidden');
       if (response.status === 200) {
         window.location.href = "/admin_category_view_get";
       }
     } catch (err) {
       if (err.response.status === 400) {
+        document.getElementById('loader').classList.add('visually-hidden');
         const errors = err.response.data.error;
         Object.keys(errors).forEach((key) => {
           document.getElementById(key).textContent = errors[key];

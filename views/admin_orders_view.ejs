@@ -1,5 +1,56 @@
 <%- include('admin_header')-%>
     <%- include('admin_sidebar')-%>
+        <style>
+            table.table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            table.table th,
+            table.table td {
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+
+            table.table th {
+                background-color: #f0f0f0;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            table.table td {
+                text-align: center;
+            }
+
+            table.table p {
+                margin: 0;
+            }
+
+            .tooltip1 {
+                position: relative;
+                display: inline-block;
+            }
+
+
+            .tooltip1 .tooltiptext1 {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+
+
+                position: absolute;
+                z-index: 1;
+            }
+
+            .tooltip1:hover .tooltiptext1 {
+                visibility: visible;
+            }
+        </style>
 
         <div class="main-content">
             <div class="container-fluid mt-4 pt-2 mb-6">
@@ -41,13 +92,18 @@
                                                 <% user.address.forEach(address=> {%>
                                                     <% if(address._id==order.address){%>
                                                         <p>
+                                                        <div class="tooltip1">
                                                             <%= address.name%> <br>
                                                                 <%= address.email%> <br>
-                                                                    <%= address.phoneNo%> <br>
-                                                                        <%= address.streetAddress %> <br>
-                                                                            <%= address.city%> <br>
-                                                                                <%= address.pinCode%> <br>
-                                                                                    <%= address.state%>
+                                                                    <span class="tooltiptext1">
+                                                                        <%= address.phoneNo%> <br>
+                                                                            <%= address.streetAddress %> <br>
+                                                                                <%= address.city%> <br>
+                                                                                    <%= address.pinCode%> <br>
+                                                                                        <%= address.state%>
+                                                                    </span>
+
+                                                        </div>
                                                         </p>
                                                         <%}%>
                                                             <%})%>
@@ -55,14 +111,15 @@
                                         </td>
                                         <td class="text-center">
                                             <span>₹</span>
-                                            <%=order.total%>
+                                            <%=order.amountAfterDiscount%>
                                         </td>
                                         <td class="text-center">
                                             <%= order.paymentMethod%>
                                         </td>
                                         <td class="text-center">
                                             <select class="status-select" data-order-id="<%= order._id %>">
-                                                <% const statuses=["Pending", "Shipped" , "Delivered", "Cancelled", "Returned" ]; %>
+                                                <% const statuses=["Pending", "Shipped" , "Delivered" , "Cancelled"
+                                                    , "Returned" ]; %>
                                                     <% statuses.forEach(status=> { %>
                                                         <option value="<%= status %>" <%=order.status===status
                                                             ? 'selected' : '' %>><%= status %>

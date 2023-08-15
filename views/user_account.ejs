@@ -13,11 +13,6 @@
                     <div class="row">
                         <aside class="col-md-4 col-lg-3">
                             <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-                                <!-- <li class="nav-item">
-                                <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
-                                    href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
-                                    aria-selected="true">Dashboard</a>
-                            </li> -->
                                 <li class="nav-item">
                                     <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
                                         role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
@@ -65,6 +60,12 @@
                                         <label>Email address </label>
                                         <input type="email" class="form-control" name="email" value="<%=user.email%>"
                                             disabled>
+
+                                        <%if(user && user.referralCode){%>
+                                             <label>Referral Code </label>
+                                        <input type="text" class="form-control" name="referral" value="<%=user.referralCode%>"
+                                            disabled>
+                                        <%}%>
 
                                         <label>Current password</label>
                                         <input type="password" class="form-control" name="currentPassword"
@@ -273,6 +274,7 @@
                 });
             });
 
+////////////////////////////////////////// ADDING ADDRESS FUNCTION /////////////////////////////////////////
             async function addAddress(event) {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -317,7 +319,8 @@
                     console.log(err);
                 }
             }
-            ////////////////// USER ADDRESS DELETE ////////////////////
+
+///////////////////////////////////////////// USER ADDRESS DELETE /////////////////////////////////////////
             document.querySelectorAll('.fa-trash').forEach(address => {
                 address.addEventListener('click', function (event) {
                     const addressId = event.currentTarget.dataset.addressid;
@@ -340,7 +343,7 @@
                 }
             })
 
-            ////////////////// USER ACCOUNT EDIT BUTTONS DISPLAY ///////////////////
+////////////////////////////////////// USER ACCOUNT EDIT BUTTONS DISPLAY /////////////////////////////////////
             document.addEventListener('DOMContentLoaded', function () {
                 const form = document.getElementById('profileForm');
                 const editButton = document.getElementById('editButton');

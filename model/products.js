@@ -16,6 +16,10 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 
+  offerPrice: {
+    type: Number,
+  },
+
   stock: {
     type: Number,
     required: true,
@@ -49,6 +53,11 @@ const productSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+
+  isVisible: {
+    type: Boolean,
+    default: true
+  }
   
 });
 

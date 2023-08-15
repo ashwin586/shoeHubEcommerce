@@ -88,20 +88,12 @@
 
             async function addToCart(event, productid) {
                 event.preventDefault();
-
                 try {
                     const response = await axios.post(`/user_add_to_cart_post/${productid}`);
                 } catch (err) {
                     console.log(err);
                 }
             }
-
-            // document.querySelectorAll('.wishlistremove').forEach(button => {
-            //     button.addEventListener('click', function (event) {
-            //         const productid = event.target.dataset.productid;
-            //         wishlistRemove(event, productid);
-            //     })
-            // })
 
             document.querySelectorAll('.wishlistremove').forEach(button => {
                 button.addEventListener('click', function (event) {

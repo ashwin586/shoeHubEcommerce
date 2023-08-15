@@ -18,15 +18,18 @@ exports.adminOrderStatusPost = async (req, res) => {
         const order = await Orders.findOne({_id: orderId});
         if(newStatus == "Delivered"){
           const deliveredDate = new Date();
-          const returnDate = new Date(deliveredDate.setDate() + 7);
+          const returnDate = new Date(deliveredDate);
+          returnDate.setDate(returnDate.getDate() + 7);
 
           order.deliveredDate = deliveredDate;
           order.returnEndDate = returnDate;
+          
         }
         order.status = newStatus;
         await order.save();
         
     }catch(err) {
+      console.log("this only")
         console.log(err);
     }
 }
