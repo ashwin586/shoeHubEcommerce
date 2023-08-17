@@ -232,7 +232,6 @@ exports.userCouponCheck = async (req, res) => {
 
       coupon.usedBy.forEach((user) => {
         if (user.toString() == userId) {
-          console.log("came");
           return res
             .status(402)
             .json({ error: "You have already applied this coupon" });

@@ -91,20 +91,26 @@ exports.userotpPost = async (req, res) => {
   const storedOtp = otpMap.get(data.email);
 
   if (req.body.otp == storedOtp) {
-    const referedUser = await User.findOne({referralCode: req.session.referral});
-    if(referedUser){
-      referedUser.wallet.balance += 250;
-      await referedUser.save();
-    }
-    
-    const newUser = await User.create(data);
-    if(referedUser){
-      newUser.wallet.balance += 100;
+    if(req.session.referral){
+      const referedUser = await User.findOne({referralCode: req.session.referral});
+      if(referedUser){
+        referedUser.wallet.balance += 250;
+        await referedUser.save();
+      }
+      
+      const newUser = await User.create(data);
+      if(referedUser){
+        newUser.wallet.balance += 100;
+        await newUser.save();
+      }
+      delete req.session.referral;
+    } else {
+      const newUser = await User.create(data);
       await newUser.save();
     }
 
     delete req.session.userData;
-    delete req.session.referral;
+    
 
     res.redirect("/login");
   } else {
