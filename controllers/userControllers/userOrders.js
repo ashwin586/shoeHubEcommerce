@@ -4,7 +4,6 @@ const Products = require("../../model/products");
 
 //////////////////////////// FOR DISPLAYING THE ORDER HISTORY ///////////////////////////
 exports.userOrderHistoryGet = async (req, res) => {
-  if (req.session.email) {
     try {
       const user = await Users.findOne({ email: req.session.email });
       if (req.session.email && !user.isBlocked) {
@@ -21,9 +20,6 @@ exports.userOrderHistoryGet = async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-  } else {
-    res.render("home", { loggedIn: false });
-  }
 };
 
 
@@ -32,7 +28,6 @@ exports.userOrderDetailsGet = async (req, res) => {
   try {
     const orderId = req.query.orderId;
     const order = await Orders.findById(orderId);
-    if (req.session.email) {
       const user = await Users.findOne({ email: req.session.email });
       const userAddress = user.address.find(
         (address) => address.id === order.address
@@ -44,7 +39,7 @@ exports.userOrderDetailsGet = async (req, res) => {
           address: userAddress,
         });
       }
-    }
+    
   } catch (err) {
     console.log(err);
   }

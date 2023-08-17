@@ -11,3 +11,12 @@ exports.userLogoutGet = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.userBlockLogoutGet = async (req, res) => {
+  try{
+    delete req.session.email;
+    res.redirect('/');
+  }catch(err){
+    console.log(err);
+  }
+}

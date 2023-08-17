@@ -17,10 +17,11 @@ const userOrderInvoice = require('../controllers/userControllers/userOrderInvoic
 const userHeaderMiddleware = require("../middleware/userHeader.js");
 const userAuth = require("../middleware/userAuth.js");
 
-const { isLogged, blockCheck } = userAuth;
+const { isLogged, blockCheck, isUser } = userAuth;
 
 ////////////////////////////////////////////// USER AUTH AND FUNCTIONS /////////////////////////////////////
-userRouter.get("/", blockCheck, userHeaderMiddleware, userHomeGet.home);
+userRouter.get("/", isLogged, userHeaderMiddleware, userHomeGet.home);
+userRouter.get('/logout', userLogout.userBlockLogoutGet);
 userRouter.get("/login", userHeaderMiddleware, userLogin.loginGet);
 userRouter.get("/register", userHeaderMiddleware, userRegister.signinGet);
 userRouter.get("/user_otp", userHeaderMiddleware, userRegister.userOtpGet);
@@ -38,39 +39,39 @@ userRouter.post("/resend_otp_post", userHeaderMiddleware, userForgotPassword.res
 
 
 ///////////////////////////////////////////// USER PRODUCT BASED FUNCTIONS ////////////////////////////////////
-userRouter.get("/user_product_view_get", userHeaderMiddleware, blockCheck, userProductView.userProductsViewGet );
-userRouter.get("/user_category_product_view_get", userHeaderMiddleware, userProductView.userCategoryProductViewGet );
-userRouter.get("/user_product_details_get/:product_id", userHeaderMiddleware, userProductView.userProductDetailsGet );
-userRouter.post("/user_filter_category_post/:categoryid", userHeaderMiddleware, userProductView.userFilterCategory );
+userRouter.get("/user_product_view_get", isLogged, userHeaderMiddleware, userProductView.userProductsViewGet );
+userRouter.get("/user_category_product_view_get", isLogged, userHeaderMiddleware, userProductView.userCategoryProductViewGet );
+userRouter.get("/user_product_details_get/:product_id", isLogged, userHeaderMiddleware, userProductView.userProductDetailsGet );
+userRouter.post("/user_filter_category_post/:categoryid", isLogged, userHeaderMiddleware, userProductView.userFilterCategory );
 
 
 ///////////////////////////////////////////// USER CART AND WISHLIST BASED FUNCTIONS //////////////////////////////
 userRouter.get("/user_wishlist_get", userHeaderMiddleware, isLogged, userWishlist.wishListGet );
 userRouter.get("/user_cart_get", userHeaderMiddleware, isLogged, userCart.userCartGet);
-userRouter.post("/user_wishlist_post/:product_id", userHeaderMiddleware, userWishlist.wishlistPost );
-userRouter.post("/user_wishlist_remove/:id", userHeaderMiddleware, userWishlist.wishlistRemove );
-userRouter.post("/user_add_to_cart_post/:productid/:quantity", userHeaderMiddleware, userCart.userCartPost );
-userRouter.post("/user_cart_remove/:id", userHeaderMiddleware, userCart.userCartRemovePost );
-userRouter.post("/user_cart_quantity_update", userHeaderMiddleware, userCart.userCartQuantityUpdate );
+userRouter.post("/user_wishlist_post/:product_id", isUser, userHeaderMiddleware, userWishlist.wishlistPost );
+userRouter.post("/user_wishlist_remove/:id", isUser, userHeaderMiddleware, userWishlist.wishlistRemove );
+userRouter.post("/user_add_to_cart_post/:productid/:quantity", isUser, blockCheck, userHeaderMiddleware, userCart.userCartPost );
+userRouter.post("/user_cart_remove/:id", isUser, userHeaderMiddleware, blockCheck, userCart.userCartRemovePost );
+userRouter.post("/user_cart_quantity_update", isUser, userHeaderMiddleware, blockCheck, userCart.userCartQuantityUpdate );
 
 
 //////////////////////////////////////////// USER PROFILE BASED FUNCTIONS /////////////////////////////////////////
 userRouter.get("/user_account_details_get", userHeaderMiddleware, isLogged, userAccountDetails.userAccountDeatailsGet );
-userRouter.post("/user_address_post", userHeaderMiddleware, userAddress.userAddressPost );
-userRouter.post("/user_address_remove_post", userHeaderMiddleware, userAddress.userAddressRemovePost );
-userRouter.post("/user_account_edit_post", userHeaderMiddleware, userAccountDetails.userAccountDetailsEditPost );
+userRouter.post("/user_address_post", isUser, userHeaderMiddleware, blockCheck, userAddress.userAddressPost );
+userRouter.post("/user_address_remove_post", isUser, userHeaderMiddleware, blockCheck, userAddress.userAddressRemovePost );
+userRouter.post("/user_account_edit_post", isUser, userHeaderMiddleware, blockCheck, userAccountDetails.userAccountDetailsEditPost );
 
 
 ///////////////////////////////////////////// USER ORDER BASED FUNCTIONS ///////////////////////////////////////////
-userRouter.get("/user_checkout_get", userHeaderMiddleware, userCheckout.userCheckOutGet );
+userRouter.get("/user_checkout_get", isLogged, userHeaderMiddleware, userCheckout.userCheckOutGet );
 userRouter.get("/user_order_success_get", userHeaderMiddleware, isLogged, userOrderSuccess.userOrderSuccessGet );
 userRouter.get("/user_order_history_get", userHeaderMiddleware, isLogged, userOrders.userOrderHistoryGet );
 userRouter.get("/user_order_details_get",userHeaderMiddleware, isLogged, userOrders.userOrderDetailsGet );
-userRouter.post("/user_checkout_post", userHeaderMiddleware, userCheckout.userCheckOutPost );
-userRouter.post("/user_order_cancel", userHeaderMiddleware, userOrders.userOrderCancel );
-userRouter.post("/user_order_returned", userHeaderMiddleware, userOrders.userOrderReturn );
-userRouter.post("/user_coupon_check", userHeaderMiddleware, userCheckout.userCouponCheck );
-userRouter.post('/user_order_invoice', userHeaderMiddleware, userOrderInvoice.userOrderInvoice);
+userRouter.post("/user_checkout_post", isUser, userHeaderMiddleware, blockCheck, userCheckout.userCheckOutPost );
+userRouter.post("/user_order_cancel", isUser, userHeaderMiddleware, blockCheck, userOrders.userOrderCancel );
+userRouter.post("/user_order_returned", isUser, userHeaderMiddleware, blockCheck, userOrders.userOrderReturn );
+userRouter.post("/user_coupon_check", isUser, userHeaderMiddleware, blockCheck, userCheckout.userCouponCheck );
+userRouter.post('/user_order_invoice', isUser, userHeaderMiddleware, blockCheck, userOrderInvoice.userOrderInvoice);
 
 
 module.exports = userRouter;

@@ -201,10 +201,12 @@
                         <td colspan="3" class="text-right">Discounted Applied</td>
                         <td id="discountedPrice">0</td>
                       </tr>
-                     <tr>
-                      <td colspan="3" class="text-right">New Total</td>
-                      <td id="newTotal"><%= totalPrice%></td>
-                     </tr>
+                      <tr>
+                        <td colspan="3" class="text-right">New Total</td>
+                        <td id="newTotal">
+                          <%= totalPrice%>
+                        </td>
+                      </tr>
                     </tfoot>
                 </table>
               </div>
@@ -337,19 +339,33 @@
               dynamicAddress.insertAdjacentHTML("beforeend", newAddressHTML);
             }
           } catch (err) {
+            if (err.response.status == 301) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'You are Blocked',
+                text: 'Your account has been blocked by admin.',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33',
+              }).then(result => {
+                if (result.isConfirmed) {
+                  window.location.href = `/logout`;
+                }
+              })
+            }
             console.log(err);
           }
         }
-////////////////////////////////// FUNCTION TO PLACE ORDER /////////////////////////////////
+        ////////////////////////////////// FUNCTION TO PLACE ORDER /////////////////////////////////
         function placeOrder() {
           const paymentSelect = document.querySelector('.paymentSelect:checked');
-          if(!paymentSelect){
+          if (!paymentSelect) {
             Swal.fire({
-                icon: "warning",
-                title: "Payment method error",
-                text: "Please select a payment method",
-              })
-              return;
+              icon: "warning",
+              title: "Payment method error",
+              text: "Please select a payment method",
+            })
+            return;
           }
           const selectedPayment = paymentSelect.value;
 
@@ -363,7 +379,7 @@
         }
 
 
-////////////////////////////////// CASH ON DELIVERY FUNCTION ///////////////////////////////////////
+        ////////////////////////////////// CASH ON DELIVERY FUNCTION ///////////////////////////////////////
         async function cashOnDelivery(paymentSelect, updatedBalance) {
           try {
             let selectedAddressId;
@@ -373,7 +389,7 @@
             if (selectedAddress) {
               selectedAddressId = selectedAddress.dataset.addressid;
             }
-            if(!selectedAddressId){
+            if (!selectedAddressId) {
               Swal.fire({
                 icon: "warning",
                 title: "Billing Address error",
@@ -386,7 +402,7 @@
               selectedAddressId: selectedAddressId,
               selectedPayment: paymentSelect,
               walletBalance: updatedBalance,
-              couponCode: couponCode, 
+              couponCode: couponCode,
               newTotal: newTotal,
             }, {
               headers: {
@@ -409,16 +425,31 @@
             }
 
           } catch (err) {
+            if (err.response.status == 301) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'You are Blocked',
+                text: 'Your account has been blocked by admin.',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33',
+              }).then(result => {
+                if (result.isConfirmed) {
+                  window.location.href = `/logout`;
+                }
+              })
+            }
             console.log(err);
           }
         }
 
-////////////////////////////////////// RAZOR PAY FUNCTION //////////////////////////////////////// 
+        ////////////////////////////////////// RAZOR PAY FUNCTION //////////////////////////////////////// 
         async function razorPay(paymentSelect) {
           try {
             let selectedAddressId;
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-            if(!selectedAddressId){
+            console.log(selectedAddress)
+            if (!selectedAddress) {
               Swal.fire({
                 icon: "warning",
                 title: "Billing Address error",
@@ -431,12 +462,12 @@
             const newTotal = Number(document.getElementById("newTotal").textContent);
 
             var options = {
-              "key": razorpayApiKey, 
+              "key": razorpayApiKey,
               "amount": newTotal * 100,
               "currency": "INR",
               "name": "ShoeHub",
               "description": "Order payment",
-              "order_id": undefined, 
+              "order_id": undefined,
               "handler": function (response) {
                 cashOnDelivery(paymentSelect)
               },
@@ -455,7 +486,7 @@
 
         }
 
-////////////////////////////////////////////// WALLET PAYMENT FUNCTION ////////////////////////////////////
+        ////////////////////////////////////////////// WALLET PAYMENT FUNCTION ////////////////////////////////////
         function toggleWallet() {
           const walletClicked = document.getElementById("wallet-clicked");
           const walletRadio = document.querySelector('input[name="paymentMethod"][value="wallet"]:checked');
@@ -471,9 +502,9 @@
           try {
             const walletClicked = document.getElementById("wallet-clicked");
             const walletBalance = Number(document.getElementById('walletBalance').innerText);
-            console.log(typeof(walletBalance));
+            
             const totalAmount = Number('<%= totalPrice%>');
-            console.log(typeof(totalAmount))
+           
             const insufficienWalletBalance = document.getElementById("insuficient-wallet-bal");
             if (walletBalance > totalAmount) {
               const updatedBalance = walletBalance - totalAmount;
@@ -487,13 +518,13 @@
           }
         }
 
-///////////////////////////////////////////// COUPON CHECKING FUNCTION //////////////////////////////////////////
+        ///////////////////////////////////////////// COUPON CHECKING FUNCTION //////////////////////////////////////////
 
         async function couponCheck(event) {
           event.preventDefault();
           try {
             const enteredCoupon = document.getElementById('coupon-code').value;
-            const response = await axios.post(`/user_coupon_check`, {enteredCoupon});
+            const response = await axios.post(`/user_coupon_check`, { enteredCoupon });
 
             if (response.status == 200) {
               document.getElementById('couponSuccess').textContent = response.data.success;
@@ -501,16 +532,16 @@
               document.getElementById('discountedPrice').textContent = response.data.discountAmount;
               document.getElementById('couponSuccess').textContent = response.data.success;
             }
-            
+
           } catch (err) {
             if (err.response.status == 400) {
               const errors = err.response.data.error;
               Object.keys(errors).forEach((key) => {
                 document.getElementById(key).textContent = errors[key];
               });
-            } else if(err.response.status == 401){
+            } else if (err.response.status == 401) {
               document.getElementById('couponError').textContent = err.response.data.error;
-            } else if(err.response.status == 402){
+            } else if (err.response.status == 402) {
               document.getElementById('couponError').textContent = err.response.data.error;
             } else {
               alert("Something went wrong");

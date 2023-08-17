@@ -24,7 +24,6 @@ exports.userAddressPost = async (req, res) => {
 
 exports.userAddressRemovePost = async (req, res) =>{
   const addressId = req.query.addressId;
-  if(req.session.email){
     try{
       const user = await User.findOne({email: req.session.email});
       if(user){
@@ -38,5 +37,4 @@ exports.userAddressRemovePost = async (req, res) =>{
     }catch(err){
       console.log(err);
     }
-  }
 }

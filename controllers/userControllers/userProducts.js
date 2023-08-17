@@ -78,7 +78,7 @@ exports.userProductsViewGet = async (req, res) => {
       (product) => product.category !== null
     );
 
-    if (req.session.email && !user.isBlocked) {
+    if (req.session.email) {
       res.render("user_product_view", {
         filteredProducts,
         loggedIn: true,

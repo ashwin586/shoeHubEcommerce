@@ -10,7 +10,6 @@ exports.userCheckOutGet = async (req, res) => {
     const user = await User.findOne({ email: req.session.email });
     const userCart = user.cart;
     const userWallet = user.wallet.balance;
-    if (req.session.email && !user.isBlocked) {
       const razorpayApiKey = process.env.KEY_ID;
       const cartItemsWithDetails = await Promise.all(
         userCart.map(async (cartItem) => {
@@ -37,7 +36,6 @@ exports.userCheckOutGet = async (req, res) => {
         razorpayApiKey,
         userWallet,
       });
-    }
   } catch (err) {
     console.log(err);
   }

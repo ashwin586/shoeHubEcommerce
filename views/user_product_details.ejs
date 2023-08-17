@@ -115,8 +115,8 @@
                                 <li><a href="/register">Create Account</a></li>
                                 <% } else if (locals.loggedIn) {%>
                                     <li>
-                                        <a href="/user_account_details_get"><i class="far fa-user"
-                                                style="color: #ffffff"></i>
+                                        <a data-isBlocked="<%= locals.isBlocked%>" href="/user_account_details_get"><i
+                                                class="far fa-user" style="color: #ffffff"></i>
                                             Account</a>
                                     </li>
                                     <li><a href="/user_wishlist_get">Wishlist</a></li>
@@ -357,7 +357,7 @@
                                     <% if(product.offerPrice> 0){%>
                                         <!-- <span class="visually-hidden">Regular price</span> -->
                                         <s id="ComparePrice-product-template"><span class="money">₹<%=product.price%>
-                                                    </span></s>
+                                            </span></s>
                                         <span
                                             class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
                                             <span id="ProductPrice-product-template"><span class="money">₹
@@ -368,7 +368,8 @@
                                         <%} else {%>
                                             <span
                                                 class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">₹
-                                                <%=product.price%></span>
+                                                <%=product.price%>
+                                            </span>
                                             <%}%>
                                 </p>
                                 <div class="product-single__description rte">
@@ -470,6 +471,7 @@
                 <!--MainContent-->
             </div>
             <!--End Body Content-->
+
 </body>
 
 <!--Footer-->
@@ -722,12 +724,6 @@
     }
 
     /////////////////////////////////////////// ADD TO CART /////////////////////////////////////////////
-    // document.getElementById('addtocart').addEventListener('click', function (event) {
-    //     const productid = event.target.dataset.productid;
-    //     const quantityInput = document.querySelector(`.productQuantity`);
-    //     const quantity = parseInt(quantityInput.value);
-    //     addToCart(event, productid, quantity);
-    // });
     async function addToCart(event, productid) {
         event.preventDefault();
         const quantity = document.querySelector('.product-form__input').value;
@@ -749,6 +745,21 @@
                 })
                 return;
             }
+
+            if (err.response.status == 301) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'You are Blocked',
+                    text: 'Your account has been blocked by admin.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33',
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/logout`;
+                    }
+                })
+            }
             console.log(err);
         }
     }
@@ -761,6 +772,23 @@
             showConfirmButton: false,
             timer: 1500
         })
+    }
+
+    const anchorTag = document.querySelector('a[data-isBlocked]');
+    const isBlockedValue = anchorTag.getAttribute('data-isBlocked');
+    if (isBlockedValue === "true") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'You are Blocked',
+            text: 'Your account has been blocked by admin.',
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33',
+        }).then(result => {
+            if (result.isConfirmed) {
+                window.location.href = `/logout`
+            }
+        });
     }
 </script>
 

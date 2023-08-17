@@ -40,11 +40,13 @@
                           <a href="#">
                             <%=cart.product.name%>
                           </a>
-                          <% const error = errorMessage[index] %>
-                          <% if(error) {%>
-                            <p class="text-danger"><%=error%></p>
-                          <%}%>
-                          <p id="stockError_<%=cart.product._id %>" class="text-danger"></p>
+                          <% const error=errorMessage[index] %>
+                            <% if(error) {%>
+                              <p class="text-danger">
+                                <%=error%>
+                              </p>
+                              <%}%>
+                                <p id="stockError_<%=cart.product._id %>" class="text-danger"></p>
                         </div>
                       </td>
                       <td class="cart__price-wrapper cart-flex-item">
@@ -52,7 +54,7 @@
                           <span class="money">$<%=cart.product.offerPrice%></span>
                           <%} else { %>
                             <span class="money">$<%=cart.product.price%></span>
-                          <%}%>
+                            <%}%>
                       </td>
 
                       <td class="cart__update-wrapper cart-flex-item text-right">
@@ -69,7 +71,7 @@
                       </td>
                       <td class="text-right small--hide cart-price">
                         <% if (cart.product) { %>
-                          <% if(cart.product.offerPrice > 0){%>
+                          <% if(cart.product.offerPrice> 0){%>
                             <div>
                               <span id="money_<%= cart.product._id %>">₹ <%= cart.product.offerPrice * cart.quantity %>
                               </span>
@@ -80,7 +82,7 @@
                                 </span>
                               </div>
                               <%}%>
-                        <%}%>
+                                <%}%>
                       </td>
                       <td class="text-center small--hide">
                         <a data-productid="<%= cart.product._id%>" class="btn btn--secondary cart__remove cartremove"
@@ -138,7 +140,7 @@
 
     <script src="/js/axios.min.js"></script>
     <script>
-//////////////////////////////////// FOR REMOVING ITEMS FROM CART ///////////////////////////////////
+      //////////////////////////////////// FOR REMOVING ITEMS FROM CART ///////////////////////////////////
       document.querySelectorAll(".cartremove").forEach((button) => {
         button.addEventListener("click", function (event) {
           const productid = event.currentTarget.dataset.productid;
@@ -158,11 +160,25 @@
             window.location.reload();
           }
         } catch (err) {
+          if (err.response.status == 301) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'You are Blocked',
+              text: 'Your account has been blocked by admin.',
+              showConfirmButton: true,
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#d33',
+            }).then(result => {
+              if (result.isConfirmed) {
+                window.location.href = `/logout`;
+              }
+            })
+          }
           console.log(err);
         }
       }
 
-///////////////////////////////////////// UPDATING THE FULL CART TOTAL //////////////////////////////////
+      ///////////////////////////////////////// UPDATING THE FULL CART TOTAL //////////////////////////////////
       document.addEventListener("DOMContentLoaded", function () {
         function updateFullCartTotal() {
           let fullCartTotal = 0;
@@ -211,6 +227,21 @@
                   document.getElementById("stockError_" + productId).textContent =
                     err.response.data.error;
                 }
+              }
+           
+              if (err.response.status == 301) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'You are Blocked',
+                  text: 'Your account has been blocked by admin.',
+                  showConfirmButton: true,
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#d33',
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    window.location.href = `/logout`
+                  }
+                })
               }
               console.log(err);
             }

@@ -2,8 +2,7 @@
     <div class="newsletter-section">
         <div class="container">
             <div class="row">
-                <div
-                    class="col-12 col-sm-12 col-md-12 col-lg-7 w-100 d-flex justify-content-start align-items-center">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-7 w-100 d-flex justify-content-start align-items-center">
                     <div class="display-table">
                         <div class="display-table-cell footer-newsletter">
                             <div class="section-header text-center">
@@ -11,8 +10,8 @@
                             </div>
                             <form action="#" method="post">
                                 <div class="input-group">
-                                    <input type="email" class="input-group__field newsletter__input"
-                                        name="EMAIL" value="" placeholder="Email address" required="">
+                                    <input type="email" class="input-group__field newsletter__input" name="EMAIL"
+                                        value="" placeholder="Email address" required="">
                                     <span class="input-group__btn">
                                         <button type="submit" class="btn newsletter__submit" name="commit"
                                             id="Subscribe"><span
@@ -139,6 +138,26 @@
 <!--Scoll Top-->
 <span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
 <!--End Scoll Top-->
+
+<script>
+    const anchorTag = document.querySelector('a[data-isBlocked]');
+    const isBlockedValue = anchorTag.getAttribute('data-isBlocked');
+    if (isBlockedValue === "true") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'You are Blocked',
+            text: 'Your account has been blocked by admin.',
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33',
+        }).then(result => {
+            if (result.isConfirmed) {
+                window.location.href = `/logout`
+            }
+        })
+    }
+</script>
+
 
 <!-- Including Jquery -->
 <script src="/js/vendor/jquery-3.3.1.min.js"></script>

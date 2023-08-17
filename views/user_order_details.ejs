@@ -383,6 +383,9 @@
                     if (err.response && err.response.status == 400) {
                         document.getElementById('cancelError').textContent = err.response.data.error;
                     }
+                    if (err.response.status == 300) {
+                        window.location.href = '/login';
+                    }
                 }
             }
 
@@ -423,6 +426,9 @@
                     if (err.response && err.response.status == 400) {
                         document.getElementById('returnError').textContent = err.response.data.error;
                     }
+                    if (err.response.status == 300) {
+                        window.location.href = '/login';
+                    }
                 }
             }
 
@@ -450,6 +456,9 @@
                     link.click();
                     link.parentNode.removeChild(link);
                 } catch (err) {
+                    if (err.response.status == 300) {
+                        window.location.href = '/login';
+                    }
                     console.log(err);
                 }
             }

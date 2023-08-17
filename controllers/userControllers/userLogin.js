@@ -1,7 +1,11 @@
 const User = require("../../model/users");
 
 exports.loginGet = (req, res) => {
-  res.render("login", { loggedIn: false, error: false });
+  try{
+    res.render("login", { loggedIn: false, error: false });
+  } catch(err){
+    console.log(err);
+  }
 };
 
 exports.loginPost = async (req, res) => {

@@ -4,12 +4,11 @@
     <!--Home slider-->
     <div class="slideshow slideshow-wrapper pb-section sliderFull">
       <div class="home-slideshow">
-        <% banners.forEach(banner =>{%>
+        <% banners.forEach(banner=>{%>
           <div class="slide slideshow--medium">
             <div class="blur-up lazyload bg-size">
-              <img class="blur-up lazyload bg-img" data-src="<%=banner.image.url%>"
-                src="<%=banner.image.url%>" alt="<%=banner.title%>"
-                title="<%=banner.title%>" />
+              <img class="blur-up lazyload bg-img" data-src="<%=banner.image.url%>" src="<%=banner.image.url%>"
+                alt="<%=banner.title%>" title="<%=banner.title%>" />
               <div class="slideshow__text-wrap slideshow__overlay classic middle">
                 <div class="slideshow__text-content classic left">
                   <div class="container">
@@ -17,349 +16,188 @@
                       <h2 class="h1 mega-title slideshow__title">
                         <%=banner.title%>
                       </h2>
-                      <span class="mega-subtitle slideshow__subtitle"><%=banner.subTitle%></span>
+                      <span class="mega-subtitle slideshow__subtitle">
+                        <%=banner.subTitle%>
+                      </span>
                       <span class="btn"><a href="/user_product_view_get" style="text-decoration: none; color: white;">
-                        <%=banner.label%>
-                      </a></span>
+                          <%=banner.label%>
+                        </a></span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        <%})%>
+          <%})%>
+      </div>
+    </div>
+  </div>
+  <!--End Home slider-->
+
+  <!--Shop the Latest & Greatest Shoes-->
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="section-header text-center">
+            <h2 class="h2">Shop the Latest &amp; Greatest Shoes</h2>
+            <p>Shop The most popular shoes from ShoeHub</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid-products grid-products-hover-btn">
+        <div class="productSlider-style1">
+          <% products.forEach(product=> {%>
+            <div class="col-12 item grid-view-item style2">
+              <div class="grid-view_image">
+                <!-- start product image -->
+                <a href="#" class="grid-view-item__link">
+                  <!-- image -->
+                  <img class="grid-view-item__image primary blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
+                    src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
+                  <!-- End image -->
+                  <!-- Hover image -->
+                  <img class="grid-view-item__image hover blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
+                    src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
+                  <!-- End hover image -->
+                </a>
+                <!-- end product image -->
+                <!--start product details -->
+                <div class="product-details hoverDetails text-center mobile">
+                  <!-- product name -->
+                  <div class="product-name">
+                    <a href="#">
+                      <%=product.name%>
+                    </a>
+                  </div>
+                  <!-- End product name -->
+                  <!-- product price -->
+                  <div class="product-price">
+                    <!-- <span class="old-price">$500.00</span> -->
+                    <span class="price">$<%=product.price%></span>
+                  </div>
+                  <!-- End product price -->
+
+                  <!-- product button -->
+                  <div class="button-set">
+                    <form class="variants add" action="#" onclick="window.location.href='cart.html'" method="post">
+                      <button class="btn cartIcon btn-addto-cart" type="button" tabindex="0">
+                        <i class="icon anm anm-bag-l"></i>
+                      </button>
+                    </form>
+                    <div class="wishlist-btn">
+                      <form action="/user_wishlist_post/<%= product._id%>" method="post">
+                        <a class="wishlist add-to-wishlist" href="">
+                          <i class="icon anm anm-heart-l"></i>
+                        </a>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- end product button -->
+                </div>
+                <!-- End product details -->
+              </div>
+            </div>
+            <%})%>
         </div>
       </div>
     </div>
-    <!--End Home slider-->
+  </div>
+  <!--End Shop the Latest & Greatest Shoes-->
 
-    <!--Shop the Latest & Greatest Shoes-->
-    <div class="section">
-      <div class="container">
+  <!--Logo Slider-->
+  <div class="section logo-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="logo-bar">
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo1.png" alt="" title="" />
+            </div>
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo2.png" alt="" title="" />
+            </div>
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo3.png" alt="" title="" />
+            </div>
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo4.png" alt="" title="" />
+            </div>
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo5.png" alt="" title="" />
+            </div>
+            <div class="logo-bar__item">
+              <img src="/images/logo/brandlogo6.png" alt="" title="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Logo Slider-->
+
+  <!--Trendy Collection-->
+  <div class="section custom-content-style1">
+    <div class="container">
+      <% if (categories && categories.length>0) { %>
         <div class="row">
           <div class="col-12 col-sm-12 col-md-12 col-lg-12">
             <div class="section-header text-center">
-              <h2 class="h2">Shop the Latest &amp; Greatest Shoes</h2>
-              <p>Shop The most popular shoes from ShoeHub</p>
+              <h2 class="h2">Trendy Collection</h2>
             </div>
           </div>
         </div>
-        <div class="grid-products grid-products-hover-btn">
-          <div class="productSlider-style1">
-            <% products.forEach(product=> {%>
-              <div class="col-12 item grid-view-item style2">
-                <div class="grid-view_image">
-                  <!-- start product image -->
-                  <a href="#" class="grid-view-item__link">
-                    <!-- image -->
-                    <img class="grid-view-item__image primary blur-up lazyload"
-                      data-src="<%=product.imageUrl[0].url%>"
-                      src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
-                    <!-- End image -->
-                    <!-- Hover image -->
-                    <img class="grid-view-item__image hover blur-up lazyload"
-                      data-src="<%=product.imageUrl[0].url%>"
-                      src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
-                    <!-- End hover image -->
-                  </a>
-                  <!-- end product image -->
-                  <!--start product details -->
-                  <div class="product-details hoverDetails text-center mobile">
-                    <!-- product name -->
-                    <div class="product-name">
-                      <a href="#"><%=product.name%></a>
-                    </div>
-                    <!-- End product name -->
-                    <!-- product price -->
-                    <div class="product-price">
-                      <!-- <span class="old-price">$500.00</span> -->
-                      <span class="price">$<%=product.price%></span>
-                    </div>
-                    <!-- End product price -->
-
-                    <!-- product button -->
-                    <div class="button-set">
-                      <form class="variants add" action="#" onclick="window.location.href='cart.html'" method="post">
-                        <button class="btn cartIcon btn-addto-cart" type="button" tabindex="0">
-                          <i class="icon anm anm-bag-l"></i>
-                        </button>
-                      </form>
-                      <div class="wishlist-btn">
-                        <form action="/user_wishlist_post/<%= product._id%>" method="post">
-                          <a class="wishlist add-to-wishlist" href="">
-                            <i class="icon anm anm-heart-l"></i>
-                          </a>
-                        </form>
+        <% const menCategory=categories.find(category=> category.categoryName ==
+          'Men'); %> <% if (menCategory) { %>
+            <div class="row align-items-center mb-4">
+              <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="custom-text text-center">
+                  <h4 class="h3">
+                    <a href="#">Warm layers, fall colors and trendy styles are here for
+                      fall!</a>
+                  </h4>
+                  <div class="rte-setting">
+                    <p>UP TO 60% OFF</p>
+                  </div>
+                  <a class="btn" href="#">Shop Men's</a>
+                </div>
+              </div>
+              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                <div class="custom-text text-center">
+                  <img class="blur-up lazyload" src="<%= menCategory.imageUrl[0].url%>" alt="Mens Category" title="" />
+                </div>
+              </div>
+            </div>
+            <% } %>
+              <% const womenCategory=categories.find(category=>
+                category.categoryName == 'Women'); %> <% if (womenCategory) { %>
+                  <div class="row align-items-center">
+                    <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                      <div class="custom-text text-center">
+                        <img class="blur-up lazyload" src="<%= womenCategory.imageUrl[0].url%>" alt="Women Category"
+                          title="" />
                       </div>
                     </div>
-                    <!-- end product button -->
-                  </div>
-                  <!-- End product details -->
-                </div>
-              </div>
-              <%})%>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--End Shop the Latest & Greatest Shoes-->
-
-    <!--Logo Slider-->
-    <div class="section logo-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="logo-bar">
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo1.png" alt="" title="" />
-              </div>
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo2.png" alt="" title="" />
-              </div>
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo3.png" alt="" title="" />
-              </div>
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo4.png" alt="" title="" />
-              </div>
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo5.png" alt="" title="" />
-              </div>
-              <div class="logo-bar__item">
-                <img src="/images/logo/brandlogo6.png" alt="" title="" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--End Logo Slider-->
-
-    <!--Trendy Collection-->
-    <div class="section custom-content-style1">
-      <div class="container">
-        <% if (categories && categories.length>0) { %>
-          <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="section-header text-center">
-                <h2 class="h2">Trendy Collection</h2>
-              </div>
-            </div>
-          </div>
-          <% const menCategory=categories.find(category=> category.categoryName ==
-            'Men'); %> <% if (menCategory) { %>
-              <div class="row align-items-center mb-4">
-                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
-                  <div class="custom-text text-center">
-                    <h4 class="h3">
-                      <a href="#">Warm layers, fall colors and trendy styles are here for
-                        fall!</a>
-                    </h4>
-                    <div class="rte-setting">
-                      <p>UP TO 60% OFF</p>
-                    </div>
-                    <a class="btn" href="#">Shop Men's</a>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                  <div class="custom-text text-center">
-                    <img class="blur-up lazyload" src="<%= menCategory.imageUrl[0].url%>" alt="Mens Category"
-                      title="" />
-                  </div>
-                </div>
-              </div>
-              <% } %>
-                <% const womenCategory=categories.find(category=>
-                  category.categoryName == 'Women'); %> <% if (womenCategory) { %>
-                    <div class="row align-items-center">
-                      <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                        <div class="custom-text text-center">
-                          <img class="blur-up lazyload" src="<%= womenCategory.imageUrl[0].url%>" alt="Women Category"
-                            title="" />
+                    <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                      <div class="custom-text text-center">
+                        <h4 class="h3">
+                          <a href="#">Stay warm and look cool in fall styles for Women!</a>
+                        </h4>
+                        <div class="rte-setting">
+                          <p>
+                            Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
+                            velit...
+                          </p>
                         </div>
-                      </div>
-                      <div class="col-12 col-sm-4 col-md-4 col-lg-4">
-                        <div class="custom-text text-center">
-                          <h4 class="h3">
-                            <a href="#">Stay warm and look cool in fall styles for Women!</a>
-                          </h4>
-                          <div class="rte-setting">
-                            <p>
-                              Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
-                              velit...
-                            </p>
-                          </div>
-                          <a class="btn" href="#">Shop Women's</a>
-                        </div>
+                        <a class="btn" href="#">Shop Women's</a>
                       </div>
                     </div>
+                  </div>
+                  <% } %>
                     <% } %>
-                      <% } %>
-      </div>
     </div>
-    <!--End Trendy Collection-->
-
-    <!--Three Column Products-->
-    <div class="section three-column-pro">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-4">
-            <div class="section-header text-left">
-              <h2 class="h2">Most Popular</h2>
-            </div>
-            <div class="grid">
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#">
-                      <img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product1.jpg" alt="" />
-                    </a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Camoscio Zip Heel</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$173.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product2.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Camoscio Heel</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$378.00</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product3.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Aqualina Sandal</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$278.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-4">
-            <div class="section-header text-left">
-              <h2 class="h2">Weekly Top Seller</h2>
-            </div>
-            <div class="grid">
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#">
-                      <img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product4.jpg" alt="" />
-                    </a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">White Sneaker</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$173.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product5.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Suede Loafers - Black/Blue</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$378.00</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product6.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Stiro Oxford in Slate</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$278.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-4">
-            <div class="section-header text-left">
-              <h2 class="h2">Flash Sale</h2>
-            </div>
-            <div class="grid">
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#">
-                      <img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product1.jpg" alt="" />
-                    </a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Camoscio Zip Heel</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$173.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product2.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Camoscio Heel</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$378.00</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="grid__item">
-                <div class="mini-list-item">
-                  <div class="mini-view_image">
-                    <a class="grid-view-item__link" href="#"><img class="grid-view-item__image blur-up lazyload"
-                        src="/images/product-images/home7-product3.jpg" alt="" /></a>
-                  </div>
-                  <div class="details">
-                    <a class="grid-view-item__title" href="#">Aqualina Sandal</a>
-                    <div class="grid-view-item__meta">
-                      <span class="product-price__price"><span class="money">$278.60</span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--End Three Column Products-->
+  </div>
+  <!--End Trendy Collection-->
   </div>
   <!--End Body Content-->
 

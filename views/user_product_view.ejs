@@ -248,10 +248,14 @@
       Swal.fire({
         icon: 'warning',
         title: 'You are Blocked',
-        text: 'Your account has been blocked.',
+        text: 'Your account has been blocked by admin.',
         showConfirmButton: true,
         confirmButtonText: 'OK',
         confirmButtonColor: '#d33',
+      }).then(result =>{
+        if (result.isConfirmed) {
+                window.location.href = `/logout`
+            }
       });
     }
   </script>

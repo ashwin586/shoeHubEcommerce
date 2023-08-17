@@ -62,36 +62,39 @@
                                             disabled>
 
                                         <%if(user && user.referralCode){%>
-                                             <label>Referral Code </label>
-                                        <input type="text" class="form-control" name="referral" value="<%=user.referralCode%>"
-                                            disabled>
-                                        <%}%>
+                                            <label>Referral Code </label>
+                                            <input type="text" class="form-control" name="referral"
+                                                value="<%=user.referralCode%>" disabled>
+                                            <%}%>
 
-                                        <label>Current password</label>
-                                        <input type="password" class="form-control" name="currentPassword"
-                                            value="<%=user.password%>" disabled>
+                                                <label>Current password</label>
+                                                <input type="password" class="form-control" name="currentPassword"
+                                                    value="<%=user.password%>" disabled>
 
-                                        <div class="d-none" id="newPassword">
-                                            <label>New password</label>
-                                            <input type="password" class="form-control" name="newPassword">
+                                                <div class="d-none" id="newPassword">
+                                                    <label>New password</label>
+                                                    <input type="password" class="form-control" name="newPassword">
 
-                                            <label>Confirm new password</label>
-                                            <input type="password" class="form-control mb-2" name="confirmNewPassword">
-                                        </div>
-                                        <button type="submit" class="btn btn-outline-primary-2 mt-2" id="editButton">
-                                            <span>EDIT</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
+                                                    <label>Confirm new password</label>
+                                                    <input type="password" class="form-control mb-2"
+                                                        name="confirmNewPassword">
+                                                </div>
+                                                <button type="submit" class="btn btn-outline-primary-2 mt-2"
+                                                    id="editButton">
+                                                    <span>EDIT</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
 
-                                        <button type="button" class="btn btn-outline-primary-2 d-none" id="saveButton">
-                                            <span>SAVE</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-primary-2 d-none"
-                                            id="cancelButton">
-                                            <span>CANCEL</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
+                                                <button type="button" class="btn btn-outline-primary-2 d-none"
+                                                    id="saveButton">
+                                                    <span>SAVE</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary-2 d-none"
+                                                    id="cancelButton">
+                                                    <span>CANCEL</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
                                     </form>
                                 </div>
 
@@ -274,7 +277,7 @@
                 });
             });
 
-////////////////////////////////////////// ADDING ADDRESS FUNCTION /////////////////////////////////////////
+            ////////////////////////////////////////// ADDING ADDRESS FUNCTION /////////////////////////////////////////
             async function addAddress(event) {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -316,11 +319,14 @@
                         dynamicAddress.insertAdjacentHTML("beforeend", newAddressHTML);
                     }
                 } catch (err) {
+                    if (err.response.status == 300) {
+                        window.location.href = '/login';
+                    }
                     console.log(err);
                 }
             }
 
-///////////////////////////////////////////// USER ADDRESS DELETE /////////////////////////////////////////
+            ///////////////////////////////////////////// USER ADDRESS DELETE /////////////////////////////////////////
             document.querySelectorAll('.fa-trash').forEach(address => {
                 address.addEventListener('click', function (event) {
                     const addressId = event.currentTarget.dataset.addressid;
@@ -338,12 +344,15 @@
                             }
                         }
                     } catch (err) {
+                        if (err.response.status == 300) {
+                            window.location.href = '/login';
+                        }
                         console.log(err);
                     }
                 }
             })
 
-////////////////////////////////////// USER ACCOUNT EDIT BUTTONS DISPLAY /////////////////////////////////////
+            ////////////////////////////////////// USER ACCOUNT EDIT BUTTONS DISPLAY /////////////////////////////////////
             document.addEventListener('DOMContentLoaded', function () {
                 const form = document.getElementById('profileForm');
                 const editButton = document.getElementById('editButton');
@@ -385,18 +394,25 @@
                     formData.forEach((value, key) => {
                         formDataObject[key] = value;
                     });
-
-                    const response = await axios.post('/user_account_edit_post', formDataObject)
-                    if (response.status == 200) {
-                        const inputs = form.querySelectorAll("input");
-                        inputs.forEach((input) => {
-                            input.setAttribute("disabled", "disabled");
-                        });
-                        editButton.classList.remove("d-none");
-                        saveButton.classList.add("d-none");
-                        cancelButton.classList.add("d-none");
-                        newPassword.classList.add('d-none');
+                    try {
+                        const response = await axios.post('/user_account_edit_post', formDataObject)
+                        if (response.status == 200) {
+                            const inputs = form.querySelectorAll("input");
+                            inputs.forEach((input) => {
+                                input.setAttribute("disabled", "disabled");
+                            });
+                            editButton.classList.remove("d-none");
+                            saveButton.classList.add("d-none");
+                            cancelButton.classList.add("d-none");
+                            newPassword.classList.add('d-none');
+                        }
+                    } catch (err) {
+                        if (err.response.status == 300) {
+                            window.location.href = '/login';
+                        }
+                        console.log(err);
                     }
+
                 })
             })
         </script>
