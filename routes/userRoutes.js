@@ -39,10 +39,10 @@ userRouter.post("/resend_otp_post", userHeaderMiddleware, userForgotPassword.res
 
 
 ///////////////////////////////////////////// USER PRODUCT BASED FUNCTIONS ////////////////////////////////////
-userRouter.get("/user_product_view_get", isLogged, userHeaderMiddleware, userProductView.userProductsViewGet );
-userRouter.get("/user_category_product_view_get", isLogged, userHeaderMiddleware, userProductView.userCategoryProductViewGet );
-userRouter.get("/user_product_details_get/:product_id", isLogged, userHeaderMiddleware, userProductView.userProductDetailsGet );
-userRouter.post("/user_filter_category_post/:categoryid", isLogged, userHeaderMiddleware, userProductView.userFilterCategory );
+userRouter.get("/user_product_view_get", userHeaderMiddleware, userProductView.userProductsViewGet );
+userRouter.get("/user_category_product_view_get", userHeaderMiddleware, userProductView.userCategoryProductViewGet );
+userRouter.get("/user_product_details_get/:product_id", userHeaderMiddleware, userProductView.userProductDetailsGet );
+userRouter.post("/user_filter_category_post/:categoryid", userHeaderMiddleware, userProductView.userFilterCategory );
 
 
 ///////////////////////////////////////////// USER CART AND WISHLIST BASED FUNCTIONS //////////////////////////////

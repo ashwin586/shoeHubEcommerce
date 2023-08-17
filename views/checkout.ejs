@@ -339,6 +339,11 @@
               dynamicAddress.insertAdjacentHTML("beforeend", newAddressHTML);
             }
           } catch (err) {
+///////////////////////////////// FOR REDIRECTING TO LOGIN IF USER DIDN'T LOGIN //////////////////////////////////
+            if(err.response.status == 300){
+                window.location.href = '/login';
+            }
+
             if (err.response.status == 301) {
               Swal.fire({
                 icon: 'warning',
@@ -356,7 +361,7 @@
             console.log(err);
           }
         }
-        ////////////////////////////////// FUNCTION TO PLACE ORDER /////////////////////////////////
+////////////////////////////////////// FUNCTION TO PLACE ORDER ////////////////////////////////////////
         function placeOrder() {
           const paymentSelect = document.querySelector('.paymentSelect:checked');
           if (!paymentSelect) {
@@ -379,7 +384,7 @@
         }
 
 
-        ////////////////////////////////// CASH ON DELIVERY FUNCTION ///////////////////////////////////////
+/////////////////////////////////////// CASH ON DELIVERY FUNCTION ///////////////////////////////////////////
         async function cashOnDelivery(paymentSelect, updatedBalance) {
           try {
             let selectedAddressId;
@@ -425,6 +430,12 @@
             }
 
           } catch (err) {
+
+/////////////////////////////////// FOR REDIRECTING TO LOGIN IF USER DIDN'T LOGIN //////////////////////////////////
+            if(err.response.status == 300){
+                window.location.href = '/login';
+            }
+
             if (err.response.status == 301) {
               Swal.fire({
                 icon: 'warning',
@@ -443,7 +454,7 @@
           }
         }
 
-        ////////////////////////////////////// RAZOR PAY FUNCTION //////////////////////////////////////// 
+//////////////////////////////////////// RAZOR PAY FUNCTION /////////////////////////////////////////// 
         async function razorPay(paymentSelect) {
           try {
             let selectedAddressId;
@@ -486,7 +497,7 @@
 
         }
 
-        ////////////////////////////////////////////// WALLET PAYMENT FUNCTION ////////////////////////////////////
+////////////////////////////////////////////// WALLET PAYMENT FUNCTION ////////////////////////////////////
         function toggleWallet() {
           const walletClicked = document.getElementById("wallet-clicked");
           const walletRadio = document.querySelector('input[name="paymentMethod"][value="wallet"]:checked');
@@ -518,7 +529,7 @@
           }
         }
 
-        ///////////////////////////////////////////// COUPON CHECKING FUNCTION //////////////////////////////////////////
+///////////////////////////////////////////// COUPON CHECKING FUNCTION //////////////////////////////////////////
 
         async function couponCheck(event) {
           event.preventDefault();
