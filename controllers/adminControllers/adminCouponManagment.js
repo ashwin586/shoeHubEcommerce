@@ -21,7 +21,7 @@ exports.admincouponAddPost = async (req, res) => {
 
     const { code, discount, minDiscount, maxdiscount, expiryDate } = req.body;
 
-    const expiryDateObj = new Date(expiryDate); // Convert expiryDate to Date object
+    const expiryDateObj = new Date(expiryDate);
     const currentDate = new Date();
 
     let status;
@@ -68,11 +68,11 @@ function couponValidation(data) {
     errors.couponMinDiscountError = "The Minimum price should only be numbers";
   }
 
-  // if (!maxDiscount) {
-  //   errors.couponMaxDiscountError = "Please provide an Maximum amount";
-  // } else if (!regex.test(maxDiscount)) {
-  //   errors.couponMaxDiscountError = "The Maximum price should only be numbers";
-  // }
+  if (!maxDiscount) {
+    errors.couponMaxDiscountError = "Please provide an Maximum amount";
+  } else if (!regex.test(maxDiscount)) {
+    errors.couponMaxDiscountError = "The Maximum price should only be numbers";
+  }
 
   if (!expiryDate) {
     errors.couponDateError = "Please provide a Date for expiry";

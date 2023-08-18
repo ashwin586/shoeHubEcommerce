@@ -314,9 +314,9 @@
                                     <table class="table table-summary">
                                         <tr>
                                             <td class="order-one">Grand Total :</td>
-                                            <td class="order-two" style="text-align: end;">₹ <%= orders.total%>
+                                            <td class="order-two" style="text-align: end;">₹ <%= orders.amountAfterDiscount%>
                                             </td>
-                                            <input type="hidden" id="grandTotal" value="<%= orders.total%>">
+                                            <input type="hidden" id="grandTotal" value="<%= orders.amountAfterDiscount%>">
                                         </tr>
                                         <tr>
                                             <td class="order-one">Payment method :</td>

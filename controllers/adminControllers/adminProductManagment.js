@@ -215,12 +215,10 @@ exports.adminProductList = async (req, res) => {
 
 function validationProduct(data, files) {
   const errors = {};
-  if (!files) {
-    errors.productImageError = "Please provide an image";
-    errors.productImageError2 = "Please provide an image";
-    errors.productImageError3 = "Please provide an image";
-    errors.productImageError4 = "Please provide an image";
+  if (files.length !== 4) {
+    errors.productImageError = "Minimum 4 image is needed";
   }
+  
   const { name, description, price, stock, category } = data;
   const nameRegex = /^[A-Za-z\s]+$/;
   const priceRegex = /^\d+(\.\d+)?$/;
