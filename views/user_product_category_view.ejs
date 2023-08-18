@@ -31,12 +31,11 @@
             <div class="widget-title">
               <h2>Price</h2>
             </div>
-            <form action="#" method="post" class="price-filter">
-              <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-              </div>
+            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-min="10" data-max="2000">
+              <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
+              <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+              <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+            </div>
               <div class="row">
                 <div class="col-6">
                   <p class="no-margin"><input id="amount" type="text" /></p>
@@ -45,27 +44,8 @@
                   <button class="btn btn-secondary btn--small">filter</button>
                 </div>
               </div>
-            </form>
           </div>
           <!--End Price Filter-->
-          <!--Size Swatches-->
-          <div class="sidebar_widget filterBox filter-widget size-swacthes">
-            <div class="widget-title">
-              <h2>Size</h2>
-            </div>
-            <div class="filter-color swacth-list">
-              <ul>
-                <li><span class="swacth-btn checked">XS</span></li>
-                <li><span class="swacth-btn">S</span></li>
-                <li><span class="swacth-btn">M</span></li>
-                <li><span class="swacth-btn">L</span></li>
-                <li><span class="swacth-btn">XL</span></li>
-                <li><span class="swacth-btn">XXL</span></li>
-                <li><span class="swacth-btn">XXXL</span></li>
-              </ul>
-            </div>
-          </div>
-          <!--End Size Swatches-->
         </div>
       </div>
       <!--End Sidebar-->
@@ -100,45 +80,57 @@
           <div class="grid-products grid--view-items">
             <div class="row">
               <% products.forEach(product=> {%>
-                <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
-                  <!-- start product image -->
-                  <div class="product-image">
+                <% if(product.isVisible) {%>
+                  <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
                     <!-- start product image -->
-                    <a href="#">
-                      <img class="primary blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
-                        src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
-
-                      <img class="hover blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
-                        src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
-                    </a>
-
-                    <form class="variants add" action="#" onclick="window.location.href='cart.html'" method="post">
-                      <button class="btn btn-addto-cart" type="button">
-                        Add to Cart
-                      </button>
-                    </form>
-                    <div class="button-set">
-                      <div class="wishlist-btn">
-                        <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist">
-                          <i class="icon anm anm-heart-l"></i>
+                    <div class="product-image">
+                      <!-- start product image -->
+                      <a href="/user_product_details_get/<%=product._id%>">
+                        <img class="primary blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
+                          src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
+  
+                        <img class="hover blur-up lazyload" data-src="<%=product.imageUrl[0].url%>"
+                          src="<%=product.imageUrl[0].url%>" alt="image" title="product" />
+                      </a>
+  
+                      <div class="button-set">
+                        <% const wishlisted=wishlistedProduct.find((p)=> p._id.toString() === product._id.toString()) %>
+                          <% if (wishlisted) { %>
+                            <div class="wishlist-btn">
+                              <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
+                                onclick="addToWishlist(event, '<%=product._id%>')">
+                                <i class="fa-solid fa-heart" style="color: #e60505;"></i>
+                              </a>
+                            </div>
+                            <%} else {%>
+                              <div class="wishlist-btn">
+                                <a style="cursor: pointer" class="wishlist add-to-wishlist" id="wishlist"
+                                  onclick="addToWishlist(event, '<%=product._id%>')">
+                                  <i class="icon anm anm-heart-l"></i>
+                                </a>
+                              </div>
+                              <%}%>
+                      </div>
+                    </div>
+  
+                    <div class="product-details text-center">
+                      <div class="product-name">
+                        <a href="#">
+                          <%=product.name%>
                         </a>
+                      </div>
+  
+                      <div class="product-price">
+                        <% if(product.offerPrice > 0){%>
+                          <span class="old-price">₹ <%= product.price%></span>
+                          <span class="price">₹ <%= product.offerPrice%></span>
+                        <%} else {%>
+                          <span class="price">₹ <%=product.price%></span>
+                        <%}%>
                       </div>
                     </div>
                   </div>
-
-                  <div class="product-details text-center">
-                    <div class="product-name">
-                      <a href="#">
-                        <%=product.name%>
-                      </a>
-                    </div>
-
-                    <div class="product-price">
-                      <!-- <span class="old-price">$500.00</span> -->
-                      <span class="price">₹<%=product.price%></span>
-                    </div>
-                  </div>
-                </div>
+                <%}%>
                 <%})%>
             </div>
           </div>
